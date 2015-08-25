@@ -14,12 +14,14 @@ import co.com.codesoftware.persistence.enumeration.DataType;
 import co.com.codesoftware.utilities.ReadFunction;
 
 public class ProductsLogic implements AutoCloseable {
-    private Session     sesion;
+
+    private Session sesion;
     private Transaction tx;
 
     @SuppressWarnings("unchecked")
     public List<ProductoTable> buscaProductos(Integer sede_sede) {
         List<ProductoTable> productos = null;
+        List<ProductoTable> productosRta = null;
         try {
             initOperation();
             productos = sesion.createQuery("from ProductoTable").list();
@@ -28,12 +30,20 @@ public class ProductsLogic implements AutoCloseable {
                 query1.setParameter("estado", "A");
                 query1.setParameter("idSede", sede_sede);
                 query1.setParameter("idProducto", producto.getId());
-                producto.setPrecios(query1.list());
+                List precio = query1.list();
+                if (precio != null && precio.size() > 0) {
+                    producto.setPrecios(precio);
+                    if (productosRta == null) {
+                        productosRta = new ArrayList<>();
+                    }
+                    productosRta.add(producto);
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } 
-        return productos;
+        }
+        return productosRta;
 
     }
 
@@ -54,7 +64,7 @@ public class ProductsLogic implements AutoCloseable {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
         return product;
     }
 
