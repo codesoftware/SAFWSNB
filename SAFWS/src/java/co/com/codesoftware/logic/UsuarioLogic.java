@@ -64,6 +64,11 @@ public class UsuarioLogic implements AutoCloseable {
             rf.addParametro(usuario.getPassword(), DataType.TEXT);
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();
+            if("Ok".equalsIgnoreCase(response.get(0))){
+                rta = true;
+            }else{
+                rta = false;
+            } 
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,8 +93,12 @@ public class UsuarioLogic implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        tx.commit();
-        sesion.close();
+        if(tx!= null){
+            tx.commit();
+        }
+        if(sesion!=null){
+            sesion.close();
+        }
     }
 
 }

@@ -341,7 +341,8 @@ public class SAFWS {
     @WebResult(name = "respuesta")
     public boolean cambiaClaveUsuario(UsuarioTable usuario) {
         try (UsuarioLogic logic = new UsuarioLogic()) {
-            return logic.cambioContrasenaObligatorio(usuario);
+            boolean rta = logic.cambioContrasenaObligatorio(usuario);
+            return rta;
         } catch (Exception e) {
             return false;
         }
