@@ -60,7 +60,13 @@ public class ProductsLogic implements AutoCloseable {
                 query1.setParameter("estado", "A");
                 query1.setParameter("idSede", sede);
                 query1.setParameter("idProducto", product.getId());
-                product.setPrecios(query1.list());
+                List precios = query1.list();
+                if(precios != null & precios.size() > 0 ){
+                    product.setPrecios(precios);
+                }else{
+                    product = null;
+                }
+                
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -14,6 +14,8 @@ import co.com.codesoftware.persistence.entites.tables.PrecioRecetaTable;
 import co.com.codesoftware.persistence.entites.tables.ProductoTable;
 import co.com.codesoftware.persistence.entites.tables.RecetaTable;
 import co.com.codesoftware.utilities.FileManagement;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class PantallaPrincipalFactLogic implements AutoCloseable {
 
@@ -29,9 +31,9 @@ public class PantallaPrincipalFactLogic implements AutoCloseable {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<PantallaPrincipalFacTable> obtieneProductosPantalla(
-            Integer sede_sede) {
+    public List<PantallaPrincipalFacTable> obtieneProductosPantalla(Integer sede_sede) {
         List<PantallaPrincipalFacTable> productos = null;
+        List<PantallaPrincipalFacTable> productosRta = null;
         try {
             initOperation();
             Query query = sesion
@@ -43,20 +45,20 @@ public class PantallaPrincipalFactLogic implements AutoCloseable {
                 query2.setParameter("estado", "A");
                 query2.setParameter("idSede", sede_sede);
                 query2.setParameter("idProducto", this.obtieneIdProductoForCode(producto.getCodigo()));
-                producto.setImagen(FileManagement.encodeToString(
-                        producto.getRuta(), producto.getExtension()));
+                producto.setImagen(FileManagement.encodeToString(producto.getRuta(), producto.getExtension()));
                 PrecioProductoTable precio = (PrecioProductoTable) query2.uniqueResult();
-                if (precio == null) {
-                    producto.setPrecio("0");
-                } else {
+                if (precio != null) {
+                    if (productosRta == null) {
+                        productosRta = new ArrayList<>();
+                    }
                     producto.setPrecio(precio.getPrecio());
+                    productosRta.add(producto);
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return productos;
+        return productosRta;
     }
 
     /**
@@ -68,29 +70,27 @@ public class PantallaPrincipalFactLogic implements AutoCloseable {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<PantallaPrincipalFacTable> obtieneRecetasPantalla(
-            Integer sede_sede) {
+    public List<PantallaPrincipalFacTable> obtieneRecetasPantalla(Integer sede_sede) {
         List<PantallaPrincipalFacTable> productos = null;
         try {
             initOperation();
-            Query query = sesion
-                    .createQuery("from PantallaPrincipalFacTable WHERE tipo = :tipo");
+            Query query = sesion.createQuery("from PantallaPrincipalFacTable WHERE tipo = :tipo");
             query.setParameter("tipo", "R");
             productos = query.list();
-            for (PantallaPrincipalFacTable producto : productos) {
-                Query query2 = sesion
-                        .createQuery("from PrecioRecetaTable WHERE estado = :estado and idSede = :idSede and idReceta = :idReceta ");
+            Iterator<PantallaPrincipalFacTable> it = productos.iterator();
+            while(it.hasNext()){
+                PantallaPrincipalFacTable producto = it.next();
+                 Query query2 = sesion.createQuery("from PrecioRecetaTable WHERE estado = :estado and idSede = :idSede and idReceta = :idReceta ");
                 query2.setParameter("estado", "A");
                 query2.setParameter("idSede", sede_sede);
-                query2.setParameter("idReceta",
-                        this.obtieneIdRecetaForCode(producto.getCodigo()));
+                query2.setParameter("idReceta",this.obtieneIdRecetaForCode(producto.getCodigo()));
                 PrecioRecetaTable precio = (PrecioRecetaTable) query2.uniqueResult();
-                if (precio == null) {
-                    producto.setPrecio("0");
-                } else {
-                    producto.setPrecio("" + precio.getPrecio());
+                if(precio != null){
+                    producto.setPrecio(""+precio.getPrecio());
+                    producto.setImagen(FileManagement.encodeToString(producto.getRuta(), producto.getExtension()));
+                }else{
+                    it.remove();
                 }
-                producto.setImagen(FileManagement.encodeToString(producto.getRuta(), producto.getExtension()));
             }
         } catch (Exception e) {
             e.printStackTrace();
