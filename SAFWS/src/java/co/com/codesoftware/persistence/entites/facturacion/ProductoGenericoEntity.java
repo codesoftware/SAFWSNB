@@ -6,6 +6,7 @@
 package co.com.codesoftware.persistence.entites.facturacion;
 
 import co.com.codesoftware.types.TypeProduct;
+import java.math.BigDecimal;
 
 /**
  * Clase con la cual se representara la entidad generica entre precios y recetas
@@ -18,7 +19,7 @@ public class ProductoGenericoEntity {
     private TypeProduct tipoProducto;
     private String codigo;
     private String nombre;
-    private String precio;
+    private BigDecimal precio;
 
     public Integer getId() {
         return id;
@@ -52,11 +53,11 @@ public class ProductoGenericoEntity {
         this.nombre = nombre;
     }
 
-    public String getPrecio() {
+    public BigDecimal getPrecio() {
         return precio;
     }
 
-    public void setPrecio(String precio) {
+    public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
 

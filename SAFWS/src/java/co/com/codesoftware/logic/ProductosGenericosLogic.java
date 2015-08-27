@@ -9,6 +9,8 @@ import co.com.codesoftware.persistence.entites.facturacion.ProductoGenericoEntit
 import co.com.codesoftware.persistence.entites.tables.ProductoTable;
 import co.com.codesoftware.persistence.entites.tables.RecetaTable;
 import co.com.codesoftware.types.TypeProduct;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +69,7 @@ public class ProductosGenericosLogic {
             rta.setCodigo(receta.getCodigo());
             rta.setId(receta.getId());
             rta.setNombre(receta.getDescripcion());
-            rta.setPrecio("" + receta.getPrecios().get(0).getPrecio());
+            rta.setPrecio(receta.getPrecios().get(0).getPrecio());
             rta.setTipoProducto(TypeProduct.RECETA);
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +90,7 @@ public class ProductosGenericosLogic {
             rta.setCodigo(producto.getCodigo());
             rta.setId(producto.getId());
             rta.setNombre(producto.getDescripcion());
-            rta.setPrecio("" + producto.getPrecios().get(0).getPrecio());
+            rta.setPrecio(new BigDecimal(producto.getPrecios().get(0).getPrecio()));
             rta.setTipoProducto(TypeProduct.PRODUCTO);
         } catch (Exception e) {
             e.printStackTrace();
