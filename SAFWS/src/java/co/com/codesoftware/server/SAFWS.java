@@ -15,12 +15,14 @@ import co.com.codesoftware.logic.FacturacionLogic;
 import co.com.codesoftware.logic.LogicLogin;
 import co.com.codesoftware.logic.PantallaPrincipalFactLogic;
 import co.com.codesoftware.logic.ParametrosEmpresaLogic;
+import co.com.codesoftware.logic.ProductosGenericosLogic;
 import co.com.codesoftware.logic.ProductsLogic;
 import co.com.codesoftware.logic.RecetaLogic;
 import co.com.codesoftware.logic.SedesLogic;
 import co.com.codesoftware.logic.UsuarioLogic;
 import co.com.codesoftware.persistence.entites.facturacion.FacturaTable;
 import co.com.codesoftware.persistence.entites.facturacion.Facturacion;
+import co.com.codesoftware.persistence.entites.facturacion.ProductoGenericoEntity;
 import co.com.codesoftware.persistence.entites.facturacion.RespuestaFacturacion;
 import co.com.codesoftware.persistence.entites.tables.Cliente;
 import co.com.codesoftware.persistence.entites.tables.PantallaPrincipalFacTable;
@@ -345,6 +347,24 @@ public class SAFWS {
             return rta;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    /**
+     * Metodo el cual busca los productos y recetas parametrizados en el sistema
+     *
+     * @param sede_sede
+     * @return
+     */
+    @WebMethod(operationName = "findProductosAndDishes")
+    @WebResult(name = "ListGeneric")
+    public List<ProductoGenericoEntity> findProductosAndDishes(Integer sede_sede) {
+        try {
+            ProductosGenericosLogic logic = new ProductosGenericosLogic();
+            return logic.buscaProductosRecetas(sede_sede);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

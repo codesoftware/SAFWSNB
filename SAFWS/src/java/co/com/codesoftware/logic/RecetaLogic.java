@@ -16,6 +16,15 @@ public class RecetaLogic implements AutoCloseable {
     private Session sesion;
     private Transaction tx;
 
+    /**
+     * Funcion encargada de realizar la logica para la obtencion de recetas del
+     * sistema que tengan el precio parametrizado
+     *
+     * @param param
+     * @param sede
+     * @return
+     * @throws HibernateException
+     */
     @SuppressWarnings("unchecked")
     public List<RecetaTable> getRecetas(List<String> param, Integer sede) throws HibernateException {
         List<RecetaTable> recetas = null;
@@ -23,12 +32,12 @@ public class RecetaLogic implements AutoCloseable {
         try {
             initOperation();
             recetas = sesion.createQuery("from RecetaTable").list();
-            for (RecetaTable receta : recetas) {                
+            for (RecetaTable receta : recetas) {
                 String auxQuery = "from PrecioRecetaTable precio  WHERE precio.estado = 'A' and precio.idReceta = " + receta.getId() + " and precio.idSede = " + sede;
                 List<PrecioRecetaTable> precios = sesion.createQuery(auxQuery).list();
-                if(precios != null & precios.size()>0){
+                if (precios != null & precios.size() > 0) {
                     receta.setPrecios(precios);
-                    if(rta == null){
+                    if (rta == null) {
                         rta = new ArrayList<>();
                     }
                     rta.add(receta);
@@ -41,7 +50,7 @@ public class RecetaLogic implements AutoCloseable {
         }
         return rta;
     }
-
+    
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
         tx = sesion.beginTransaction();

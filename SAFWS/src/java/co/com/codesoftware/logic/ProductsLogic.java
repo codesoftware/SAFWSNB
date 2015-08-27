@@ -18,6 +18,13 @@ public class ProductsLogic implements AutoCloseable {
     private Session sesion;
     private Transaction tx;
 
+    /**
+     * Funcion con la cual se obtiene los productos parametrizados en el sistema
+     * basandose en su sede
+     *
+     * @param sede_sede
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public List<ProductoTable> buscaProductos(Integer sede_sede) {
         List<ProductoTable> productos = null;
@@ -61,12 +68,12 @@ public class ProductsLogic implements AutoCloseable {
                 query1.setParameter("idSede", sede);
                 query1.setParameter("idProducto", product.getId());
                 List precios = query1.list();
-                if(precios != null & precios.size() > 0 ){
+                if (precios != null & precios.size() > 0) {
                     product.setPrecios(precios);
-                }else{
+                } else {
                     product = null;
                 }
-                
+
             }
         } catch (Exception e) {
             e.printStackTrace();
