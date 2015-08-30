@@ -41,10 +41,11 @@ public class PantallaPrincipalFactLogic implements AutoCloseable {
             query.setParameter("tipo", "P");
             productos = query.list();
             for (PantallaPrincipalFacTable producto : productos) {
+                Integer idProducto = this.obtieneIdProductoForCode(producto.getCodigo());
                 Query query2 = sesion.createQuery("from PrecioProductoTable WHERE estado = :estado and idSede = :idSede and idProducto = :idProducto ");
                 query2.setParameter("estado", "A");
                 query2.setParameter("idSede", sede_sede);
-                query2.setParameter("idProducto", this.obtieneIdProductoForCode(producto.getCodigo()));
+                query2.setParameter("idProducto", idProducto);
                 producto.setImagen(FileManagement.encodeToString(producto.getRuta(), producto.getExtension()));
                 PrecioProductoTable precio = (PrecioProductoTable) query2.uniqueResult();
                 if (precio != null) {
@@ -52,6 +53,7 @@ public class PantallaPrincipalFactLogic implements AutoCloseable {
                         productosRta = new ArrayList<>();
                     }
                     producto.setPrecio(precio.getPrecio());
+                    producto.setIdReceta(idProducto);
                     productosRta.add(producto);
                 }
             }
