@@ -78,17 +78,20 @@ public class PantallaPrincipalFactLogic implements AutoCloseable {
             query.setParameter("tipo", "R");
             productos = query.list();
             Iterator<PantallaPrincipalFacTable> it = productos.iterator();
-            while(it.hasNext()){
+            while (it.hasNext()) {
                 PantallaPrincipalFacTable producto = it.next();
-                 Query query2 = sesion.createQuery("from PrecioRecetaTable WHERE estado = :estado and idSede = :idSede and idReceta = :idReceta ");
+                Integer idReceta = this.obtieneIdRecetaForCode(producto.getCodigo());
+                Query query2 = sesion.createQuery("from PrecioRecetaTable WHERE estado = :estado and idSede = :idSede and idReceta = :idReceta ");
                 query2.setParameter("estado", "A");
                 query2.setParameter("idSede", sede_sede);
-                query2.setParameter("idReceta",this.obtieneIdRecetaForCode(producto.getCodigo()));
+                query2.setParameter("idReceta", idReceta);
                 PrecioRecetaTable precio = (PrecioRecetaTable) query2.uniqueResult();
-                if(precio != null){
-                    producto.setPrecio(""+precio.getPrecio());
+                if (precio != null) {
+                    producto.setPrecio("" + precio.getPrecio());
                     producto.setImagen(FileManagement.encodeToString(producto.getRuta(), producto.getExtension()));
-                }else{
+                    //Se modifica este id ya que el id que trae de la base datos es el id de la tabla de pantalla principal mas no el de la receta
+                    producto.setIdReceta(idReceta);
+                } else {
                     it.remove();
                 }
             }
