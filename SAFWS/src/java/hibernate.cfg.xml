@@ -24,5 +24,6 @@
         <mapping class="co.com.codesoftware.persistence.entites.facturacion.DetProdFacturaTable"/>
         <mapping class="co.com.codesoftware.persistence.entites.tables.ParametrosEmpresaTable"/>
         <mapping class="co.com.codesoftware.persistence.entites.facturacion.DetReceFacturacionTable" />
+        <mapping class="co.com.codesoftware.persistence.entites.tables.PerfilTable" />
     </session-factory>
 </hibernate-configuration>

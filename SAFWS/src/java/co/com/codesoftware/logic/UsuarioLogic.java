@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import co.com.codesoftware.persistence.HibernateUtil;
+import co.com.codesoftware.persistence.entites.tables.PerfilTable;
 import co.com.codesoftware.persistence.entites.tables.UsuarioTable;
 import co.com.codesoftware.persistence.enumeration.DataType;
 import co.com.codesoftware.utilities.ReadFunction;
@@ -18,6 +19,11 @@ public class UsuarioLogic implements AutoCloseable {
     private Session sesion;
     private Transaction tx;
 
+    /**
+     * Funcion con la cual se obtienen todos los usuarios de la aplicacion
+     *
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public List<UsuarioTable> obtieneUsuariosApp() {
         List<UsuarioTable> usuarios = null;
@@ -35,6 +41,12 @@ public class UsuarioLogic implements AutoCloseable {
         return usuarios;
     }
 
+    /**
+     * Funcion con la cual obtenemos un usuario por medio de su usuario
+     *
+     * @param user
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public UsuarioTable obtieneUsuarioForUser(String user) {
         UsuarioTable usuario = null;
@@ -53,28 +65,40 @@ public class UsuarioLogic implements AutoCloseable {
         }
         return usuario;
     }
-    
-    public boolean cambioContrasenaObligatorio(UsuarioTable usuario){
+
+    /**
+     * Funcion con la cual se puede cambiar la contraseña del usuario
+     *
+     * @param usuario
+     * @return
+     */
+    public boolean cambioContrasenaObligatorio(UsuarioTable usuario) {
         boolean rta = true;
         List<String> response = new ArrayList<>();
-        try(ReadFunction rf = new ReadFunction()) {
+        try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("US_FCAMBIO_CLAVE");
             rf.setNumParam(2);
             rf.addParametro(usuario.getUsuario(), DataType.TEXT);
             rf.addParametro(usuario.getPassword(), DataType.TEXT);
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();
-            if("Ok".equalsIgnoreCase(response.get(0))){
+            if ("Ok".equalsIgnoreCase(response.get(0))) {
                 rta = true;
-            }else{
+            } else {
                 rta = false;
-            } 
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
 
+    /**
+     * Funcion con la cual obtenemos el usuario por medio de su id
+     *
+     * @param tius_tius
+     * @return
+     */
     public UsuarioTable obtieneUsuarioXId(Long tius_tius) {
         UsuarioTable usuario = null;
         try {
@@ -86,6 +110,34 @@ public class UsuarioLogic implements AutoCloseable {
         return usuario;
     }
 
+    /**
+     * Funcion con la cual evaluo si el usuario puede facturar en el sistema
+     *
+     * @param idUsuario
+     * @return
+     */
+    public boolean validaUsuarioFacturador(Long idUsuario) {
+        try {
+             UsuarioTable usuario = obtieneUsuarioXId(idUsuario);
+             if(usuario != null){
+                 initOperation();
+                 Query query = sesion.createQuery("from PerfilTable where id = :idPerfil ");
+                 query.setParameter("idPerfil", usuario.getIdPerfil());
+                 PerfilTable perfil = (PerfilTable) query.uniqueResult();
+                 if(perfil != null){
+                     return perfil.getPermisos().contains(".FcCr1.");
+                 }else{
+                     return false;
+                 }
+             }else{
+                 return false;
+             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
         tx = sesion.beginTransaction();
@@ -93,10 +145,10 @@ public class UsuarioLogic implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        if(tx!= null){
+        if (tx != null) {
             tx.commit();
         }
-        if(sesion!=null){
+        if (sesion != null) {
             sesion.close();
         }
     }

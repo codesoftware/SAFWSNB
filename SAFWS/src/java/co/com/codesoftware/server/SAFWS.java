@@ -360,12 +360,28 @@ public class SAFWS {
     @WebMethod(operationName = "getRecetaForcode")
     @WebResult(name = "RecetaTable")
     public RecetaTable getRecetaForcode(@XmlElement(required = true) @WebParam(name = "rece_codigo") String rece_codigo, @XmlElement(required = true) @WebParam(name = "rece_sede") Integer sede_sede) {
-        try {
-            RecetaLogic logic = new RecetaLogic();
+        try (RecetaLogic logic = new RecetaLogic()){            
             return logic.getRecetaForcode(rece_codigo, sede_sede);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * Funcion utilizada para validar el permiso de facturacion
+     *
+     * @param idTius
+     * @return
+     */
+    @WebMethod(operationName = "validaUsuarioFacturador")
+    @WebResult(name = "valida")
+    public boolean validaUsuarioFacturador(@XmlElement(required = true) @WebParam(name = "tius_tius") Long idTius) {
+        try(UsuarioLogic logic = new UsuarioLogic()) {            
+            return logic.validaUsuarioFacturador(idTius);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
