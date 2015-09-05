@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import co.com.codesoftware.persistence.HibernateUtil;
 import co.com.codesoftware.persistence.entites.tables.PrecioRecetaTable;
 import co.com.codesoftware.persistence.entites.tables.RecetaTable;
+import org.hibernate.Query;
 
 public class RecetaLogic implements AutoCloseable {
 
@@ -50,7 +51,38 @@ public class RecetaLogic implements AutoCloseable {
         }
         return rta;
     }
-    
+
+    /**
+     * Funcion encargada de buscar una receta por medio de su codigo
+     *
+     * @param rece_codigo
+     * @param sede_sede
+     * @return
+     */
+    public RecetaTable getRecetaForcode(String rece_codigo, Integer sede_sede) {
+        RecetaTable receta = null;
+        try {
+            initOperation();
+            Query query = sesion.createQuery("from RecetaTable where codigo = :codigo ");
+            query.setParameter("codigo", rece_codigo);
+            receta = (RecetaTable) query.uniqueResult();
+            if (receta != null) {
+                Query query2 = sesion.createQuery("from PrecioRecetaTable precio  WHERE precio.estado = 'A' and precio.idReceta = :idReceta and precio.idSede = :idSede ");
+                query2.setParameter("idReceta", receta.getId());
+                query2.setParameter("idSede", sede_sede);
+                List precios =  query2.list();
+                if(precios != null & precios.size() > 0 ){
+                    receta.setPrecios(precios);
+                }else{
+                    receta = null;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return receta;
+    }
+
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
         tx = sesion.beginTransaction();

@@ -351,6 +351,25 @@ public class SAFWS {
     }
 
     /**
+     * Metodo con el cual obtengo la receta por medio de su codigo unico
+     *
+     * @param rece_codigo
+     * @param sede_sede
+     * @return
+     */
+    @WebMethod(operationName = "getRecetaForcode")
+    @WebResult(name = "RecetaTable")
+    public RecetaTable getRecetaForcode(@XmlElement(required = true) @WebParam(name = "rece_codigo") String rece_codigo, @XmlElement(required = true) @WebParam(name = "rece_sede") Integer sede_sede) {
+        try {
+            RecetaLogic logic = new RecetaLogic();
+            return logic.getRecetaForcode(rece_codigo, sede_sede);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * Metodo el cual busca los productos y recetas parametrizados en el sistema
      *
      * @param sede_sede
