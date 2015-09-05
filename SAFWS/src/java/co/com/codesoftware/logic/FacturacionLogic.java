@@ -321,6 +321,8 @@ public class FacturacionLogic implements AutoCloseable {
                 idFactura = aux[1];
             }
         } catch (Exception e) {
+            llamadoFunction = "error";
+            rta = e.toString();
             e.printStackTrace();
         }
         return rta;

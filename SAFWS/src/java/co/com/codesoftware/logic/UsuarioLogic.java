@@ -88,6 +88,7 @@ public class UsuarioLogic implements AutoCloseable {
                 rta = false;
             }
         } catch (Exception e) {
+            rta = false;
             e.printStackTrace();
         }
         return rta;
