@@ -12,6 +12,17 @@ public class Facturacion {
 	private Long					idSede;
 	private List<TemporalProdTable>	productos;
 	private List<TemporalRecTable>	recetas;
+        private boolean domicilio;
+
+    public boolean isDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(boolean domicilio) {
+        this.domicilio = domicilio;
+    }
+        
+        
 
 	public Long getIdCliente() {
 		return idCliente;

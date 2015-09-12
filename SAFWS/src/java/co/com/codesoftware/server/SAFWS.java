@@ -31,6 +31,7 @@ import co.com.codesoftware.persistence.entites.tables.ProductoTable;
 import co.com.codesoftware.persistence.entites.tables.RecetaTable;
 import co.com.codesoftware.persistence.entites.tables.Sede;
 import co.com.codesoftware.persistence.entites.tables.UsuarioTable;
+import java.util.Date;
 
 @WebService(name = "SAFWS")
 public class SAFWS {
@@ -274,7 +275,7 @@ public class SAFWS {
     }
 
     @WebMethod(operationName = "facturar")
-    @WebResult(name = "respuestaFacturacon")
+    @WebResult(name = "respuestaFacturacion")
     public RespuestaFacturacion facturar(@XmlElement(required = true) @WebParam(name = "Facturacion") Facturacion facturacion) {
         RespuestaFacturacion rta = null;
         try (FacturacionLogic objLogic = new FacturacionLogic()) {
@@ -286,15 +287,18 @@ public class SAFWS {
     }
 
     /**
-     * Metodo con el cual obtengo todas las facturas registradas en el sistema
+     * Metodo con el cual obtengo todas las facturas registradas en el sistema por sede y en un rango de fechas
      *
+     * @param idSede
+     * @param fInicial
+     * @param fFinal
      * @return
      */
     @WebMethod(operationName = "getFacturas")
     @WebResult(name = "listaFacturas")
-    public List<FacturaTable> getFacturas() {
+    public List<FacturaTable> getFacturas(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial,@XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal) {
         try (FacturacionLogic objLogic = new FacturacionLogic()) {
-            return objLogic.consultaFacturas();
+            return objLogic.consultaFacturas(fInicial,fFinal);
         } catch (Exception e) {
             return null;
         }

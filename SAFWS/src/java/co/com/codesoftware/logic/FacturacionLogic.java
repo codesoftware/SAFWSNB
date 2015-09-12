@@ -21,7 +21,9 @@ import co.com.codesoftware.persistence.entites.tables.UsuarioTable;
 import co.com.codesoftware.persistence.entities.facturacion.tables.TemporalProdTable;
 import co.com.codesoftware.persistence.entities.facturacion.tables.TemporalRecTable;
 import co.com.codesoftware.persistence.enumeration.DataType;
+import co.com.codesoftware.utilities.Convertions;
 import co.com.codesoftware.utilities.ReadFunction;
+import java.util.Date;
 
 public class FacturacionLogic implements AutoCloseable {
 
@@ -77,6 +79,9 @@ public class FacturacionLogic implements AutoCloseable {
 
                     }
                     if (iterator > 0) {
+                        if(facturacion.isDomicilio()){
+                            //Logica para enviar que la factura es domicilio
+                        }
                         msn = this.llamaFuncionFacturacion(facturacion, idTrans);
                         rta.setRespuesta(llamadoFunction);
                         rta.setIdFacturacion(this.idFactura);
@@ -332,14 +337,18 @@ public class FacturacionLogic implements AutoCloseable {
      * Funcion la cual obtendra todas las facturas que se encuentren registradas
      * en el sistema
      *
+     * @param sede
+     * @param fechaInicial
+     * @param fechaFinal
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<FacturaTable> consultaFacturas() {
+    public List<FacturaTable> consultaFacturas(Date fechaInicial,Date fechaFinal) {
         List<FacturaTable> facturas = null;
         try {
             initOperation();
-            facturas = sesion.createQuery("from FacturaTable ORDER BY id DESC ").list();
+            facturas = sesion.createQuery("from FacturaTable WHERE fecha BETWEEN :fechaInicial AND :fechaFinal ORDER BY id DESC ")
+                    .setParameter("fechaInicial", fechaInicial).setParameter("fechaFinal", fechaFinal).list();
             for (FacturaTable factura : facturas) {
                 if (factura != null) {
                     Query query2 = sesion.createQuery("from Cliente WHERE id = :idCliente ");
