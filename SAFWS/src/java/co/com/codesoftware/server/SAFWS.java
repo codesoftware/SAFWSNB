@@ -18,6 +18,7 @@ import co.com.codesoftware.logic.ParametrosEmpresaLogic;
 import co.com.codesoftware.logic.ProductosGenericosLogic;
 import co.com.codesoftware.logic.ProductsLogic;
 import co.com.codesoftware.logic.RecetaLogic;
+import co.com.codesoftware.logic.report.ReporteLogica;
 import co.com.codesoftware.logic.SedesLogic;
 import co.com.codesoftware.logic.UsuarioLogic;
 import co.com.codesoftware.persistence.entites.facturacion.FacturaTable;
@@ -287,7 +288,8 @@ public class SAFWS {
     }
 
     /**
-     * Metodo con el cual obtengo todas las facturas registradas en el sistema por sede y en un rango de fechas
+     * Metodo con el cual obtengo todas las facturas registradas en el sistema
+     * por sede y en un rango de fechas
      *
      * @param idSede
      * @param fInicial
@@ -296,9 +298,9 @@ public class SAFWS {
      */
     @WebMethod(operationName = "getFacturas")
     @WebResult(name = "listaFacturas")
-    public List<FacturaTable> getFacturas(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial,@XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal) {
+    public List<FacturaTable> getFacturas(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial, @XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal) {
         try (FacturacionLogic objLogic = new FacturacionLogic()) {
-            return objLogic.consultaFacturas(fInicial,fFinal);
+            return objLogic.consultaFacturas(fInicial, fFinal);
         } catch (Exception e) {
             return null;
         }
@@ -364,7 +366,7 @@ public class SAFWS {
     @WebMethod(operationName = "getRecetaForcode")
     @WebResult(name = "RecetaTable")
     public RecetaTable getRecetaForcode(@XmlElement(required = true) @WebParam(name = "rece_codigo") String rece_codigo, @XmlElement(required = true) @WebParam(name = "rece_sede") Integer sede_sede) {
-        try (RecetaLogic logic = new RecetaLogic()){            
+        try (RecetaLogic logic = new RecetaLogic()) {
             return logic.getRecetaForcode(rece_codigo, sede_sede);
         } catch (Exception e) {
             e.printStackTrace();
@@ -381,7 +383,7 @@ public class SAFWS {
     @WebMethod(operationName = "validaUsuarioFacturador")
     @WebResult(name = "valida")
     public boolean validaUsuarioFacturador(@XmlElement(required = true) @WebParam(name = "tius_tius") Long idTius) {
-        try(UsuarioLogic logic = new UsuarioLogic()) {            
+        try (UsuarioLogic logic = new UsuarioLogic()) {
             return logic.validaUsuarioFacturador(idTius);
         } catch (Exception e) {
             e.printStackTrace();
@@ -405,6 +407,25 @@ public class SAFWS {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Funcion con la cual se genera un pdf con la factura apartir de su id
+     *
+     * @param fact_fact
+     * @return
+     */
+    @WebMethod(operationName = "findBillForId")
+    @WebResult(name = "imagen")
+    public String findBillForId(@XmlElement(required = true) @WebParam(name = "fact_fact")String fact_fact) {
+        String imagen = null;
+        try {
+            ReporteLogica logica = new ReporteLogica();
+            imagen = logica.generaPdfFactura(fact_fact);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return imagen;
     }
 
 }

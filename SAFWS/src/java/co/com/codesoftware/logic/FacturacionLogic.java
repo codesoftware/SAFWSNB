@@ -21,7 +21,6 @@ import co.com.codesoftware.persistence.entites.tables.UsuarioTable;
 import co.com.codesoftware.persistence.entities.facturacion.tables.TemporalProdTable;
 import co.com.codesoftware.persistence.entities.facturacion.tables.TemporalRecTable;
 import co.com.codesoftware.persistence.enumeration.DataType;
-import co.com.codesoftware.utilities.Convertions;
 import co.com.codesoftware.utilities.ReadFunction;
 import java.util.Date;
 
