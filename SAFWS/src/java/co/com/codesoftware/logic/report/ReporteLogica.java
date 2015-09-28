@@ -56,15 +56,15 @@ public class ReporteLogica {
             this.conectionJDBC();
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put("fact_fact", fact_fact);
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject("D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\src\\java\\co\\com\\codesoftware\\logic\\report\\Factura.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject("/home/john/Documentos/Proyectos/MEXICAPRICHOS/Fuentes/SAFWSNB/SAFWS/src/java/co/com/codesoftware/logic/report/Factura.jasper");
             JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
-            JasperExportManager.exportReportToPdfFile(print, "C:\\reportesFactura\\prueba.pdf");            
+            JasperExportManager.exportReportToPdfFile(print, "/IMAGENES/prueba.pdf");            
             CodificaBase64 codifica64 = new CodificaBase64();
-            boolean codifico = codifica64.codificacionDocumento("C:\\reportesFactura\\prueba.pdf");
+            boolean codifico = codifica64.codificacionDocumento("/IMAGENES/prueba.pdf");
             if(codifico){
                 documento = codifica64.getDocumento();
                 codifica64.setDocumento(null);
-                File file = new File("C:\\reportesFactura\\prueba.pdf");
+                File file = new File("/IMAGENES/prueba.pdf");
                 file.delete();
             }
         } catch (Exception e) {

@@ -6,7 +6,7 @@
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Sigemco</property>
         <property name="hibernate.connection.username">postgres</property>
-        <property name="hibernate.connection.password">Codesoftware1234</property>
+        <property name="hibernate.connection.password">1234</property>
         <property name="hibernate.connection.pool_size">1</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
