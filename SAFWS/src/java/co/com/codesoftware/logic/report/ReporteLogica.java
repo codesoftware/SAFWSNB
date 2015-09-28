@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -26,8 +27,20 @@ import org.hibernate.engine.spi.SessionImplementor;
  * @author ACER
  */
 public class ReporteLogica {
-    
+
     private Connection con;
+    private String rutaRepo;
+
+    public ReporteLogica() {
+        ResourceBundle rb = ResourceBundle.getBundle("co.com.codesoftware.properties.baseProperties");
+        this.rutaRepo = rb.getString("RUTA_REP").trim();
+        //Identificamos si el sistema operativo es windows o linux
+        String sistemaOperativo = System.getProperty("os.name");
+        sistemaOperativo = sistemaOperativo.toUpperCase();
+        if (sistemaOperativo.contains("WINDOWS")) {
+            rutaRepo = "C:" + rutaRepo;
+        }
+    }
 
     /**
      * Funcion con la cual se realiza un pdf con la factura solicitada teniendo
@@ -36,7 +49,7 @@ public class ReporteLogica {
      * @param fact_fact
      * @return
      */
-    public String generaPdfFactura(String fact_fact) {
+    public synchronized String generaPdfFactura(String fact_fact) {
         String documento = null;
         try {
             documento = generaJasper(fact_fact);
@@ -45,31 +58,34 @@ public class ReporteLogica {
         }
         return documento;
     }
+
     /**
      * Funcion la cual llama al jasper para la creacion del pdf
+     *
      * @param pdf
-     * @return 
+     * @return
      */
-    private String generaJasper(String fact_fact){
+    private synchronized String generaJasper(String fact_fact) {
         String documento = null;
         try {
             this.conectionJDBC();
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put("fact_fact", fact_fact);
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject("D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\src\\java\\co\\com\\codesoftware\\logic\\report\\Factura.jasper");
+            //JasperReport jasperReport = (JasperReport) JRLoader.loadObject("D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\src\\java\\co\\com\\codesoftware\\logic\\report\\Factura.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepo+"\\Factura.jasper");
             JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
-            JasperExportManager.exportReportToPdfFile(print, "C:\\reportesFactura\\prueba.pdf");            
+            JasperExportManager.exportReportToPdfFile(print, rutaRepo+"\\prueba.pdf");
             CodificaBase64 codifica64 = new CodificaBase64();
-            boolean codifico = codifica64.codificacionDocumento("C:\\reportesFactura\\prueba.pdf");
-            if(codifico){
+            boolean codifico = codifica64.codificacionDocumento(rutaRepo+"\\prueba.pdf");
+            if (codifico) {
                 documento = codifica64.getDocumento();
                 codifica64.setDocumento(null);
-                File file = new File("C:\\reportesFactura\\prueba.pdf");
+                File file = new File(rutaRepo+"\\prueba.pdf");
                 file.delete();
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -78,10 +94,11 @@ public class ReporteLogica {
         }
         return documento;
     }
-     /**
+
+    /**
      * Funcion que toma el objeto conexion de Hibernate y lo utiliza como un
      * objeto conexion de jdbc
-     * 
+     *
      * @return
      */
     private boolean conectionJDBC() {
@@ -94,6 +111,14 @@ public class ReporteLogica {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public String getRutaRepo() {
+        return rutaRepo;
+    }
+
+    public void setRutaRepo(String rutaRepo) {
+        this.rutaRepo = rutaRepo;
     }
 
 }

@@ -35,13 +35,9 @@ public class FileManagement {
         ByteArrayOutputStream baos = null;
         try {
             String sistemaOperativo = System.getProperty("os.name");
-            System.out.println(sistemaOperativo);
             if ("WINDOWS".indexOf(sistemaOperativo.toUpperCase())>=0) {
                 rutaImg = "C:" + rutaImg;
             }
-//            if (FileManagement.tipoSistemaOperativo().equalsIgnoreCase("WINDOWS")) {
-//                rutaImg = "C:" + rutaImg;
-//            }
             File file = new File(rutaImg);
             if (!file.exists()) {
                 return "La ruta de la imagen a codificar no existe";
