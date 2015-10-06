@@ -32,6 +32,7 @@ import co.com.codesoftware.persistence.entites.tables.ProductoTable;
 import co.com.codesoftware.persistence.entites.tables.RecetaTable;
 import co.com.codesoftware.persistence.entites.tables.Sede;
 import co.com.codesoftware.persistence.entites.tables.UsuarioTable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @WebService(name = "SAFWS")
@@ -426,6 +427,17 @@ public class SAFWS {
             e.printStackTrace();
         }
         return imagen;
+    }
+    /**
+     * Metodo que consulta el valor de la facturacion por sede
+     * @param sede
+     * @return 
+     */
+    @WebMethod(operationName = "searchBoxNow")
+    @WebResult(name = "cantidad")
+    public BigDecimal searchBoxNow(@XmlElement(required = true) @WebParam(name = "sede")Integer sede){
+        FacturacionLogic logic = new FacturacionLogic();
+        return logic.validaValorCaja(sede);
     }
 
 }

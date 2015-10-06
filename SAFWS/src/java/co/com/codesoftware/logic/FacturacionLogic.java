@@ -22,6 +22,8 @@ import co.com.codesoftware.persistence.entities.facturacion.tables.TemporalProdT
 import co.com.codesoftware.persistence.entities.facturacion.tables.TemporalRecTable;
 import co.com.codesoftware.persistence.enumeration.DataType;
 import co.com.codesoftware.utilities.ReadFunction;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FacturacionLogic implements AutoCloseable {
@@ -78,7 +80,7 @@ public class FacturacionLogic implements AutoCloseable {
 
                     }
                     if (iterator > 0) {
-                        if(facturacion.isDomicilio()){
+                        if (facturacion.isDomicilio()) {
                             //Logica para enviar que la factura es domicilio
                         }
                         msn = this.llamaFuncionFacturacion(facturacion, idTrans);
@@ -342,7 +344,7 @@ public class FacturacionLogic implements AutoCloseable {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<FacturaTable> consultaFacturas(Date fechaInicial,Date fechaFinal) {
+    public List<FacturaTable> consultaFacturas(Date fechaInicial, Date fechaFinal) {
         List<FacturaTable> facturas = null;
         try {
             initOperation();
@@ -445,6 +447,25 @@ public class FacturacionLogic implements AutoCloseable {
             return false;
         }
         return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    public BigDecimal validaValorCaja(Integer sede) {
+        BigDecimal rta = null;
+        try {
+            initOperation();
+
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String dateString = sdf.format(date);
+            Date dateFinal = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+            System.out.println("date final"+dateFinal);
+            rta = (BigDecimal) sesion.createQuery("SELECT SUM(valor) FROM FacturaTable where fecha = current_date and idSede =:sede").setParameter("sede", sede).uniqueResult();
+            System.out.println(rta);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 
 }
