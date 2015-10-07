@@ -449,19 +449,21 @@ public class FacturacionLogic implements AutoCloseable {
         return true;
     }
 
+    /**
+     * Funcion con la cual obtengo la suma de facturas que existen en el dia
+     *
+     * @param sede
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public BigDecimal validaValorCaja(Integer sede) {
         BigDecimal rta = null;
         try {
             initOperation();
-
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String dateString = sdf.format(date);
-            Date dateFinal = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
-            System.out.println("date final"+dateFinal);
             rta = (BigDecimal) sesion.createQuery("SELECT SUM(valor) FROM FacturaTable where fecha = current_date and idSede =:sede").setParameter("sede", sede).uniqueResult();
-            System.out.println(rta);
+            if (rta == null) {
+                rta = new BigDecimal(0);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
