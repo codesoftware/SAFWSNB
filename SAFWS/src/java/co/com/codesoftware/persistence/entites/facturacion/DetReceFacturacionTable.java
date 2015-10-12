@@ -71,7 +71,7 @@ public class DetReceFacturacionTable {
         this.idFact = idFact;
     }
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dtre_fecha")
     public Date getFecha() {
         return fecha;

@@ -372,6 +372,7 @@ public class FacturacionLogic implements AutoCloseable {
     @SuppressWarnings("unchecked")
     public FacturaTable getFacturaForId(Integer id) {
         FacturaTable factura = null;
+        boolean validaFecha = true;
         try {
             initOperation();
             factura = (FacturaTable) sesion.get(FacturaTable.class, id);
@@ -380,24 +381,36 @@ public class FacturacionLogic implements AutoCloseable {
                 query.setParameter("idFact", id);
                 List<DetProdFacturaTable> aux = query.list();
                 if (aux != null) {
-                    for (DetProdFacturaTable detalle : aux) {
-                        Query query3 = sesion.createQuery("from ProductoTable where id = :idDska ");
-                        query3.setParameter("idDska", detalle.getIdProducto());
-                        detalle.setProducto((ProductoTable) query3.uniqueResult());
+                    if (!aux.isEmpty()) {
+                        if (validaFecha) {
+                            validaFecha = false;
+                            factura.setFechaExacta(aux.get(0).getFecha());
+                        }
+                        for (DetProdFacturaTable detalle : aux) {
+                            Query query3 = sesion.createQuery("from ProductoTable where id = :idDska ");
+                            query3.setParameter("idDska", detalle.getIdProducto());
+                            detalle.setProducto((ProductoTable) query3.uniqueResult());
+                        }
+                        factura.setDetalleProductos(aux);
                     }
-                    factura.setDetalleProductos(aux);
                 }
                 //Obtengo las recetas
                 Query query2 = sesion.createQuery("from DetReceFacturacionTable where idFact = :idFact ");
                 query2.setParameter("idFact", id);
                 List<DetReceFacturacionTable> aux2 = query2.list();
                 if (aux2 != null) {
-                    for (DetReceFacturacionTable receta : aux2) {
-                        Query query4 = sesion.createQuery("from RecetaTable where id = :idRece ");
-                        query4.setParameter("idRece", receta.getIdRece());
-                        receta.setReceta((RecetaTable) query4.uniqueResult());
+                    if (!aux2.isEmpty()) {
+                        if (validaFecha) {
+                            validaFecha = false;
+                            factura.setFechaExacta(aux2.get(0).getFecha());
+                        }
+                        for (DetReceFacturacionTable receta : aux2) {
+                            Query query4 = sesion.createQuery("from RecetaTable where id = :idRece ");
+                            query4.setParameter("idRece", receta.getIdRece());
+                            receta.setReceta((RecetaTable) query4.uniqueResult());
+                        }
+                        factura.setDetalleRecetas(aux2);
                     }
-                    factura.setDetalleRecetas(aux2);
                 }
             }
             if (factura != null) {
