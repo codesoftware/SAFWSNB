@@ -23,7 +23,7 @@ public class CodificaBase64 {
         InputStream inputStream = null;
         ByteArrayOutputStream baos = null;
         try {
-            urlDocumento = urlDocumento.replaceAll("/", "\\");
+            //urlDocumento = urlDocumento.replaceAll("/", "\\");
             System.out.println(urlDocumento);
             inputStream = new FileInputStream(urlDocumento);
             byte[] buffer = new byte[1024];

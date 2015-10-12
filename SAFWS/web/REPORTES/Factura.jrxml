@@ -2,12 +2,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="655" columnWidth="212" leftMargin="7" rightMargin="7" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="2.1435888100000016"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="144"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\web\\REPORTES\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/REPORTESSAF/"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT  (select para_valor from em_tpara where para_clave = 'NOMBREEMPRESA') NOMBRE,
@@ -240,7 +240,7 @@
 			<staticText>
 				<reportElement x="0" y="175" width="78" height="10" uuid="85767f8f-63a5-4151-b98d-07ebd914e607"/>
 				<textElement textAlignment="Right">
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[TARJETA:]]></text>
 			</staticText>
