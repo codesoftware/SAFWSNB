@@ -12,10 +12,11 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import co.com.codesoftware.persistence.entites.tables.ProductoTable;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "fa_tdtpr")
-public class DetProdFacturaTable {
+public class DetProdFacturaTable implements Serializable {
 
 	private Integer			id;
 	private Integer			idProducto;
@@ -65,7 +66,7 @@ public class DetProdFacturaTable {
 		this.idFactura = idFactura;
 	}
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dtpr_fecha")
 	public Date getFecha() {
 		return fecha;

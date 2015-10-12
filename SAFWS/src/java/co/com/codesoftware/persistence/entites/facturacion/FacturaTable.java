@@ -13,10 +13,11 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import co.com.codesoftware.persistence.entites.tables.Cliente;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "fa_tfact")
-public class FacturaTable {
+public class FacturaTable implements Serializable{
 
     private Integer id;
     private Integer idTius;
@@ -39,6 +40,7 @@ public class FacturaTable {
     private List<DetProdFacturaTable> detalleProductos;
     private List<DetReceFacturacionTable> detalleRecetas;
     private Cliente cliente;
+    private Date fechaExacta;
 
     @Id
     @Column(name = "fact_fact")
@@ -221,6 +223,7 @@ public class FacturaTable {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+
     @Transient
     public List<DetReceFacturacionTable> getDetalleRecetas() {
         return detalleRecetas;
@@ -228,6 +231,14 @@ public class FacturaTable {
 
     public void setDetalleRecetas(List<DetReceFacturacionTable> detalleRecetas) {
         this.detalleRecetas = detalleRecetas;
+    }
+    @Transient
+    public Date getFechaExacta() {
+        return fechaExacta;
+    }
+
+    public void setFechaExacta(Date fechaExacta) {
+        this.fechaExacta = fechaExacta;
     }
 
 }
