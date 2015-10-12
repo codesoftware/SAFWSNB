@@ -38,7 +38,9 @@ public class ReporteLogica {
         String sistemaOperativo = System.getProperty("os.name");
         sistemaOperativo = sistemaOperativo.toUpperCase();
         if (sistemaOperativo.contains("WINDOWS")) {
-            rutaRepo = "C:" + rutaRepo;
+            rutaRepo = "C:\\" + rutaRepo + "\\";
+        }else{
+            rutaRepo = "/" + rutaRepo + "/";
         }
     }
 
@@ -73,15 +75,15 @@ public class ReporteLogica {
             properties.put("fact_fact", fact_fact);
 
             //JasperReport jasperReport = (JasperReport) JRLoader.loadObject("D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\src\\java\\co\\com\\codesoftware\\logic\\report\\Factura.jasper");
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepo+"/Factura.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepo+"Factura.jasper");
             JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
-            JasperExportManager.exportReportToPdfFile(print, rutaRepo+"\\prueba.pdf");
+            JasperExportManager.exportReportToPdfFile(print, rutaRepo+"prueba.pdf");
             CodificaBase64 codifica64 = new CodificaBase64();
-            boolean codifico = codifica64.codificacionDocumento(rutaRepo+"\\prueba.pdf");
+            boolean codifico = codifica64.codificacionDocumento(rutaRepo+"prueba.pdf");
             if (codifico) {
                 documento = codifica64.getDocumento();
                 codifica64.setDocumento(null);
-                File file = new File(rutaRepo+"\\prueba.pdf");
+                File file = new File(rutaRepo+"prueba.pdf");
                 file.delete();
             }
         } catch (Exception e) {
