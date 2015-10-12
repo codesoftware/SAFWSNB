@@ -73,6 +73,7 @@ public class ReporteLogica {
             this.conectionJDBC();
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put("fact_fact", fact_fact);
+            properties.put("SUBREPORT_DIR", rutaRepo);
 
             //JasperReport jasperReport = (JasperReport) JRLoader.loadObject("D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\src\\java\\co\\com\\codesoftware\\logic\\report\\Factura.jasper");
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepo+"Factura.jasper");

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="655" columnWidth="212" leftMargin="7" rightMargin="7" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="2.1435888100000016"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="185"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -63,70 +63,70 @@
 			<textField>
 				<reportElement x="0" y="0" width="212" height="15" uuid="4d7442df-d70e-48af-9b7f-18465600b33e"/>
 				<textElement textAlignment="Center">
-					<font fontName="Courier New" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="15" width="212" height="15" uuid="3e3cea59-d8a1-47c5-8aec-0d1ffea4b7db"/>
 				<textElement textAlignment="Center">
-					<font fontName="Courier New" isBold="false"/>
+					<font fontName="SansSerif" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nit}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="45" width="212" height="10" uuid="88b5bbde-b74c-45bd-860e-c4ad279640b4"/>
 				<textElement textAlignment="Center">
-					<font fontName="Courier New" size="8" isBold="false"/>
+					<font fontName="SansSerif" size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ciudad}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="80" width="210" height="10" uuid="d9206362-7b87-493b-be57-ec509caa5319"/>
 				<textElement textAlignment="Center">
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vendedor}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="30" width="212" height="15" uuid="e3b7afc2-b229-411f-b86b-83354c141c39"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ubicacion}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="55" width="212" height="15" uuid="0ad1ed6a-9fa7-4888-b24f-2544d8c858c3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="111" y="70" width="101" height="10" uuid="44ec9021-b527-4fd9-82b8-bfaced028775"/>
 				<textElement>
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fact_fact}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="70" width="111" height="10" uuid="18d152e7-af44-4bb5-815d-6f89d490c8cd"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Courier New" size="8" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FACTURA DE VENTA: ]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="0" y="90" width="211" height="15" uuid="d565b957-ddf1-4f52-8228-2994cf16b372"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="105" width="212" height="15" uuid="010692fa-d79f-479f-b359-1fcc748f3612"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cedulacliente}]]></textFieldExpression>
 			</textField>
@@ -151,35 +151,35 @@
 			<staticText>
 				<reportElement x="0" y="125" width="78" height="10" uuid="f446089d-fca0-43aa-9207-90e35de8fcb3"/>
 				<textElement textAlignment="Right">
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<text><![CDATA[TOTAL IVA:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="155" width="78" height="10" uuid="7ea4d0cc-fb62-4fe8-ad5f-58a3323feea8"/>
 				<textElement textAlignment="Right">
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="78" y="125" width="134" height="10" uuid="11e1d9fa-d4ec-4351-83e6-4780de6309b1"/>
 				<textElement>
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totiva}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="135" width="78" height="10" uuid="18d86fd5-961a-4fef-b674-0d6220d1390f"/>
 				<textElement textAlignment="Right">
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<text><![CDATA[SUB TOTAL:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="78" y="135" width="134" height="10" uuid="c66f3d65-ecbc-442f-b9c8-5729c62005cc"/>
 				<textElement>
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
 			</textField>
@@ -192,21 +192,21 @@
 			<textField>
 				<reportElement x="77" y="155" width="135" height="10" uuid="25863acd-c957-4bbf-b5b0-46a22166b285"/>
 				<textElement>
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="77" y="145" width="135" height="10" uuid="e613d823-fc28-4736-9aaf-5faebc57107e"/>
 				<textElement>
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descunento}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="145" width="78" height="10" uuid="84b43121-f470-4baf-bd82-f8d9fd128b87"/>
 				<textElement textAlignment="Right">
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[DESCUENTO:]]></text>
 			</staticText>
@@ -219,21 +219,21 @@
 			<textField>
 				<reportElement x="77" y="165" width="135" height="10" uuid="a5d9f86c-f6ce-4853-9862-59336a2a10aa"/>
 				<textElement>
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pgoefec}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="165" width="78" height="10" uuid="91e426d5-fe3e-4968-acd3-47f700f194c7"/>
 				<textElement textAlignment="Right">
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<text><![CDATA[EFECTIVO:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="77" y="175" width="135" height="10" uuid="7fda534f-6629-467c-b1a5-5c8e46692d1e"/>
 				<textElement>
-					<font fontName="Courier New" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pgotarjeta}]]></textFieldExpression>
 			</textField>
