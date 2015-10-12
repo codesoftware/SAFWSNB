@@ -73,7 +73,7 @@ public class ReporteLogica {
             properties.put("fact_fact", fact_fact);
 
             //JasperReport jasperReport = (JasperReport) JRLoader.loadObject("D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\src\\java\\co\\com\\codesoftware\\logic\\report\\Factura.jasper");
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepo+"\\Factura.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepo+"/Factura.jasper");
             JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
             JasperExportManager.exportReportToPdfFile(print, rutaRepo+"\\prueba.pdf");
             CodificaBase64 codifica64 = new CodificaBase64();
