@@ -34,12 +34,14 @@ public class ProductosGenericosLogic {
             List<RecetaTable> recetas = recetaLogic.getRecetas(null, sede_sede);
             ProductsLogic productsLogic = new ProductsLogic();
             List<ProductoTable> productos = productsLogic.buscaProductos(sede_sede);
-            if (recetas != null & recetas.size() > 0) {
-                if (rta == null) {
-                    rta = new ArrayList<>();
-                }
-                for (RecetaTable receta : recetas) {
-                    rta.add(this.mapeaGenericObjectReceta(receta));
+            if (recetas != null) {
+                if (recetas != null & recetas.size() > 0) {
+                    if (rta == null) {
+                        rta = new ArrayList<>();
+                    }
+                    for (RecetaTable receta : recetas) {
+                        rta.add(this.mapeaGenericObjectReceta(receta));
+                    }
                 }
             }
             if (productos != null & productos.size() > 0) {

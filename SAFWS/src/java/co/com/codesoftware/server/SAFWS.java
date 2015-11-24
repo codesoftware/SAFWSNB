@@ -21,6 +21,7 @@ import co.com.codesoftware.logic.RecetaLogic;
 import co.com.codesoftware.logic.report.ReporteLogica;
 import co.com.codesoftware.logic.SedesLogic;
 import co.com.codesoftware.logic.UsuarioLogic;
+import co.com.codesoftware.logic.productos.PedidosLogic;
 import co.com.codesoftware.persistence.entites.facturacion.FacturaTable;
 import co.com.codesoftware.persistence.entites.facturacion.Facturacion;
 import co.com.codesoftware.persistence.entites.facturacion.ProductoGenericoEntity;
@@ -32,7 +33,11 @@ import co.com.codesoftware.persistence.entites.tables.ProductoTable;
 import co.com.codesoftware.persistence.entites.tables.RecetaTable;
 import co.com.codesoftware.persistence.entites.tables.Sede;
 import co.com.codesoftware.persistence.entites.tables.UsuarioTable;
+import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
+import co.com.codesoftware.persistence.entity.productos.PedidoEntity;
+import co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 
 @WebService(name = "SAFWS")
@@ -438,6 +443,44 @@ public class SAFWS {
     public BigDecimal searchBoxNow(@XmlElement(required = true) @WebParam(name = "sede")Integer sede){
         FacturacionLogic logic = new FacturacionLogic();
         return logic.validaValorCaja(sede);
+    }
+    
+    
+    /**
+     * metodo que inserta un pedido al sistema
+     *
+     * @param parametros
+     * @return
+     */
+    @WebMethod(operationName = "insertaPedidosProducto")
+    public RespuestaEntity insertaPedidosProducto(PedidoEntity parametros) {
+        RespuestaEntity respuesta = new RespuestaEntity();
+        try (PedidosLogic logic = new PedidosLogic()) {
+            respuesta = logic.insertaPedidos(parametros);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            respuesta.setCodigoRespuesta(0);
+            respuesta.setDescripcionRespuesta(e.getMessage());
+            respuesta.setMensajeRespuesta("ERROR" + e.getMessage());
+        }
+        return respuesta;
+    }
+
+    @WebMethod(operationName = "insertaProductosXPedido")
+    public RespuestaEntity insertaProductoXPedido(ArrayList<PedidoProductoEntity> productos, Integer idPedido) {
+        RespuestaEntity respuesta = new RespuestaEntity();
+        try (PedidosLogic logic = new PedidosLogic()) {
+            respuesta = logic.insertaProductos(productos, idPedido);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            respuesta.setCodigoRespuesta(0);
+            respuesta.setDescripcionRespuesta(e.getMessage());
+            respuesta.setMensajeRespuesta("ERROR" + e.getMessage());
+        }
+        return respuesta;
+
     }
 
 }
