@@ -69,6 +69,8 @@ public class PedidosProductoLogic implements AutoCloseable {
         }
         return resultado;
     }
+    
+
 
     /**
      * Funcion que inicializa la clase de hibernate

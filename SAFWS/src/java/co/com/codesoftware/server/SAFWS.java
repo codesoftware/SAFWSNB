@@ -16,6 +16,7 @@ import co.com.codesoftware.logic.LogicLogin;
 import co.com.codesoftware.logic.PantallaPrincipalFactLogic;
 import co.com.codesoftware.logic.ParametrosEmpresaLogic;
 import co.com.codesoftware.logic.ProductosGenericosLogic;
+import co.com.codesoftware.logic.ProductosHomeLogic;
 import co.com.codesoftware.logic.ProductsLogic;
 import co.com.codesoftware.logic.RecetaLogic;
 import co.com.codesoftware.logic.report.ReporteLogica;
@@ -29,10 +30,12 @@ import co.com.codesoftware.persistence.entites.facturacion.RespuestaFacturacion;
 import co.com.codesoftware.persistence.entites.tables.Cliente;
 import co.com.codesoftware.persistence.entites.tables.PantallaPrincipalFacTable;
 import co.com.codesoftware.persistence.entites.tables.ParametrosEmpresaTable;
+import co.com.codesoftware.persistence.entites.tables.PrecioProductoEntity;
 import co.com.codesoftware.persistence.entites.tables.ProductoTable;
 import co.com.codesoftware.persistence.entites.tables.RecetaTable;
 import co.com.codesoftware.persistence.entites.tables.Sede;
 import co.com.codesoftware.persistence.entites.tables.UsuarioTable;
+import co.com.codesoftware.persistence.entity.administracion.ProductosHomeEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity;
@@ -481,6 +484,35 @@ public class SAFWS {
         }
         return respuesta;
 
+    }
+    /**
+     * Metodo que consulta las subcategorias por Id
+     * @param categoria
+     * @return 
+     */
+    @WebMethod(operationName = "consultaReferenciasHomeCategoria")
+    public List<ProductosHomeEntity> consultaReferenciasHomeCategoria(Integer categoria){
+        try (ProductosHomeLogic logic = new ProductosHomeLogic()){
+            return logic.consultaReferenciaHome(categoria);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    /**
+     * Metodo que consulta los productos por referencia
+     * @param referencia
+     * @return 
+     */
+    @WebMethod(operationName = "consultaProductosXReferencia")
+    public List<PrecioProductoEntity> consultaProductosXReferencia(Integer referencia){
+        try (ProductsLogic logic = new ProductsLogic()){
+            return logic.consultaProductosXReferencia(referencia);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

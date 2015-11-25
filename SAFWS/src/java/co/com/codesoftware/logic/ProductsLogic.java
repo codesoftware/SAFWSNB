@@ -9,9 +9,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import co.com.codesoftware.persistence.HibernateUtil;
+import co.com.codesoftware.persistence.entites.tables.PrecioProductoEntity;
 import co.com.codesoftware.persistence.entites.tables.ProductoTable;
 import co.com.codesoftware.persistence.enumeration.DataType;
 import co.com.codesoftware.utilities.ReadFunction;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 public class ProductsLogic implements AutoCloseable {
 
@@ -99,6 +102,26 @@ public class ProductsLogic implements AutoCloseable {
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
         tx = sesion.beginTransaction();
+    }
+
+    /**
+     * Metodo que consulta los productos por una referencia
+     *
+     * @param referencia
+     * @return
+     */
+    public List<PrecioProductoEntity> consultaProductosXReferencia(Integer referencia) {
+        List<PrecioProductoEntity> lista = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(PrecioProductoEntity.class);
+            crit.createAlias("idProducto", "prod").add(Restrictions.eq("prod.referenciaId", referencia));
+            
+            lista = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
 
     @Override

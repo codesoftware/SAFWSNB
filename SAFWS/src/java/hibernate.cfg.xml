@@ -15,6 +15,7 @@
         <mapping class="co.com.codesoftware.persistence.entites.tables.RecetaTable"/>
         <mapping class="co.com.codesoftware.persistence.entites.tables.PrecioRecetaTable"/>
         <mapping class="co.com.codesoftware.persistence.entites.tables.ProductoTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.PrecioProductoEntity"/>
         <mapping class="co.com.codesoftware.persistence.entites.tables.PantallaPrincipalFacTable"/>     
         <mapping class="co.com.codesoftware.persistence.entites.tables.PrecioProductoTable"/>
         <mapping class="co.com.codesoftware.persistence.entites.tables.PersonaUsuarioTable"/>
@@ -26,6 +27,7 @@
         <mapping class="co.com.codesoftware.persistence.entites.tables.ParametrosEmpresaTable"/>
         <mapping class="co.com.codesoftware.persistence.entites.facturacion.DetReceFacturacionTable" />
         <mapping class="co.com.codesoftware.persistence.entites.tables.PerfilTable" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ProductosHomeEntity" />
         <mapping class="co.com.codesoftware.persistence.entity.productos.PedidoEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity"/>
     </session-factory>
