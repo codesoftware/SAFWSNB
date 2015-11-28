@@ -514,5 +514,27 @@ public class SAFWS {
             return null;
         }
     }
+    
+       /**
+     * Funcion con la cual se genera un pdf con el pedido a partir de su id
+     *
+     * @param fact_fact
+     * @return
+     */
+    @WebMethod(operationName = "generaCodigoPedido")
+    @WebResult(name = "imagen")
+    public String generaCodigoPedido(@XmlElement(required = true) @WebParam(name = "pedi_pedi")Integer fact_fact) {
+        String imagen = null;
+        try {
+            ReporteLogica logica = new ReporteLogica();
+            imagen = logica.generaPdfPedidos(fact_fact);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return imagen;
+    }
+    
+    
+
 
 }

@@ -58,6 +58,22 @@ public class ReporteLogica {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        return documento;
+    }
+    /**
+     * Funcion que genera el pdf del pedido
+     * @param pedi_pedi
+     * @return 
+     */
+    public synchronized String generaPdfPedidos(Integer pedi_pedi) {
+        String pedido = pedi_pedi.toString();
+        String documento = null;
+        try {
+            documento = generaJasperPedido(pedido);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return documento;
     }
 
@@ -85,6 +101,41 @@ public class ReporteLogica {
                 documento = codifica64.getDocumento();
                 codifica64.setDocumento(null);
                 File file = new File(rutaRepo+"prueba.pdf");
+                file.delete();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ReporteLogica.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return documento;
+    }
+    
+    /**
+     * 
+     * @param fact_fact
+     * @return 
+     */
+     private synchronized String generaJasperPedido(String pedi_pedi) {
+        String documento = null;
+        try {
+            this.conectionJDBC();
+            Map<String, Object> properties = new HashMap<String, Object>();
+            properties.put("IDPEDIDO", pedi_pedi);
+            //JasperReport jasperReport = (JasperReport) JRLoader.loadObject("D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\src\\java\\co\\com\\codesoftware\\logic\\report\\Factura.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepo+"Pedido.jasper");
+            JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
+            JasperExportManager.exportReportToPdfFile(print, rutaRepo+"Pedido_"+pedi_pedi+".pdf");
+            CodificaBase64 codifica64 = new CodificaBase64();
+            boolean codifico = codifica64.codificacionDocumento(rutaRepo+"Pedido_"+pedi_pedi+".pdf");
+            if (codifico) {
+                documento = codifica64.getDocumento();
+                codifica64.setDocumento(null);
+                File file = new File(rutaRepo+"Pedido_"+pedi_pedi+".pdf");
                 file.delete();
             }
         } catch (Exception e) {

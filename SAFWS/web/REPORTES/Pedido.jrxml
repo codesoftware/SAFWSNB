@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="216" columnWidth="214" leftMargin="6" rightMargin="6" topMargin="6" bottomMargin="6" uuid="2d50eee7-2ff3-42ff-b0cf-68c496158506">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IDPEDIDO" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select (SELECT ('Cliente :'||clien_nombres||' '||clien_apellidos)
+		   FROM us_tclien,in_tpedi where pedi_pedi = cast($P{IDPEDIDO} as int) 
+		   and clien_clien = pedi_clie) cliente,
+	     (SELECT 'Usted fue atendido por:'||PER.PERS_NOMBRE||' '||PER.PERS_APELLIDO  
+		   FROM us_tpers per, us_ttius us, in_tpedi pedi
+		  WHERE pedi.pedi_pedi = cast($P{IDPEDIDO} as int)  
+		    AND us.tius_tius = pedi.pedi_usu 
+		    AND per.pers_pers = us.tius_pers) usuario,
+		    (select para_valor from em_tpara where para_clave = 'NOMBREEMPRESA') NOMBREEMPRESA]]>
+	</queryString>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="nombreempresa" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="158">
+			<componentElement>
+				<reportElement x="26" y="88" width="158" height="50" uuid="87c4dfaf-1694-4159-89de-b957386e3ab8"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="3of9" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$P{IDPEDIDO}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement x="0" y="24" width="214" height="20" uuid="139472c8-25f8-45a6-9692-63a9a11b19c8"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="44" width="214" height="44" uuid="4e5f7de8-9eb3-4a3e-8e62-67fb84f009dc"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="214" height="24" uuid="902b8014-7dc0-409a-a2f5-904f2be70e4b"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreempresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="138" width="214" height="20" uuid="1b072290-76f9-410f-9136-89b5bb983b10"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{IDPEDIDO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
