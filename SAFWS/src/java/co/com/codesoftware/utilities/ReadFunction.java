@@ -127,7 +127,10 @@ public class ReadFunction implements AutoCloseable {
         }
         return true;
     }
-
+    /**
+     * Funcion con la cual se realiza el llamado
+     * @return 
+     */
     public boolean callFunctionJdbc() {
         try (ConexionJdbc objConexion = ConexionJdbc.getInstance()) {
             this.createBase();

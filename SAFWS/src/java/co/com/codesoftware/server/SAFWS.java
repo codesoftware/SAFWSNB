@@ -286,12 +286,34 @@ public class SAFWS {
         }
     }
 
+    /**
+     * Funcion en la cual se crea la facturacion basica del sistema
+     *
+     * @param facturacion
+     * @return
+     */
     @WebMethod(operationName = "facturar")
     @WebResult(name = "respuestaFacturacion")
     public RespuestaFacturacion facturar(@XmlElement(required = true) @WebParam(name = "Facturacion") Facturacion facturacion) {
         RespuestaFacturacion rta = null;
         try (FacturacionLogic objLogic = new FacturacionLogic()) {
             rta = objLogic.generaFacturacion(facturacion);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual se realiza la facturacion de los productos avanzados
+     * @param facturacion
+     * @return 
+     */
+    @WebMethod(operationName = "facturarAvanzada")
+    @WebResult(name = "respuestaFacturacion")
+    public RespuestaFacturacion facturarAvanzado(@XmlElement(required = true) @WebParam(name = "Facturacion") Facturacion facturacion){
+        RespuestaFacturacion rta = null;
+        try (FacturacionLogic objLogic = new FacturacionLogic()) {
+            rta = objLogic.generaFacturacionAvanzada(facturacion);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -548,7 +570,7 @@ public class SAFWS {
      */
     @WebMethod(operationName = "consultaPedidoXId")
     @WebResult(name = "RespuestaPedidoEntity")
-    public RespuestaPedidoEntity consultaPedidoXId(@XmlElement(required = true)@WebParam(name = "pedi_pedi")Integer idPedido) {
+    public RespuestaPedidoEntity consultaPedidoXId(@XmlElement(required = true) @WebParam(name = "pedi_pedi") Integer idPedido) {
         RespuestaPedidoEntity respuesta = new RespuestaPedidoEntity();
         try (PedidosProductoLogic logica = new PedidosProductoLogic()) {
             respuesta = logica.consultaProductosXPedido(idPedido);

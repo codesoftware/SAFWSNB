@@ -23,7 +23,6 @@ import co.com.codesoftware.persistence.entities.facturacion.tables.TemporalRecTa
 import co.com.codesoftware.persistence.enumeration.DataType;
 import co.com.codesoftware.utilities.ReadFunction;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FacturacionLogic implements AutoCloseable {
@@ -478,6 +477,117 @@ public class FacturacionLogic implements AutoCloseable {
                 rta = new BigDecimal(0);
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
+    /**
+     * Funcion encargada de realizar la logica para la realizacion de la
+     * facturas avanzadas en el sistema
+     *
+     * @param facturacion
+     * @return
+     */
+    public RespuestaFacturacion generaFacturacionAvanzada(Facturacion facturacion) {
+        RespuestaFacturacion rta = new RespuestaFacturacion();
+        Integer idTrans = 0;
+        String msn = "Validacion de datos incorrecta";
+        int iterator = 0;
+        try {
+            if (this.validaListasRecibidad(facturacion)) {
+                boolean valida = this.validaInformacionPreFacturacion(facturacion, rta);
+                if (valida) {
+                    initOperation();
+                    idTrans = this.getSecunceTransId();
+                    if (facturacion.getProductos() != null) {
+                        for (TemporalProdTable producto : facturacion.getProductos()) {
+                            boolean validaItem = validaItemProducto(producto);
+                            if (validaItem) {
+                                Integer id = this.getMaxId();
+                                producto.setId(id + 1);
+                                producto.setIdTrans(idTrans);
+                                sesion.save(producto);
+                                tx.commit();
+                                iterator++;
+                            }
+                        }
+                    }
+                    if (facturacion.getRecetas() != null) {
+                        for (TemporalRecTable receta : facturacion.getRecetas()) {
+                            boolean validaItem = validaItemReceta(receta);
+                            if (validaItem) {
+                                Integer id = this.getMaxIdReceta();
+                                receta.setId(id + 1);
+                                receta.setIdTrans(idTrans);
+                                sesion.save(receta);
+                                tx.commit();
+                                iterator++;
+                            }
+                        }
+
+                    }
+                    if (iterator > 0) {
+                        if (facturacion.isDomicilio()) {
+                            //Logica para enviar que la factura es domicilio
+                        }
+                        msn = this.llamaFuncionFacturacionAvanzada(facturacion, idTrans);
+                        rta.setRespuesta(llamadoFunction);
+                        rta.setIdFacturacion(this.idFactura);
+                        rta.setTrazaExcepcion(msn);
+                    } else {
+                        rta.setRespuesta("Error");
+                        rta.setTrazaExcepcion("No se registro ningun producto valido por facturar");
+                    }
+                }
+            } else {
+                rta.setRespuesta("Error");
+                rta.setTrazaExcepcion("Las dos listas no pueden estar vacias");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta.setRespuesta("Error");
+            rta.setTrazaExcepcion(e.toString());
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion encargada de realizar el llamado a la funcion que realiza toda la
+     * facturacion
+     *
+     * @return
+     */
+    public String llamaFuncionFacturacionAvanzada(Facturacion objFactura, Integer idTrans) {
+        String rta = "";
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()) {
+            rf.setNombreFuncion("FA_FACTURACION_X_PRECIO");
+            rf.setNumParam(8);
+            rf.addParametro("" + objFactura.getIdTius(), DataType.INT);
+            rf.addParametro("" + objFactura.getIdCliente(), DataType.INT);
+            rf.addParametro("" + idTrans, DataType.INT);
+            rf.addParametro("" + objFactura.getIdSede(), DataType.INT);
+            rf.addParametro("N/A", DataType.TEXT);
+            rf.addParametro("0", DataType.BIGDECIMAL);
+            rf.addParametro("0", DataType.BIGDECIMAL);
+            rf.addParametro(""+objFactura.getIdPedido(), DataType.INT);
+            
+            rf.callFunctionJdbc();
+            response = rf.getRespuestaPg();
+            String respuesta = response.get(0);
+            if (respuesta.indexOf("Error") >= 0) {
+                respuesta = respuesta.replaceAll("Error", "");
+                rta = respuesta;
+                llamadoFunction = "error";
+            } else {
+                String[] aux = respuesta.split("-");
+                llamadoFunction = aux[0];
+                idFactura = aux[1];
+            }
+        } catch (Exception e) {
+            llamadoFunction = "error";
+            rta = e.toString();
             e.printStackTrace();
         }
         return rta;
