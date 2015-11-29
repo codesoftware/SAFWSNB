@@ -13,20 +13,26 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="in_tpedprod")
+@Table(name = "in_tpedprod")
 public class PedidoProductoEntity implements Serializable {
+
     @Id
-    @Column(name="pedprod_pedprod")
+    @Column(name = "pedprod_pedprod")
     private Integer id;
-    @Column(name="pedprod_pedi")
+    @Column(name = "pedprod_pedi")
     private Integer pedido;
-    @Column(name="pedprod_dska")
+    @Column(name = "pedprod_dska")
     private Integer producto;
-    @Column(name="pedprod_precio")
+    @Column(name = "pedprod_precio")
     private BigDecimal precio;
-    @Column(name="pedprod_canti")
+    @Column(name = "pedprod_canti")
     private Integer cantidad;
-    
+    @Column(name = "pedprod_codi")
+    private String codigo;
+    @Column(name = "pedprod_descu")
+    private BigDecimal descuento;
+    @Column(name = "pedprod_name")
+    private String nombre;
 
     public Integer getId() {
         return id;
@@ -67,8 +73,29 @@ public class PedidoProductoEntity implements Serializable {
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
-    
-    
-    
-    
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
 }

@@ -6,12 +6,13 @@
 package co.com.codesoftware.logic.productos;
 
 import co.com.codesoftware.persistence.HibernateUtil;
-import co.com.codesoftware.persistence.entites.ProductoGenericoEntity;
+import co.com.codesoftware.persistence.entites.ProductoGenEntity;
 import co.com.codesoftware.persistence.entites.RespuestaPedidoEntity;
 import co.com.codesoftware.persistence.entites.tables.Cliente;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -26,7 +27,7 @@ import org.hibernate.criterion.Restrictions;
  * @author root
  */
 public class PedidosProductoLogic implements AutoCloseable {
-
+    
     private Session sesion;
     private Transaction tx;
 
@@ -78,13 +79,16 @@ public class PedidosProductoLogic implements AutoCloseable {
     }
 
     /**
-     * Metodo que consulta los pedidos y los productos de los pedidos, se mapean en el objeto necesario
+     * Metodo que consulta los pedidos y los productos de los pedidos, se mapean
+     * en el objeto necesario
+     *
      * @param idPedido
-     * @return 
+     * @return
      */
+    
     public RespuestaPedidoEntity consultaProductosXPedido(Integer idPedido) {
         RespuestaPedidoEntity respuesta = new RespuestaPedidoEntity();
-        List<ProductoGenericoEntity> productos = new ArrayList<ProductoGenericoEntity>();
+        List<ProductoGenEntity> productos = new ArrayList<ProductoGenEntity>();
         List<PedidoProductoEntity> listaProductos = new ArrayList<PedidoProductoEntity>();
         Cliente cliente = new Cliente();
         RespuestaEntity res = new RespuestaEntity();
@@ -93,7 +97,17 @@ public class PedidosProductoLogic implements AutoCloseable {
             PedidoEntity pedido = new PedidoEntity();
             pedido = consultaPedidoFacturado(idPedido);
             if (!"FA".equalsIgnoreCase(pedido.getEstado())) {
-
+                Criteria crit = sesion.createCriteria(PedidoProductoEntity.class)
+                        .add(Restrictions.eq("pedido", idPedido));
+                listaProductos = crit.list();
+                cliente = consultaCliente(pedido.getCliente());
+                productos = mapeoGenericoProducto(listaProductos);
+                respuesta.setCliente(cliente);
+                respuesta.setListaProductos(productos);
+                res.setCodigoRespuesta(1);
+                res.setDescripcionRespuesta("OK");
+                res.setMensajeRespuesta("OK");
+                respuesta.setRespuesta(res);
             } else {
                 res.setCodigoRespuesta(0);
                 res.setDescripcionRespuesta("EL PEDIDO YA FUE FACTURADO");
@@ -118,17 +132,51 @@ public class PedidosProductoLogic implements AutoCloseable {
             Criteria crit = sesion.createCriteria(PedidoEntity.class)
                     .add(Restrictions.eq("id", pedido));
             resultado = (PedidoEntity) crit.uniqueResult();
-
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
         return resultado;
     }
-    
-    public List<ProductoGenericoEntity> mapeoGenericoProducto(List<Pro){
-        List<ProductoGenericoEntity> respuesta = new ArrayList<ProductoGenericoEntity>();
+
+    /**
+     * Funcion que consulta el objeto cliente
+     *
+     * @param idCliente
+     * @return
+     */
+    public Cliente consultaCliente(Integer idCliente) {
+        Cliente repuesta = new Cliente();
         try {
-            
+            initOperation();
+            Criteria crit = sesion.createCriteria(Cliente.class).add(Restrictions.eq("id",idCliente.longValue()));
+            repuesta = (Cliente) crit.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return repuesta;
+    }
+
+    /**
+     * funcion que mapea la list de la consulta al generico
+     *
+     * @param listaProductos
+     * @return
+     */
+    public List<ProductoGenEntity> mapeoGenericoProducto(List<PedidoProductoEntity> listaProductos) {
+        List<ProductoGenEntity> respuesta = new ArrayList<ProductoGenEntity>();
+        try {
+            for (PedidoProductoEntity item : listaProductos) {
+                ProductoGenEntity entidad = new ProductoGenEntity();
+                entidad.setAmount(item.getCantidad());
+                entidad.setCode(item.getCodigo());
+                entidad.setName(item.getNombre());
+                entidad.setPrice(item.getPrecio());
+                entidad.setTotalPrice(item.getPrecio().multiply(new BigDecimal(item.getCantidad())));
+                entidad.setType(1);
+                entidad.setId(item.getProducto());
+                respuesta.add(entidad);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -144,8 +192,6 @@ public class PedidosProductoLogic implements AutoCloseable {
         sesion = HibernateUtil.getSessionFactory().openSession();
         tx = sesion.beginTransaction();
     }
-    
-    
 
     /**
      * Funcion para cerrar la sesion

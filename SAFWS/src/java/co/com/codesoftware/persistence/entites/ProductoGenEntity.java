@@ -12,8 +12,7 @@ import java.math.BigDecimal;
  *
  * @author root
  */
-public class ProductoGenericoEntity implements Serializable{
-    	private static final long serialVersionUID = 1L;
+public class ProductoGenEntity implements Serializable{
 	private String code;
 	private int amount;
 	private String name;

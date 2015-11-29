@@ -6,6 +6,7 @@
 package co.com.codesoftware.persistence.entites;
 
 import co.com.codesoftware.persistence.entites.tables.Cliente;
+import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,24 +14,25 @@ import java.util.List;
  *
  * @author root
  */
-public class RespuestaPedidoEntity implements Serializable{
-    private RespuestaPedidoEntity respuesta;
-    private List<ProductoGenericoEntity> listaProductos;
+public class RespuestaPedidoEntity implements Serializable {
+
+    private RespuestaEntity respuesta;
+    private List<ProductoGenEntity> listaProductos;
     private Cliente cliente;
 
-    public RespuestaPedidoEntity getRespuesta() {
+    public RespuestaEntity getRespuesta() {
         return respuesta;
     }
 
-    public void setRespuesta(RespuestaPedidoEntity respuesta) {
+    public void setRespuesta(RespuestaEntity respuesta) {
         this.respuesta = respuesta;
     }
 
-    public List<ProductoGenericoEntity> getListaProductos() {
+    public List<ProductoGenEntity> getListaProductos() {
         return listaProductos;
     }
 
-    public void setListaProductos(List<ProductoGenericoEntity> listaProductos) {
+    public void setListaProductos(List<ProductoGenEntity> listaProductos) {
         this.listaProductos = listaProductos;
     }
 
@@ -41,6 +43,5 @@ public class RespuestaPedidoEntity implements Serializable{
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    
-    
+
 }

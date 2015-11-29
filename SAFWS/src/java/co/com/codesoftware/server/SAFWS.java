@@ -23,6 +23,8 @@ import co.com.codesoftware.logic.report.ReporteLogica;
 import co.com.codesoftware.logic.SedesLogic;
 import co.com.codesoftware.logic.UsuarioLogic;
 import co.com.codesoftware.logic.productos.PedidosLogic;
+import co.com.codesoftware.logic.productos.PedidosProductoLogic;
+import co.com.codesoftware.persistence.entites.RespuestaPedidoEntity;
 import co.com.codesoftware.persistence.entites.facturacion.FacturaTable;
 import co.com.codesoftware.persistence.entites.facturacion.Facturacion;
 import co.com.codesoftware.persistence.entites.facturacion.ProductoGenericoEntity;
@@ -426,7 +428,7 @@ public class SAFWS {
      */
     @WebMethod(operationName = "findBillForId")
     @WebResult(name = "imagen")
-    public String findBillForId(@XmlElement(required = true) @WebParam(name = "fact_fact")String fact_fact) {
+    public String findBillForId(@XmlElement(required = true) @WebParam(name = "fact_fact") String fact_fact) {
         String imagen = null;
         try {
             ReporteLogica logica = new ReporteLogica();
@@ -436,19 +438,20 @@ public class SAFWS {
         }
         return imagen;
     }
+
     /**
      * Metodo que consulta el valor de la facturacion por sede
+     *
      * @param sede
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "searchBoxNow")
     @WebResult(name = "cantidad")
-    public BigDecimal searchBoxNow(@XmlElement(required = true) @WebParam(name = "sede")Integer sede){
+    public BigDecimal searchBoxNow(@XmlElement(required = true) @WebParam(name = "sede") Integer sede) {
         FacturacionLogic logic = new FacturacionLogic();
         return logic.validaValorCaja(sede);
     }
-    
-    
+
     /**
      * metodo que inserta un pedido al sistema
      *
@@ -485,37 +488,40 @@ public class SAFWS {
         return respuesta;
 
     }
+
     /**
      * Metodo que consulta las subcategorias por Id
+     *
      * @param categoria
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "consultaReferenciasHomeCategoria")
-    public List<ProductosHomeEntity> consultaReferenciasHomeCategoria(Integer categoria){
-        try (ProductosHomeLogic logic = new ProductosHomeLogic()){
+    public List<ProductosHomeEntity> consultaReferenciasHomeCategoria(Integer categoria) {
+        try (ProductosHomeLogic logic = new ProductosHomeLogic()) {
             return logic.consultaReferenciaHome(categoria);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-    
+
     /**
      * Metodo que consulta los productos por referencia
+     *
      * @param referencia
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "consultaProductosXReferencia")
-    public List<PrecioProductoEntity> consultaProductosXReferencia(Integer referencia){
-        try (ProductsLogic logic = new ProductsLogic()){
+    public List<PrecioProductoEntity> consultaProductosXReferencia(Integer referencia) {
+        try (ProductsLogic logic = new ProductsLogic()) {
             return logic.consultaProductosXReferencia(referencia);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-    
-       /**
+
+    /**
      * Funcion con la cual se genera un pdf con el pedido a partir de su id
      *
      * @param fact_fact
@@ -523,7 +529,7 @@ public class SAFWS {
      */
     @WebMethod(operationName = "generaCodigoPedido")
     @WebResult(name = "imagen")
-    public String generaCodigoPedido(@XmlElement(required = true) @WebParam(name = "pedi_pedi")Integer fact_fact) {
+    public String generaCodigoPedido(@XmlElement(required = true) @WebParam(name = "pedi_pedi") Integer fact_fact) {
         String imagen = null;
         try {
             ReporteLogica logica = new ReporteLogica();
@@ -533,8 +539,28 @@ public class SAFWS {
         }
         return imagen;
     }
-    
-    
 
+    /**
+     * Metodo que consulta todo el detalle de un pedido
+     *
+     * @param idPedido
+     * @return
+     */
+    @WebMethod(operationName = "consultaPedidoXId")
+    @WebResult(name = "RespuestaPedidoEntity")
+    public RespuestaPedidoEntity consultaPedidoXId(@XmlElement(required = true)@WebParam(name = "pedi_pedi")Integer idPedido) {
+        RespuestaPedidoEntity respuesta = new RespuestaPedidoEntity();
+        try (PedidosProductoLogic logica = new PedidosProductoLogic()) {
+            respuesta = logica.consultaProductosXPedido(idPedido);
+        } catch (Exception e) {
+            RespuestaEntity res = new RespuestaEntity();
+            res.setCodigoRespuesta(0);
+            res.setDescripcionRespuesta(e.toString());
+            res.setMensajeRespuesta(e.getLocalizedMessage());
+            respuesta.setRespuesta(res);
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
 
 }
