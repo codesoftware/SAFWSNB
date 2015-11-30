@@ -59,6 +59,10 @@ public class ProductoEntity implements Serializable {
     @JoinColumn(name = "dska_sbcu")
     @ManyToOne(fetch = FetchType.LAZY)
     private SubCuentaEntity subcuenta;
+    @Column(name = "dska_ubicacion")
+    private String ubicacion;
+    @Column(name="dska_cod_ext")
+    private String codigoExt;
 
     public Integer getId() {
         return id;
@@ -154,6 +158,22 @@ public class ProductoEntity implements Serializable {
 
     public void setSubcuenta(SubCuentaEntity subcuenta) {
         this.subcuenta = subcuenta;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public String getCodigoExt() {
+        return codigoExt;
+    }
+
+    public void setCodigoExt(String codigoExt) {
+        this.codigoExt = codigoExt;
     }
     
     
