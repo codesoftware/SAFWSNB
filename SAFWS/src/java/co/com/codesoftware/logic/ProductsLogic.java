@@ -115,8 +115,25 @@ public class ProductsLogic implements AutoCloseable {
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(PrecioProductoEntity.class);
-            crit.createAlias("idProducto", "prod").add(Restrictions.eq("prod.referenciaId", referencia));
-            
+            crit.createAlias("idProducto", "prod").add(Restrictions.eq("prod.referencia.id", referencia));
+
+            lista = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+/**
+ * Metodo que consulta toda la informacion del producto
+ * @param sedeId
+ * @return 
+ */
+    public List<PrecioProductoEntity> consultaProductosXSede(Integer sedeId) {
+        List<PrecioProductoEntity> lista = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(PrecioProductoEntity.class).
+                    createAlias("idSede", "sed").add(Restrictions.eq("sed.id", sedeId));
             lista = crit.list();
         } catch (Exception e) {
             e.printStackTrace();

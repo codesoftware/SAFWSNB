@@ -1,33 +1,35 @@
 package co.com.codesoftware.persistence.entites.tables;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="em_tsede")
-public class Sede{
-	@Id
-	@Column(name="sede_sede")
-	private Long id;
-    @Column(name="sede_nombre")
-	private String name;
+@Table(name = "em_tsede")
+public class Sede implements Serializable{
 
-	public Long getId() {
-		return id;
-	}
+    @Id
+    @Column(name = "sede_sede")
+    private Integer id;
+    @Column(name = "sede_nombre")
+    private String name;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }

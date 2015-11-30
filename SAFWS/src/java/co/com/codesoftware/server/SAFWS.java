@@ -584,5 +584,18 @@ public class SAFWS {
         }
         return respuesta;
     }
+    
+    @WebMethod(operationName = "consultaPedidoSede")
+    @WebResult(name="PrecioProducto")
+    public List<PrecioProductoEntity> consultaPedidoSede(Integer sede){
+        List<PrecioProductoEntity> resultado = null;
+        try (ProductsLogic logica = new ProductsLogic()){
+            resultado = logica.consultaProductosXSede(sede);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultado;
+        
+    }
 
 }

@@ -1,5 +1,6 @@
 package co.com.codesoftware.persistence.entites.tables;
 
+import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,11 +15,11 @@ import javax.persistence.Table;
 public class PrecioProductoEntity implements Serializable {
 
     private Integer id;
-    private ProductoTable idProducto;
+    private ProductoEntity idProducto;
     private String precio;
     private Integer usuarioCrea;
     private String estado;
-    private Integer idSede;
+    private Sede idSede;
 
     @Id
     @Column(name = "prpr_prpr")
@@ -35,18 +36,18 @@ public class PrecioProductoEntity implements Serializable {
         return precio;
     }
 
+    public void setPrecio(String precio) {
+        this.precio = precio;
+    }
+
     @JoinColumn(name = "prpr_dska")
     @ManyToOne(fetch = FetchType.LAZY)
-    public ProductoTable getIdProducto() {
+    public ProductoEntity getIdProducto() {
         return idProducto;
     }
 
-    public void setIdProducto(ProductoTable idProducto) {
+    public void setIdProducto(ProductoEntity idProducto) {
         this.idProducto = idProducto;
-    }
-
-    public void setPrecio(String precio) {
-        this.precio = precio;
     }
 
     @Column(name = "prpr_tius_crea")
@@ -67,12 +68,13 @@ public class PrecioProductoEntity implements Serializable {
         this.estado = estado;
     }
 
-    @Column(name = "prpr_sede")
-    public Integer getIdSede() {
+    @JoinColumn(name = "prpr_sede")
+    @ManyToOne(fetch = FetchType.LAZY)
+    public Sede getIdSede() {
         return idSede;
     }
 
-    public void setIdSede(Integer idSede) {
+    public void setIdSede(Sede idSede) {
         this.idSede = idSede;
     }
 

@@ -10,6 +10,7 @@
         <property name="hibernate.connection.pool_size">1</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
         <mapping class="co.com.codesoftware.persistence.entites.tables.Sede"/>
         <mapping class="co.com.codesoftware.persistence.entites.tables.Cliente"/>
         <mapping class="co.com.codesoftware.persistence.entites.tables.RecetaTable"/>
@@ -28,7 +29,13 @@
         <mapping class="co.com.codesoftware.persistence.entites.facturacion.DetReceFacturacionTable" />
         <mapping class="co.com.codesoftware.persistence.entites.tables.PerfilTable" />
         <mapping class="co.com.codesoftware.persistence.entity.administracion.ProductosHomeEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.SedeEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.MarcaEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.CategoriaEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ReferenciaEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.SubCuentaEntity" />
         <mapping class="co.com.codesoftware.persistence.entity.productos.PedidoEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.productos.ProductoEntity"/>
     </session-factory>
 </hibernate-configuration>
