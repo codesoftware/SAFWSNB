@@ -1,5 +1,6 @@
 package co.com.codesoftware.persistence.entities.facturacion.tables;
 
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,58 +13,66 @@ import org.hibernate.annotations.GenerationTime;
 @Table(name = "CO_TTEM_FACT")
 public class TemporalProdTable {
 
-	private Integer id;
-	private Integer idTrans;
-	private Integer idDska;
-	private Integer cantidad;
-	private Integer descuento;
-	
-	
-	@Id
-	@Column(name="TEM_FACT")
-	@Generated(GenerationTime.INSERT)
-	public Integer getId() {
-		return id;
-	}
+    private Integer id;
+    private Integer idTrans;
+    private Integer idDska;
+    private Integer cantidad;
+    private Integer descuento;
+    private BigDecimal precio;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Id
+    @Column(name = "TEM_FACT")
+    @Generated(GenerationTime.INSERT)
+    public Integer getId() {
+        return id;
+    }
 
-	@Column(name = "tem_fact_trans")
-	public Integer getIdTrans() {
-		return idTrans;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setIdTrans(Integer idTrans) {
-		this.idTrans = idTrans;
-	}
+    @Column(name = "tem_fact_trans")
+    public Integer getIdTrans() {
+        return idTrans;
+    }
 
-	@Column(name = "tem_fact_dska")
-	public Integer getIdDska() {
-		return idDska;
-	}
+    public void setIdTrans(Integer idTrans) {
+        this.idTrans = idTrans;
+    }
 
-	public void setIdDska(Integer idDska) {
-		this.idDska = idDska;
-	}
+    @Column(name = "tem_fact_dska")
+    public Integer getIdDska() {
+        return idDska;
+    }
 
-	@Column(name = "tem_fact_cant")
-	public Integer getCantidad() {
-		return cantidad;
-	}
+    public void setIdDska(Integer idDska) {
+        this.idDska = idDska;
+    }
 
-	public void setCantidad(Integer cantidad) {
-		this.cantidad = cantidad;
-	}
+    @Column(name = "tem_fact_cant")
+    public Integer getCantidad() {
+        return cantidad;
+    }
 
-	@Column(name = "tem_fact_dcto")
-	public Integer getDescuento() {
-		return descuento;
-	}
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
 
-	public void setDescuento(Integer descuento) {
-		this.descuento = descuento;
-	}
+    @Column(name = "tem_fact_dcto")
+    public Integer getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(Integer descuento) {
+        this.descuento = descuento;
+    }
+    @Column(name = "tem_fact_pruni")
+    public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
+    }
 
 }
