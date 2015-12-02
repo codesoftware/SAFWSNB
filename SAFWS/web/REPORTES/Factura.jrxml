@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="655" columnWidth="212" leftMargin="7" rightMargin="7" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="2.1435888100000016"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -14,7 +14,7 @@
          'NIT:'||(select para_valor from em_tpara where para_clave = 'NIT') NIT,
         (select para_valor from em_tpara where para_clave = 'DIRECCION' )DIRECCION,
         (select para_valor from em_tpara where para_clave = 'TELEFONOS')TELEFONOS,
-        (select para_valor from em_tpara where para_clave = 'CIUDAD')CIUDAD,
+        (select ciud_nombre|| ' ' || depa_nombre from ub_tciud, ub_tdepa where ciud_ciud = cast((select para_valor from em_tpara where para_clave = 'CIUDAD') as int) and ciud_depa = depa_depa )CIUDAD,
         (SELECT SED.SEDE_DIRECCION || '--'||SED.SEDE_NOMBRE||  '--Tel: '|| SED.SEDE_TELEFONO 
            FROM  em_tsede sed, us_ttius us,fa_tfact fac
           WHERE sed.sede_sede = us.tius_sede 

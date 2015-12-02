@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "em_tsede")
-public class Sede implements Serializable{
+public class Sede implements Serializable {
 
     @Id
     @Column(name = "sede_sede")

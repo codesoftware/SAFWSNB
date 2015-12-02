@@ -569,8 +569,8 @@ public class FacturacionLogic implements AutoCloseable {
             rf.addParametro("" + idTrans, DataType.INT);
             rf.addParametro("" + objFactura.getIdSede(), DataType.INT);
             rf.addParametro("N/A", DataType.TEXT);
-            rf.addParametro("0", DataType.BIGDECIMAL);
-            rf.addParametro("0", DataType.BIGDECIMAL);
+            rf.addParametro("0", DataType.INT);
+            rf.addParametro("0", DataType.INT);
             rf.addParametro(""+objFactura.getIdPedido(), DataType.INT);
             
             rf.callFunctionJdbc();
