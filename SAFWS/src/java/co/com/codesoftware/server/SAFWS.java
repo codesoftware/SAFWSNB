@@ -597,5 +597,22 @@ public class SAFWS {
         return resultado;
         
     }
+    
+    /**
+     * Funcion que consulta los pedidos dependiendo del estado ingresado
+     * @param estado
+     * @return 
+     */
+    @WebMethod(operationName = "consultaPedidosXEstado")
+    @WebResult(name = "PedidoEntity")
+    public List<PedidoEntity> consultaPedidoXEstado(String estado){
+        List<PedidoEntity> respuesta = new ArrayList<PedidoEntity>();
+        try (PedidosLogic logica = new PedidosLogic()){
+            respuesta=logica.consultaPedidoXEstado(estado);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
 
 }

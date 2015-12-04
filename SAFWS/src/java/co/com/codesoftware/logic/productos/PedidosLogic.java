@@ -10,11 +10,13 @@ import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity;
 import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -87,6 +89,23 @@ public class PedidosLogic implements AutoCloseable {
             e.printStackTrace();
         }
         return resultado;
+    }
+    /**
+     * metodo que consulta una lista de pedidos por id
+     * @param estado
+     * @return 
+     */
+    public List<PedidoEntity> consultaPedidoXEstado(String estado){
+        List<PedidoEntity> respuesta = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(PedidoEntity.class).
+                    add(Restrictions.eq("estado", estado));
+            respuesta=crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
     }
 
     /**

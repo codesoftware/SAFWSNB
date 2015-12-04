@@ -5,11 +5,17 @@
  */
 package co.com.codesoftware.persistence.entity.productos;
 
+import co.com.codesoftware.persistence.entites.tables.Cliente;
+import co.com.codesoftware.persistence.entites.tables.UsuarioTable;
+import co.com.codesoftware.persistence.entity.administracion.SedeEntity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,19 +27,20 @@ public class PedidoEntity implements Serializable {
     @Id
     @Column(name = "pedi_pedi")
     private Integer id;
-    @Column(name = "pedi_sede")
-    private Integer sede;
-    @Column(name = "pedi_usu")
-    private Integer usuario;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedi_sede")
+    private SedeEntity sede;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedi_usu")
+    private UsuarioTable usuario;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "pedi_fech")
     private Date fecha;
     @Column(name = "pedi_esta")
     private String estado;
-    @Column(name = "pedi_clie")
-    private Integer cliente;
-    
-    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedi_clie")
+    private Cliente cliente;
 
     public Integer getId() {
         return id;
@@ -42,7 +49,6 @@ public class PedidoEntity implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
 
     public Date getFecha() {
         return fecha;
@@ -60,31 +66,30 @@ public class PedidoEntity implements Serializable {
         this.estado = estado;
     }
 
-    public Integer getSede() {
+    public SedeEntity getSede() {
         return sede;
     }
 
-    public void setSede(Integer sede) {
+    public void setSede(SedeEntity sede) {
         this.sede = sede;
     }
 
-    public Integer getUsuario() {
+    public UsuarioTable getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Integer usuario) {
+    public void setUsuario(UsuarioTable usuario) {
         this.usuario = usuario;
     }
 
-    public Integer getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(Integer cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+    
+    
 
-
-
-   
 }

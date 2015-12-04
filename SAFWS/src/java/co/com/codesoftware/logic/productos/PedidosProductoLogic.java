@@ -100,7 +100,7 @@ public class PedidosProductoLogic implements AutoCloseable {
                 Criteria crit = sesion.createCriteria(PedidoProductoEntity.class)
                         .add(Restrictions.eq("pedido", idPedido));
                 listaProductos = crit.list();
-                cliente = consultaCliente(pedido.getCliente());
+                cliente = consultaCliente(pedido.getCliente().getId().intValue());
                 productos = mapeoGenericoProducto(listaProductos);
                 respuesta.setCliente(cliente);
                 respuesta.setListaProductos(productos);
