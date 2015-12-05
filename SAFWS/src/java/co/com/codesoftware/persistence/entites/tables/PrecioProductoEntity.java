@@ -2,6 +2,7 @@ package co.com.codesoftware.persistence.entites.tables;
 
 import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +21,7 @@ public class PrecioProductoEntity implements Serializable {
     private Integer usuarioCrea;
     private String estado;
     private Sede idSede;
+    private BigDecimal precioIva;
 
     @Id
     @Column(name = "prpr_prpr")
@@ -77,5 +79,15 @@ public class PrecioProductoEntity implements Serializable {
     public void setIdSede(Sede idSede) {
         this.idSede = idSede;
     }
+    @Column(name = "prpr_premsiva")
+    public BigDecimal getPrecioIva() {
+        return precioIva;
+    }
+
+    public void setPrecioIva(BigDecimal precioIva) {
+        this.precioIva = precioIva;
+    }
+    
+    
 
 }
