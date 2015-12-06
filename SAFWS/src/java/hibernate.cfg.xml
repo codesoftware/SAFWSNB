@@ -34,6 +34,7 @@
         <mapping class="co.com.codesoftware.persistence.entity.administracion.CategoriaEntity" />
         <mapping class="co.com.codesoftware.persistence.entity.administracion.ReferenciaEntity" />
         <mapping class="co.com.codesoftware.persistence.entity.administracion.SubCuentaEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.CantidadesEntity" />
         <mapping class="co.com.codesoftware.persistence.entity.productos.PedidoEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.productos.ProductoEntity"/>

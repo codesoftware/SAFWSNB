@@ -5,18 +5,22 @@
  */
 package co.com.codesoftware.persistence.entity.productos;
 
+import co.com.codesoftware.persistence.entity.administracion.CantidadesEntity;
 import co.com.codesoftware.persistence.entity.administracion.CategoriaEntity;
 import co.com.codesoftware.persistence.entity.administracion.MarcaEntity;
 import co.com.codesoftware.persistence.entity.administracion.ReferenciaEntity;
 import co.com.codesoftware.persistence.entity.administracion.SubCuentaEntity;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -63,6 +67,8 @@ public class ProductoEntity implements Serializable {
     private String ubicacion;
     @Column(name="dska_cod_ext")
     private String codigoExt;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "producto")
+    private Set<CantidadesEntity> existencias = new HashSet<CantidadesEntity>(0);
 
     public Integer getId() {
         return id;
@@ -174,6 +180,14 @@ public class ProductoEntity implements Serializable {
 
     public void setCodigoExt(String codigoExt) {
         this.codigoExt = codigoExt;
+    }
+
+    public Set<CantidadesEntity> getExistencias() {
+        return existencias;
+    }
+
+    public void setExistencias(Set<CantidadesEntity> existencias) {
+        this.existencias = existencias;
     }
     
     

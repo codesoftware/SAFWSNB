@@ -15,6 +15,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -100,7 +101,7 @@ public class PedidosLogic implements AutoCloseable {
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(PedidoEntity.class).
-                    add(Restrictions.eq("estado", estado));
+                    add(Restrictions.eq("estado", estado)).addOrder(Order.desc("id"));
             respuesta=crit.list();
         } catch (Exception e) {
             e.printStackTrace();

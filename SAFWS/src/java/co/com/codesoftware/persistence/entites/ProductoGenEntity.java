@@ -17,6 +17,7 @@ public class ProductoGenEntity implements Serializable{
 	private int amount;
 	private String name;
 	private BigDecimal price;
+        private BigDecimal priceIva;
 	private BigDecimal totalPrice;
 	private int id;
 	private int type;
@@ -84,6 +85,14 @@ public class ProductoGenEntity implements Serializable{
 
     public void setRoutImage(String routImage) {
         this.routImage = routImage;
+    }
+
+    public BigDecimal getPriceIva() {
+        return priceIva;
+    }
+
+    public void setPriceIva(BigDecimal priceIva) {
+        this.priceIva = priceIva;
     }
         
         
