@@ -26,13 +26,15 @@ public class CantidadesEntity implements Serializable {
     @Id
     @Column(name = "eprs_eprs")
     private Integer id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "eprs_dska")
-    private ProductoEntity producto;
+    @Column(name = "eprs_dska")
+    private Integer producto;
     @Column(name = "eprs_existencia")
     private Integer existencia;
     @Column(name = "eprs_sede")
     private Integer sede;
+
+   
+    
 
     public Integer getId() {
         return id;
@@ -42,13 +44,15 @@ public class CantidadesEntity implements Serializable {
         this.id = id;
     }
 
-    public ProductoEntity getProducto() {
+    public Integer getProducto() {
         return producto;
     }
 
-    public void setProducto(ProductoEntity producto) {
+    public void setProducto(Integer producto) {
         this.producto = producto;
     }
+
+
 
     public Integer getExistencia() {
         return existencia;

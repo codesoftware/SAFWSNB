@@ -22,6 +22,7 @@ import co.com.codesoftware.logic.RecetaLogic;
 import co.com.codesoftware.logic.report.ReporteLogica;
 import co.com.codesoftware.logic.SedesLogic;
 import co.com.codesoftware.logic.UsuarioLogic;
+import co.com.codesoftware.logic.productos.CantidadesLogic;
 import co.com.codesoftware.logic.productos.PedidosLogic;
 import co.com.codesoftware.logic.productos.PedidosProductoLogic;
 import co.com.codesoftware.persistence.entites.RespuestaPedidoEntity;
@@ -37,6 +38,7 @@ import co.com.codesoftware.persistence.entites.tables.ProductoTable;
 import co.com.codesoftware.persistence.entites.tables.RecetaTable;
 import co.com.codesoftware.persistence.entites.tables.Sede;
 import co.com.codesoftware.persistence.entites.tables.UsuarioTable;
+import co.com.codesoftware.persistence.entity.administracion.CantidadesEntity;
 import co.com.codesoftware.persistence.entity.administracion.ProductosHomeEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoEntity;
@@ -613,6 +615,18 @@ public class SAFWS {
             e.printStackTrace();
         }
         return respuesta;
+    }
+    
+    @WebMethod(operationName = "consultaCantidadesXSede")
+    @WebResult(name = "CantidadesEntity")
+    public CantidadesEntity consultaCantidadesXSede(Integer sede, Integer idProducto){
+        CantidadesEntity resultado = null;
+        try (CantidadesLogic logic = new CantidadesLogic()){
+            resultado = logic.consultaCantidad(sede, idProducto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultado;
     }
 
 }
