@@ -123,11 +123,13 @@ public class ProductsLogic implements AutoCloseable {
         }
         return lista;
     }
-/**
- * Metodo que consulta toda la informacion del producto
- * @param sedeId
- * @return 
- */
+
+    /**
+     * Metodo que consulta toda la informacion del producto
+     *
+     * @param sedeId
+     * @return
+     */
     public List<PrecioProductoEntity> consultaProductosXSede(Integer sedeId) {
         List<PrecioProductoEntity> lista = null;
         try {
@@ -139,6 +141,27 @@ public class ProductsLogic implements AutoCloseable {
             e.printStackTrace();
         }
         return lista;
+    }
+
+    /**
+     * metodo que consulta el producto dependiendo del codigo
+     *
+     * @param codigo
+     * @return
+     */
+    public PrecioProductoEntity consultaProductoXCodExterno(String codigo) {
+        PrecioProductoEntity producto = new PrecioProductoEntity();
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(PrecioProductoEntity.class).createAlias("idProducto", "pr")
+                    .add(Restrictions.eq("pr.codigoExt", codigo));
+            producto = (PrecioProductoEntity) crit.uniqueResult();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return producto;
     }
 
     @Override

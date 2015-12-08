@@ -587,6 +587,11 @@ public class SAFWS {
         return respuesta;
     }
     
+    /**
+     * metodo que consulta los productos por sede 
+     * @param sede
+     * @return 
+     */
     @WebMethod(operationName = "consultaPedidoSede")
     @WebResult(name="PrecioProducto")
     public List<PrecioProductoEntity> consultaPedidoSede(Integer sede){
@@ -598,6 +603,23 @@ public class SAFWS {
         }
         return resultado;
         
+    }
+    /**
+     * metodo que consulta un producto por codigo externo
+     * @param codigoExt
+     * @return 
+     */
+    @WebMethod(operationName = "consultaProductoCodigoExterno")
+    @WebResult(name = "PrecioProductoEntity")
+    public PrecioProductoEntity consultaProductoCodigoExterno(String codigoExt){
+        PrecioProductoEntity respuesta = new PrecioProductoEntity();
+        try(ProductsLogic logic = new ProductsLogic()) {
+            respuesta = logic.consultaProductoXCodExterno(codigoExt);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
     }
     
     /**

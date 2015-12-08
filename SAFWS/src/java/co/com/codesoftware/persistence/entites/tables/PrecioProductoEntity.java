@@ -22,6 +22,9 @@ public class PrecioProductoEntity implements Serializable {
     private String estado;
     private Sede idSede;
     private BigDecimal precioIva;
+    private BigDecimal precioXUnidad;
+    private BigDecimal precioXCien;
+    private BigDecimal precioXMil;
 
     @Id
     @Column(name = "prpr_prpr")
@@ -86,6 +89,30 @@ public class PrecioProductoEntity implements Serializable {
 
     public void setPrecioIva(BigDecimal precioIva) {
         this.precioIva = precioIva;
+    }
+    @Column(name = "prpr_preu")
+    public BigDecimal getPrecioXUnidad() {
+        return precioXUnidad;
+    }
+
+    public void setPrecioXUnidad(BigDecimal precioXUnidad) {
+        this.precioXUnidad = precioXUnidad;
+    }
+    @Column(name = "prpr_prec")
+    public BigDecimal getPrecioXCien() {
+        return precioXCien;
+    }
+
+    public void setPrecioXCien(BigDecimal precioXCien) {
+        this.precioXCien = precioXCien;
+    }
+    @Column(name = "prpr_prem")
+    public BigDecimal getPrecioXMil() {
+        return precioXMil;
+    }
+
+    public void setPrecioXMil(BigDecimal precioXMil) {
+        this.precioXMil = precioXMil;
     }
     
     
