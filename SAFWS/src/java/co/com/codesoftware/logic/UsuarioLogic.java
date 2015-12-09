@@ -149,6 +149,7 @@ public class UsuarioLogic implements AutoCloseable {
     public TipoUsuarioEntity consultaPermisosUsuario(String usuario){
         TipoUsuarioEntity respuesta = new TipoUsuarioEntity();
         try {
+            
             initOperation();
             Criteria crit = sesion.createCriteria(TipoUsuarioEntity.class)
                     .add(Restrictions.eq("usuario", usuario));
