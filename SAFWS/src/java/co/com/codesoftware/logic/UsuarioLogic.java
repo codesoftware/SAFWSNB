@@ -10,9 +10,12 @@ import org.hibernate.Transaction;
 import co.com.codesoftware.persistence.HibernateUtil;
 import co.com.codesoftware.persistence.entites.tables.PerfilTable;
 import co.com.codesoftware.persistence.entites.tables.UsuarioTable;
+import co.com.codesoftware.persistence.entity.usuario.TipoUsuarioEntity;
 import co.com.codesoftware.persistence.enumeration.DataType;
 import co.com.codesoftware.utilities.ReadFunction;
 import java.util.ArrayList;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 public class UsuarioLogic implements AutoCloseable {
 
@@ -137,6 +140,23 @@ public class UsuarioLogic implements AutoCloseable {
             e.printStackTrace();
             return false;
         }
+    }
+    /**
+     * funcion que consulta los permisos por usuario
+     * @param usuario
+     * @return 
+     */
+    public TipoUsuarioEntity consultaPermisosUsuario(String usuario){
+        TipoUsuarioEntity respuesta = new TipoUsuarioEntity();
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(TipoUsuarioEntity.class)
+                    .add(Restrictions.eq("usuario", usuario));
+            respuesta = (TipoUsuarioEntity) crit.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
     }
 
     private void initOperation() throws HibernateException {

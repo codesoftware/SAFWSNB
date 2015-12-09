@@ -43,6 +43,7 @@ import co.com.codesoftware.persistence.entity.administracion.ProductosHomeEntity
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity;
+import co.com.codesoftware.persistence.entity.usuario.TipoUsuarioEntity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -639,6 +640,12 @@ public class SAFWS {
         return respuesta;
     }
     
+    /**
+     * metodo que consulta cantidades por sede
+     * @param sede
+     * @param idProducto
+     * @return 
+     */
     @WebMethod(operationName = "consultaCantidadesXSede")
     @WebResult(name = "CantidadesEntity")
     public CantidadesEntity consultaCantidadesXSede(Integer sede, Integer idProducto){
@@ -649,6 +656,23 @@ public class SAFWS {
             e.printStackTrace();
         }
         return resultado;
+    }
+    
+    /**
+     * metodo que consulta los permisos por usuario
+     * @param usuario
+     * @return 
+     */
+    @WebMethod(operationName = "consultaPermisosUsuario")
+    @WebResult(name="TipoUsuarioEntity")
+    public TipoUsuarioEntity consultaDatosUsuario(String usuario){
+        TipoUsuarioEntity respuesta = new TipoUsuarioEntity();
+        try (UsuarioLogic logic = new UsuarioLogic()){
+            respuesta = logic.consultaPermisosUsuario(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
     }
 
 }

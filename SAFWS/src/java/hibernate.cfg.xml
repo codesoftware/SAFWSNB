@@ -38,5 +38,7 @@
         <mapping class="co.com.codesoftware.persistence.entity.productos.PedidoEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.productos.ProductoEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.usuario.TipoUsuarioEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.usuario.PerfilesEntity"/>
     </session-factory>
 </hibernate-configuration>
