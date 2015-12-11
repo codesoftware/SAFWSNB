@@ -7,6 +7,7 @@ package co.com.codesoftware.logic.productos;
 
 import co.com.codesoftware.persistence.HibernateUtil;
 import co.com.codesoftware.persistence.entity.administracion.CantidadesEntity;
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -24,17 +25,36 @@ public class CantidadesLogic implements AutoCloseable {
 
     /**
      * metodo que consulta las cantidades por producto y sede
+     *
      * @param sede
      * @param idProducto
-     * @return 
+     * @return
      */
     public CantidadesEntity consultaCantidad(Integer sede, Integer idProducto) {
         CantidadesEntity resultado = new CantidadesEntity();
         initOperation();
         try {
             Criteria crit = sesion.createCriteria(CantidadesEntity.class)
-                    .add(Restrictions.eq("producto", idProducto)).add(Restrictions.eq("sede", sede));
+                    .add(Restrictions.eq("producto", idProducto)).createAlias("sede","sd").add(Restrictions.eq("sd.id", sede));
             resultado = (CantidadesEntity) crit.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultado;
+    }
+
+    /**
+     * Consulta cantidades en todas las sedes por producto
+     * @param idProducto
+     * @return 
+     */
+    public List<CantidadesEntity> consultaCantidades(Integer idProducto) {
+        List<CantidadesEntity> resultado = null;
+        initOperation();
+        try {
+            Criteria crit = sesion.createCriteria(CantidadesEntity.class)
+                    .add(Restrictions.eq("producto", idProducto));
+            resultado = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
         }

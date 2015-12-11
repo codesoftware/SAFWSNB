@@ -5,7 +5,6 @@
  */
 package co.com.codesoftware.persistence.entity.administracion;
 
-import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,8 +29,9 @@ public class CantidadesEntity implements Serializable {
     private Integer producto;
     @Column(name = "eprs_existencia")
     private Integer existencia;
-    @Column(name = "eprs_sede")
-    private Integer sede;
+    @JoinColumn(name = "eprs_sede")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SedeEntity sede;
 
    
     
@@ -62,13 +62,16 @@ public class CantidadesEntity implements Serializable {
         this.existencia = existencia;
     }
 
-    public Integer getSede() {
+    public SedeEntity getSede() {
         return sede;
     }
 
-    public void setSede(Integer sede) {
+    public void setSede(SedeEntity sede) {
         this.sede = sede;
     }
+
+    
+
 
 
 

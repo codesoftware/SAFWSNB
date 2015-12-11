@@ -306,14 +306,16 @@ public class SAFWS {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual se realiza la facturacion de los productos avanzados
+     *
      * @param facturacion
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "facturarAvanzada")
     @WebResult(name = "respuestaFacturacion")
-    public RespuestaFacturacion facturarAvanzado(@XmlElement(required = true) @WebParam(name = "Facturacion") Facturacion facturacion){
+    public RespuestaFacturacion facturarAvanzado(@XmlElement(required = true) @WebParam(name = "Facturacion") Facturacion facturacion) {
         RespuestaFacturacion rta = null;
         try (FacturacionLogic objLogic = new FacturacionLogic()) {
             rta = objLogic.generaFacturacionAvanzada(facturacion);
@@ -587,87 +589,110 @@ public class SAFWS {
         }
         return respuesta;
     }
-    
+
     /**
-     * metodo que consulta los productos por sede 
+     * metodo que consulta los productos por sede
+     *
      * @param sede
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "consultaPedidoSede")
-    @WebResult(name="PrecioProducto")
-    public List<PrecioProductoEntity> consultaPedidoSede(Integer sede){
+    @WebResult(name = "PrecioProducto")
+    public List<PrecioProductoEntity> consultaPedidoSede(Integer sede) {
         List<PrecioProductoEntity> resultado = null;
-        try (ProductsLogic logica = new ProductsLogic()){
+        try (ProductsLogic logica = new ProductsLogic()) {
             resultado = logica.consultaProductosXSede(sede);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return resultado;
-        
+
     }
+
     /**
      * metodo que consulta un producto por codigo externo
+     *
      * @param codigoExt
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "consultaProductoCodigoExterno")
     @WebResult(name = "PrecioProductoEntity")
-    public PrecioProductoEntity consultaProductoCodigoExterno(String codigoExt){
+    public PrecioProductoEntity consultaProductoCodigoExterno(String codigoExt) {
         PrecioProductoEntity respuesta = new PrecioProductoEntity();
-        try(ProductsLogic logic = new ProductsLogic()) {
+        try (ProductsLogic logic = new ProductsLogic()) {
             respuesta = logic.consultaProductoXCodExterno(codigoExt);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
     }
-    
+
     /**
      * Funcion que consulta los pedidos dependiendo del estado ingresado
+     *
      * @param estado
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "consultaPedidosXEstado")
     @WebResult(name = "PedidoEntity")
-    public List<PedidoEntity> consultaPedidoXEstado(String estado){
+    public List<PedidoEntity> consultaPedidoXEstado(String estado) {
         List<PedidoEntity> respuesta = new ArrayList<PedidoEntity>();
-        try (PedidosLogic logica = new PedidosLogic()){
-            respuesta=logica.consultaPedidoXEstado(estado);
+        try (PedidosLogic logica = new PedidosLogic()) {
+            respuesta = logica.consultaPedidoXEstado(estado);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
     }
-    
+
     /**
      * metodo que consulta cantidades por sede
+     *
      * @param sede
      * @param idProducto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "consultaCantidadesXSede")
     @WebResult(name = "CantidadesEntity")
-    public CantidadesEntity consultaCantidadesXSede(Integer sede, Integer idProducto){
+    public CantidadesEntity consultaCantidadesXSede(Integer sede, Integer idProducto) {
         CantidadesEntity resultado = null;
-        try (CantidadesLogic logic = new CantidadesLogic()){
+        try (CantidadesLogic logic = new CantidadesLogic()) {
             resultado = logic.consultaCantidad(sede, idProducto);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return resultado;
     }
-    
+
     /**
-     * metodo que consulta los permisos por usuario
-     * @param usuario
+     * 
+     * @param idProducto
      * @return 
      */
+    @WebMethod(operationName = "consultaCantidadesXProducto")
+    @WebResult(name = "CantidadesEntity")
+    public List<CantidadesEntity> consultaCantidades(Integer idProducto) {
+        List<CantidadesEntity> resultado = null;
+        try (CantidadesLogic logic = new CantidadesLogic()) {
+            resultado = logic.consultaCantidades(idProducto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultado;
+    }
+
+    /**
+     * metodo que consulta los permisos por usuario
+     *
+     * @param usuario
+     * @return
+     */
     @WebMethod(operationName = "consultaPermisosUsuario")
-    @WebResult(name="TipoUsuarioEntity")
-    public TipoUsuarioEntity consultaDatosUsuario(String usuario){
+    @WebResult(name = "TipoUsuarioEntity")
+    public TipoUsuarioEntity consultaDatosUsuario(String usuario) {
         TipoUsuarioEntity respuesta = new TipoUsuarioEntity();
-        try (UsuarioLogic logic = new UsuarioLogic()){
+        try (UsuarioLogic logic = new UsuarioLogic()) {
             respuesta = logic.consultaPermisosUsuario(usuario);
         } catch (Exception e) {
             e.printStackTrace();
