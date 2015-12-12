@@ -5,7 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="fact_fact_table" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT ds.dska_cod CODIGO,(dska_nom_prod) DESCRIPCION, 
+		<![CDATA[SELECT ds.dska_cod_ext CODIGO,(dska_desc) DESCRIPCION, 
 pr.dtpr_cant CAN, to_char(pr.dtpr_vlr_venta_uni,'9,999,999,999.00') VALOR
  FROM fa_tdtpr pr,in_tdska ds
  WHERE   dtpr_fact = cast($P{fact_fact_table} as int)
