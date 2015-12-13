@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="655" columnWidth="212" leftMargin="7" rightMargin="7" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="1.9487171000000025"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="243"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -26,7 +26,7 @@
             AND us.tius_tius = fac.fact_tius 
             AND per.pers_pers = us.tius_pers
         )vendedor,
-        (SELECT 'FECHA:'||to_char(fact_fec_ini,'DD/MM/YYYY') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))FECHA,
+        (SELECT to_char(fact_fechaex,'DD/MM/YYYY HH:MI PM') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))FECHA,
         (SELECT (clien_nombres||' '||clien_apellidos) 
            FROM us_tclien, fa_tfact 
           WHERE fact_clien = clien_clien 
@@ -225,12 +225,12 @@
 	<detail>
 		<band height="125" splitType="Stretch">
 			<subreport>
-				<reportElement x="1" y="0" width="210" height="125" uuid="ca8f0f2e-cf60-44b1-8fc5-381c29234957"/>
+				<reportElement x="1" y="1" width="212" height="124" uuid="f6eb2444-9fd2-48fa-8d89-e234d0ffa15e"/>
 				<subreportParameter name="fact_fact_table">
 					<subreportParameterExpression><![CDATA[$P{fact_fact}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["/home/john/Documentos/Proyectos/MEXICAPRICHOS/Fuentes/SAFWSNB/SAFWS/src/java/co/com/codesoftware/logic/report/DetalleFactura.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"DetalleFactura.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
