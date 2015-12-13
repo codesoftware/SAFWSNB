@@ -106,7 +106,7 @@ public class ClienteLogic implements AutoCloseable {
 				cliente = new Cliente();
 				cliente.setId(getMaxId() + 1);
 				cliente.setApellidos("generico");
-				cliente.setCedula(new Long(0));
+				cliente.setCedula("");
 				cliente.setCorreo("generico@generico.com");
 				cliente.setNombres("generico");
 				cliente.setTelefono("1234567");

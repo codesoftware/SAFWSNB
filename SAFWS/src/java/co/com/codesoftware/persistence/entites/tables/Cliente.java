@@ -13,7 +13,7 @@ public class Cliente {
     @Column(name = "CLIEN_CLIEN")
     private Long id;
     @Column(name = "CLIEN_CEDULA")
-    private Long cedula;
+    private String cedula;
     @Column(name = "CLIEN_NOMBRES")
     private String nombres;
     @Column(name = "CLIEN_APELLIDOS")
@@ -33,13 +33,15 @@ public class Cliente {
         this.id = id;
     }
 
-    public Long getCedula() {
+    public String getCedula() {
         return cedula;
     }
 
-    public void setCedula(Long cedula) {
+    public void setCedula(String cedula) {
         this.cedula = cedula;
     }
+
+
 
     public String getNombres() {
         return nombres;
