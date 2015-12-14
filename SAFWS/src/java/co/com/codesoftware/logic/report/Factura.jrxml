@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="655" columnWidth="214" leftMargin="1" rightMargin="11" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="1.7715610000000037"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="236"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -42,6 +42,7 @@
          WHERE fact_clien = clien_clien 
            AND fact_fact = cast($P{fact_fact} as int) )CEDULACLIENTE,
 (SELECT '$' || to_char(fact_vlr_iva,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))TOTIVA,
+(SELECT fact_fact+176 from fa_tfact where fact_fact  = cast($P{fact_fact} as int))NUM,
 (SELECT '$' ||  to_char(fact_vlr_total,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))SUBTOTAL,
 (SELECT '$' || to_char(cast((fact_vlr_total+fact_vlr_iva) as numeric),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))TOTAL,
 (SELECT '$' || to_char(cast((fact_vlr_dcto) as numeric),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))descunento,
@@ -60,6 +61,7 @@
 	<field name="cliente" class="java.lang.String"/>
 	<field name="cedulacliente" class="java.lang.String"/>
 	<field name="totiva" class="java.lang.String"/>
+	<field name="num" class="java.lang.Integer"/>
 	<field name="subtotal" class="java.lang.String"/>
 	<field name="total" class="java.lang.String"/>
 	<field name="descunento" class="java.lang.String"/>
@@ -94,13 +96,6 @@
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="159" y="187" width="53" height="10" uuid="44ec9021-b527-4fd9-82b8-bfaced028775"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{fact_fact}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="1" y="151" width="49" height="10" uuid="18d152e7-af44-4bb5-815d-6f89d490c8cd"/>
@@ -227,7 +222,7 @@
 			</textField>
 			<image>
 				<reportElement x="1" y="0" width="212" height="155" uuid="cb898473-19d9-4397-9261-ea97bb5c5855"/>
-				<imageExpression><![CDATA["/home/john/Documentos/Proyectos/MEXICAPRICHOS/Fuentes/SAFWSNB/SAFWS/src/java/co/com/codesoftware/logic/report/logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["/REPORTESSAF/logo.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="2" y="82" width="211" height="11" uuid="e3f17efd-3ef0-49f8-aeb6-f49ef4b94109"/>
@@ -275,6 +270,13 @@
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pedido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="158" y="187" width="51" height="11" uuid="ad66e0cc-3bc9-4c2f-8fe6-490dcd95dd8f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
