@@ -10,6 +10,7 @@ import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoEntity;
 import co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -56,14 +57,15 @@ public class PedidosLogic implements AutoCloseable {
 
     /**
      * metodo en el cual se inserta productos a partir de un pedido
+     *
      * @param productos
      * @param productoId
-     * @return 
+     * @return
      */
-    public RespuestaEntity insertaProductos(ArrayList<PedidoProductoEntity> productos,Integer productoId) {
+    public RespuestaEntity insertaProductos(ArrayList<PedidoProductoEntity> productos, Integer productoId) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try (PedidosProductoLogic logic = new PedidosProductoLogic();) {
-            respuesta = logic.insertaProductoPedido(productos,productoId);
+            respuesta = logic.insertaProductoPedido(productos, productoId);
         } catch (Exception e) {
             tx.rollback();
             respuesta.setCodigoRespuesta(0);
@@ -91,18 +93,47 @@ public class PedidosLogic implements AutoCloseable {
         }
         return resultado;
     }
+
     /**
      * metodo que consulta una lista de pedidos por id
+     *
      * @param estado
-     * @return 
+     * @return
      */
-    public List<PedidoEntity> consultaPedidoXEstado(String estado){
+    public List<PedidoEntity> consultaPedidoXEstado(String estado) {
         List<PedidoEntity> respuesta = null;
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(PedidoEntity.class).
                     add(Restrictions.eq("estado", estado)).addOrder(Order.desc("id"));
-            respuesta=crit.list();
+            respuesta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
+    /**
+     * Consulta de pedidos por los filtros de fecha, usuario y estado
+     *
+     * @param estado
+     * @param idUsuario
+     * @param fInicial
+     * @param fFinal
+     * @return
+     */
+    public List<PedidoEntity> consultaPedidoXFiltros(String estado, long idUsuario, Date fInicial, Date fFinal) {
+        List<PedidoEntity> respuesta = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(PedidoEntity.class)
+                    .createAlias("usuario", "us")
+                    .add(Restrictions.ge("fecha", fInicial))
+                    .add(Restrictions.lt("fecha", fFinal))
+                    .add(Restrictions.eq("estado", estado))
+                    .add(Restrictions.eq("us.id", idUsuario));
+            respuesta = crit.list();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

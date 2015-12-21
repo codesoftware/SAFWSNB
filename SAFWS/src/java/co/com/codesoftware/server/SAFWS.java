@@ -645,6 +645,25 @@ public class SAFWS {
         }
         return respuesta;
     }
+    /**
+     * 
+     * @param estado
+     * @param fInicial
+     * @param fFinal
+     * @param idUsuario
+     * @return 
+     */
+    @WebMethod(operationName = "consultaPedidosXFiltros")
+    @WebResult(name = "PedidoEntity")
+    public List<PedidoEntity> consultaPedidoXFiltros(String estado,Date fInicial,Date fFinal, Long idUsuario) {
+        List<PedidoEntity> respuesta = new ArrayList<PedidoEntity>();
+        try (PedidosLogic logica = new PedidosLogic()){
+            respuesta = logica.consultaPedidoXFiltros(estado, idUsuario, fInicial, fFinal);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
 
     /**
      * metodo que consulta cantidades por sede
