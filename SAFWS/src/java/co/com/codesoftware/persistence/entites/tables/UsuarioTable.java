@@ -111,7 +111,7 @@ public class UsuarioTable {
 		this.fecha_registro = fecha_registro;
 	}
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "tius_ultimo_ingreso")
 	public Date getUltimo_ingresa() {
 		return ultimo_ingresa;
