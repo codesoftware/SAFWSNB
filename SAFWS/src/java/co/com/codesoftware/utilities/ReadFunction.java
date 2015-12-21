@@ -170,7 +170,7 @@ public class ReadFunction implements AutoCloseable {
     public void ListResponsePg() {
         try {
             if (rtaPg.indexOf("Error") >= 0) {
-                System.out.println("Postgres envio un error");
+                System.out.println("Postgres envio un error " + rtaPg);
                 if (respuestaPg == null) {
                     respuestaPg = new ArrayList<>();
                 }
