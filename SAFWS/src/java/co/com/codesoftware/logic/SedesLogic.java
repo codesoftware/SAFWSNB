@@ -26,8 +26,6 @@ public class SedesLogic implements AutoCloseable {
 		sedes =sesion.createQuery("from Sede").list();
 		} catch (HibernateException e) {
 			e.printStackTrace();
-		}finally{
-			sesion.close();
 		}
 		return sedes;
 	}
