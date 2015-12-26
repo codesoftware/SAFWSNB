@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="655" columnWidth="214" leftMargin="1" rightMargin="11" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="1.7715610000000037"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="226"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -15,6 +15,7 @@
         COALESCE((select para_valor from em_tpara where para_clave = 'DIRECCION'),'NO APLICA')DIRECCION,
         COALESCE((select para_valor from em_tpara where para_clave = 'TELEFONOS'),'NO APLICA')TELEFONOS,
         COALESCE((select para_valor from em_tpara where para_clave = 'CIUDAD'),'NO APLICA')CIUDAD,
+        COALESCE((select cast(para_valor as int)+cast($P{fact_fact} as int) from em_tpara where para_clave = 'FACTURA'),0)NUM,
         (SELECT SED.SEDE_DIRECCION || '--'||SED.SEDE_NOMBRE||  '--Tel: '|| SED.SEDE_TELEFONO 
            FROM  em_tsede sed, us_ttius us,fa_tfact fac
           WHERE sed.sede_sede = us.tius_sede 
@@ -42,7 +43,6 @@
          WHERE fact_clien = clien_clien 
            AND fact_fact = cast($P{fact_fact} as int) )CEDULACLIENTE,
 (SELECT '$' || to_char(fact_vlr_iva,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))TOTIVA,
-(SELECT fact_fact+176 from fa_tfact where fact_fact  = cast($P{fact_fact} as int))NUM,
 (SELECT '$' ||  to_char(fact_vlr_total,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))SUBTOTAL,
 (SELECT '$' || to_char(cast((fact_vlr_total+fact_vlr_iva) as numeric),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))TOTAL,
 (SELECT '$' || to_char(cast((fact_vlr_dcto) as numeric),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))descunento,
@@ -54,6 +54,7 @@
 	<field name="direccion" class="java.lang.String"/>
 	<field name="telefonos" class="java.lang.String"/>
 	<field name="ciudad" class="java.lang.String"/>
+	<field name="num" class="java.lang.Integer"/>
 	<field name="ubicacion" class="java.lang.String"/>
 	<field name="vendedor" class="java.lang.String"/>
 	<field name="pedido" class="java.lang.String"/>
@@ -61,7 +62,6 @@
 	<field name="cliente" class="java.lang.String"/>
 	<field name="cedulacliente" class="java.lang.String"/>
 	<field name="totiva" class="java.lang.String"/>
-	<field name="num" class="java.lang.Integer"/>
 	<field name="subtotal" class="java.lang.String"/>
 	<field name="total" class="java.lang.String"/>
 	<field name="descunento" class="java.lang.String"/>
@@ -272,7 +272,7 @@
 				<textFieldExpression><![CDATA[$F{pedido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="158" y="187" width="51" height="11" uuid="ad66e0cc-3bc9-4c2f-8fe6-490dcd95dd8f"/>
+				<reportElement x="161" y="187" width="51" height="11" uuid="ad66e0cc-3bc9-4c2f-8fe6-490dcd95dd8f"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
