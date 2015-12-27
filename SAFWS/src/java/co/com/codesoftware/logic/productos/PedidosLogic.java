@@ -141,6 +141,55 @@ public class PedidosLogic implements AutoCloseable {
     }
 
     /**
+     * Funcion que elimina un pedido de la base de datos
+     *
+     * @param idPedido
+     * @return
+     */
+    public boolean eliminaPedidoId(Integer idPedido) {
+        try {
+            if (eliminaProductoPedido(idPedido)) {
+                initOperation();
+                Criteria crit = sesion.createCriteria(PedidoEntity.class).
+                        add(Restrictions.eq("id", idPedido));
+                PedidoEntity respuesta = (PedidoEntity) crit.uniqueResult();
+                sesion.delete(respuesta);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * metodo que elimina los productos de un pedido
+     * @param idPedido
+     * @return 
+     */
+    public boolean eliminaProductoPedido(Integer idPedido) {
+        try {
+
+            initOperation();
+            Criteria crit = sesion.createCriteria(PedidoProductoEntity.class).
+                    add(Restrictions.eq("pedido", idPedido));
+            List<PedidoProductoEntity> respuesta = crit.list();
+            if (respuesta != null) {
+                for (PedidoProductoEntity item : respuesta) {
+                    sesion.delete(item);
+                }
+                tx.commit();
+            }
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * Funcion que inicializa la clase de hibernate
      *
      * @throws HibernateException

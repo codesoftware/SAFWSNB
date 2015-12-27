@@ -718,5 +718,22 @@ public class SAFWS {
         }
         return respuesta;
     }
+    
+    /**
+     * metodo que elimina un pedido por el id
+     * @param idPedido
+     * @return 
+     */
+    @WebMethod(operationName = "eliminaPedido")
+    @WebResult(name = "resultado")
+   public boolean eliminaPedidoXId(Integer idPedido){
+       boolean respuesta = false;
+        try(PedidosLogic logic = new PedidosLogic()) {
+            respuesta = logic.eliminaPedidoId(idPedido);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
+   }
 
 }
