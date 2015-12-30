@@ -154,7 +154,7 @@ public class ProductsLogic implements AutoCloseable {
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(PrecioProductoEntity.class).createAlias("idProducto", "pr")
-                    .add(Restrictions.eq("pr.codigoExt", codigo));
+                    .add(Restrictions.eq("pr.codigoExt", codigo)).add(Restrictions.eq("estado", "A"));
             producto = (PrecioProductoEntity) crit.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
