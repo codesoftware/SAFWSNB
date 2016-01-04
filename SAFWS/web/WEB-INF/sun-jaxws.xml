@@ -5,4 +5,5 @@
   <endpoint implementation="co.com.codesoftware.server.SAFWS" name="SAFWS" url-pattern="/SAFWS"/>
   <endpoint implementation="co.com.codesoftware.server.SAFWS" name="SAFWS" url-pattern="/SAFWS"/>
   <endpoint implementation="co.com.codesoftware.server.SAFWS" name="SAFWS" url-pattern="/SAFWS"/>
+  <endpoint implementation="co.com.codesoftware.server.conteos.ConteosWS" name="ConteosWS" url-pattern="/ConteosWS"/>
 </endpoints>

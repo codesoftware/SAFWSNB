@@ -8,9 +8,18 @@
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>ConteosWS</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SAFWS</servlet-name>
         <url-pattern>/SAFWS</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConteosWS</servlet-name>
+        <url-pattern>/ConteosWS</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
