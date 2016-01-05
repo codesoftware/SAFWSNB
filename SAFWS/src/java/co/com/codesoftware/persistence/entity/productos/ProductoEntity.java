@@ -5,7 +5,6 @@
  */
 package co.com.codesoftware.persistence.entity.productos;
 
-import co.com.codesoftware.persistence.entity.administracion.CantidadesEntity;
 import co.com.codesoftware.persistence.entity.administracion.CategoriaEntity;
 import co.com.codesoftware.persistence.entity.administracion.MarcaEntity;
 import co.com.codesoftware.persistence.entity.administracion.ReferenciaEntity;
@@ -64,6 +63,8 @@ public class ProductoEntity implements Serializable {
     private String ubicacion;
     @Column(name="dska_cod_ext")
     private String codigoExt;
+    @Column(name="dska_barcod")
+    private String codigoBarras;
 
     public Integer getId() {
         return id;
@@ -175,6 +176,14 @@ public class ProductoEntity implements Serializable {
 
     public void setCodigoExt(String codigoExt) {
         this.codigoExt = codigoExt;
+    }
+
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
     }
 
 

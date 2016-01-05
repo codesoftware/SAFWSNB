@@ -29,6 +29,7 @@
         <mapping class="co.com.codesoftware.persistence.entites.facturacion.DetReceFacturacionTable" />
         <mapping class="co.com.codesoftware.persistence.entites.tables.PerfilTable" />
         <mapping class="co.com.codesoftware.persistence.entity.administracion.ProductosHomeEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ProductoConteoEntity" />
         <mapping class="co.com.codesoftware.persistence.entity.administracion.SedeEntity" />
         <mapping class="co.com.codesoftware.persistence.entity.administracion.MarcaEntity" />
         <mapping class="co.com.codesoftware.persistence.entity.administracion.CategoriaEntity" />
