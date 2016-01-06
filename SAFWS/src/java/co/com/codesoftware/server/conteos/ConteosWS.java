@@ -24,18 +24,20 @@ public class ConteosWS {
     /**
      * Funcion que inserta un producto al conteo
      *
+     * @param codExterno
      * @param codProducto
      * @param codConteo
      * @param Cantidad
+     * @param ubicacion
      * @param codigoBarras
      * @return
      */
     @WebMethod(operationName = "insertaProdConteo")
     @WebResult(name = "RespuestaEntity")
-    public RespuestaEntity ingresaProductoConteo(@WebParam(name = "codExterno") String codExterno, @WebParam(name = "codConteo") Integer codConteo, @WebParam(name = "cantidad") Integer Cantidad, @WebParam(name = "codigoBarras") String codigoBarras) {
+    public RespuestaEntity ingresaProductoConteo(@WebParam(name = "codExterno") String codExterno, @WebParam(name = "codConteo") Integer codConteo, @WebParam(name = "cantidad") Integer Cantidad, @WebParam(name = "codigoBarras") String codigoBarras,@WebParam(name = "ubicacion")String ubicacion) {
         RespuestaEntity rta = null;
         try (ConteosLogic logic = new ConteosLogic()){
-            rta = logic.insertaProdConteo(codConteo, codExterno, Cantidad, codigoBarras);
+            rta = logic.insProdConteo(codConteo, codExterno, Cantidad, codigoBarras, ubicacion);
         } catch (Exception e) {
             e.printStackTrace();
         }

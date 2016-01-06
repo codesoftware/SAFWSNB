@@ -10,6 +10,9 @@ import co.com.codesoftware.persistence.entity.administracion.ConteoEntity;
 import co.com.codesoftware.persistence.entity.administracion.ProductoConteoEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
+import co.com.codesoftware.persistence.enumeration.DataType;
+import co.com.codesoftware.utilities.ReadFunction;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -27,7 +30,27 @@ public class ConteosLogic implements AutoCloseable {
 
     private Session sesion;
     private Transaction tx;
+    private String llamadoFunction;
+    private String idFactura;
+    private String mensaje;
 
+    
+    public RespuestaEntity insProdConteo(Integer codigoConteo, String codigoProducto, Integer cantidad, String codigoBarras,String ubicacion){
+        RespuestaEntity res = new RespuestaEntity();
+        try {
+            String descripcion = this.llamaFuncionConteo(codigoConteo, codigoProducto, cantidad, codigoBarras, ubicacion);
+            res.setCodigoRespuesta(0);
+            res.setDescripcionRespuesta(descripcion);
+            res.setMensajeRespuesta(descripcion);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.setCodigoRespuesta(0);
+            res.setDescripcionRespuesta(e.getMessage());
+            res.setMensajeRespuesta(e.toString());
+            
+        }
+        return res;
+    }
     /**
      *
      * @param codigoConteo
@@ -197,6 +220,46 @@ public class ConteosLogic implements AutoCloseable {
         }
         return respuesta;
     }
+    /**
+     * Funcion que llama el procedimiento almacenado pra el conteo
+     * @param codigoConteo
+     * @param codigoProducto
+     * @param cantidad
+     * @param codigoBarras
+     * @param ubicacion
+     * @return 
+     */
+    public String llamaFuncionConteo(Integer codigoConteo, String codigoProducto, Integer cantidad, String codigoBarras,String ubicacion) {
+        String rta = "";
+        List<String> response = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()) {
+            rf.setNombreFuncion("IN_VALIDACONTEO");
+            rf.setNumParam(6);
+            rf.addParametro("" + codigoProducto, DataType.TEXT);
+            rf.addParametro("" + cantidad, DataType.INT);
+            rf.addParametro("" + codigoBarras, DataType.TEXT);
+            rf.addParametro("" + ubicacion, DataType.TEXT);
+            rf.addParametro("0", DataType.TEXT);
+            rf.addParametro(""+codigoConteo, DataType.INT);
+            rf.callFunctionJdbc();
+            response = rf.getRespuestaPg();
+            String respuesta = response.get(0);
+            if (respuesta.indexOf("Error") >= 0) {
+                respuesta = respuesta.replaceAll("Error", "");
+                rta = respuesta;
+                llamadoFunction = "error";
+            } else {             
+                llamadoFunction = respuesta;
+                rta = respuesta;
+            }
+        } catch (Exception e) {
+            llamadoFunction = "error";
+            rta = e.toString();
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
 
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
