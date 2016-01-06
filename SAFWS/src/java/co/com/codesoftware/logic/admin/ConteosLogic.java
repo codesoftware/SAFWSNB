@@ -10,6 +10,7 @@ import co.com.codesoftware.persistence.entity.administracion.ConteoEntity;
 import co.com.codesoftware.persistence.entity.administracion.ProductoConteoEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -98,7 +99,7 @@ public class ConteosLogic implements AutoCloseable {
                     createAlias("conteo", "con").createAlias("producto", "prd")
                     .add(Restrictions.eq("con.id", codigoConteo)).add(Restrictions.eq("prd.codigoBarras", codigoBarras))
                     .uniqueResult();
-            if (prod !=null) {
+            if (prod != null) {
                 prod.setCantidad(prod.getCantidad() + cantidad);
                 sesion.update(prod);
                 //tx.commit();
@@ -127,7 +128,7 @@ public class ConteosLogic implements AutoCloseable {
                     createAlias("conteo", "con").createAlias("producto", "prd")
                     .add(Restrictions.eq("con.id", codigoConteo)).add(Restrictions.eq("prd.codigoExt", codigoExt))
                     .uniqueResult();
-            if (prod!=null) {
+            if (prod != null) {
                 prod.setCantidad(prod.getCantidad() + cantidad);
                 sesion.update(prod);
                 //tx.commit();
@@ -173,6 +174,28 @@ public class ConteosLogic implements AutoCloseable {
             e.printStackTrace();
         }
         return resultado;
+    }
+
+    /**
+     * metodo el cual consulta un grupo de conteos por estado
+     *
+     * @param estado
+     * @return
+     */
+    public List<ConteoEntity> consultaConteosEstado(String estado) {
+        initOperation();
+        if (estado == null || "".equalsIgnoreCase(estado)) {
+            estado = "A";
+        }
+        List<ConteoEntity> respuesta = null;
+        try {
+            respuesta = sesion.createCriteria(ConteoEntity.class)
+                    .add(Restrictions.eq("estado", estado)).list();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return respuesta;
     }
 
     private void initOperation() throws HibernateException {

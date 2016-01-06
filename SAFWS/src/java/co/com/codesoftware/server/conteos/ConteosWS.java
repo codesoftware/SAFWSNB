@@ -6,7 +6,9 @@
 package co.com.codesoftware.server.conteos;
 
 import co.com.codesoftware.logic.admin.ConteosLogic;
+import co.com.codesoftware.persistence.entity.administracion.ConteoEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
+import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -38,5 +40,21 @@ public class ConteosWS {
             e.printStackTrace();
         }
         return rta;
+    }
+    /**
+     * metodo el cual consulta los conteos por estado
+     * @param estado
+     * @return 
+     */
+    @WebMethod(operationName = "consultaconteos")
+    @WebResult(name = "ConteosEntity")
+    public List<ConteoEntity> consultaConteoEstado(@WebParam(name = "estado")String estado){
+        List<ConteoEntity> resultado = null;
+        try (ConteosLogic logic = new ConteosLogic()){
+            resultado = logic.consultaConteosEstado(estado);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultado;
     }
 }
