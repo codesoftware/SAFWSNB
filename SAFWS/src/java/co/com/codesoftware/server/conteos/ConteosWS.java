@@ -8,6 +8,7 @@ package co.com.codesoftware.server.conteos;
 import co.com.codesoftware.logic.admin.ConteosLogic;
 import co.com.codesoftware.persistence.entity.administracion.ConteoEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
+import co.com.codesoftware.persistence.entity.transformer.ProductoConteoEntityTR;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -58,5 +59,23 @@ public class ConteosWS {
             e.printStackTrace();
         }
         return resultado;
+    }
+    
+    /**
+     * metodo que consulta un producto de un conteo especifico
+     * @param codExterno
+     * @param conteo
+     * @return 
+     */
+    @WebMethod(operationName = "consultaProdConteo")
+    @WebResult(name = "ProductoConteoEntityTR")
+    public ProductoConteoEntityTR consultaProdConteo(String codExterno,Integer conteo){
+        ProductoConteoEntityTR rta= new ProductoConteoEntityTR();
+        try(ConteosLogic logic = new ConteosLogic()) {
+            rta = logic.consultaProductoConteo(conteo, codExterno);
+        } catch (Exception e) {
+            rta.setMensaje(e.toString());
+        }
+        return rta;
     }
 }

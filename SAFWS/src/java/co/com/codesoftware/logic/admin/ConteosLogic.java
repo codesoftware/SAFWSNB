@@ -6,10 +6,12 @@
 package co.com.codesoftware.logic.admin;
 
 import co.com.codesoftware.persistence.HibernateUtil;
+import co.com.codesoftware.persistence.entites.tables.PrecioProductoEntity;
 import co.com.codesoftware.persistence.entity.administracion.ConteoEntity;
 import co.com.codesoftware.persistence.entity.administracion.ProductoConteoEntity;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
+import co.com.codesoftware.persistence.entity.transformer.ProductoConteoEntityTR;
 import co.com.codesoftware.persistence.enumeration.DataType;
 import co.com.codesoftware.utilities.ReadFunction;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 /**
  *
@@ -260,7 +263,50 @@ public class ConteosLogic implements AutoCloseable {
         return rta;
     }
 
-
+    /**
+     * funcion que consulta un producto especifico del conteo
+     * @param conteo
+     * @param codigoExteno
+     * @return 
+     */
+    public ProductoConteoEntityTR consultaProductoConteo(Integer conteo,String codigoExterno){
+        ProductoConteoEntityTR rta = new ProductoConteoEntityTR();
+        try {
+            ProductoConteoEntity entity = new ProductoConteoEntity();
+            initOperation();
+            Criteria crit = sesion.createCriteria(ProductoConteoEntity.class)
+                    .createAlias("conteo", "con")
+                    .createAlias("producto", "prd")
+                    .add(Restrictions.eq("con.id",conteo))
+                    .add(Restrictions.eq("prd.codigoExt", codigoExterno));
+            entity = (ProductoConteoEntity) crit.uniqueResult();
+            rta = transformer(entity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta.setMensaje(e.toString());
+        }
+        return rta;
+    } 
+    
+    /**
+     * Metodo que transforma al objeto
+     * @param entity
+     * @return 
+     */
+    public ProductoConteoEntityTR transformer(ProductoConteoEntity entity){
+        ProductoConteoEntityTR rta = new ProductoConteoEntityTR();
+        try{
+        rta.setCantidad(entity.getCantidad());
+        rta.setCodigoBarras(entity.getProducto().getCodigoBarras());
+        rta.setCodigoExterno(entity.getProducto().getCodigoExt());
+        rta.setDescripcion(entity.getProducto().getDescripcion());
+        rta.setId(entity.getProducto().getId());
+        rta.setUbicacion(entity.getProducto().getUbicacion());
+        }catch(Exception e){
+            rta.setMensaje(e.getCause().getMessage());
+        }
+        return rta;
+    }
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
         tx = sesion.beginTransaction();
