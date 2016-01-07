@@ -287,6 +287,32 @@ public class ConteosLogic implements AutoCloseable {
         }
         return rta;
     } 
+    /**
+     * metodo que consulta todos los productos de un conteo
+     * @param conteo
+     * @return 
+     */
+    
+     public List<ProductoConteoEntityTR> consultaProductosConteo(Integer conteo){
+        List<ProductoConteoEntityTR> rta = new ArrayList<ProductoConteoEntityTR>();
+        try {
+            
+            List<ProductoConteoEntity> entity = null;
+            initOperation();
+            entity = sesion.createCriteria(ProductoConteoEntity.class)
+                    .createAlias("conteo", "con")
+                    .add(Restrictions.eq("con.id",conteo)).list();
+            for(ProductoConteoEntity item:entity){
+              ProductoConteoEntityTR objTrans = new ProductoConteoEntityTR();
+              objTrans = transformer(item);
+              rta.add(objTrans);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+          
+        }
+        return rta;
+    } 
     
     /**
      * Metodo que transforma al objeto

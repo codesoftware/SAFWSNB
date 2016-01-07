@@ -69,12 +69,29 @@ public class ConteosWS {
      */
     @WebMethod(operationName = "consultaProdConteo")
     @WebResult(name = "ProductoConteoEntityTR")
-    public ProductoConteoEntityTR consultaProdConteo(String codExterno,Integer conteo){
+    public ProductoConteoEntityTR consultaProdConteo(@WebParam(name = "codigoExterno")String codExterno,@WebParam(name = "idConteo")Integer conteo){
         ProductoConteoEntityTR rta= new ProductoConteoEntityTR();
         try(ConteosLogic logic = new ConteosLogic()) {
             rta = logic.consultaProductoConteo(conteo, codExterno);
         } catch (Exception e) {
             rta.setMensaje(e.toString());
+        }
+        return rta;
+    }
+    /**
+     * Metodo que consulta todos los porductos que se han añadido al conteo
+     * @param codExterno
+     * @param conteo
+     * @return 
+     */
+     @WebMethod(operationName = "consultaProductosConteo")
+    @WebResult(name = "ProductoConteoEntityTR")
+    public List<ProductoConteoEntityTR> consultaProductosConteo(@WebParam(name = "idConteo")Integer conteo){
+        List<ProductoConteoEntityTR> rta= null;
+        try(ConteosLogic logic = new ConteosLogic()) {
+            rta = logic.consultaProductosConteo(conteo);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return rta;
     }
