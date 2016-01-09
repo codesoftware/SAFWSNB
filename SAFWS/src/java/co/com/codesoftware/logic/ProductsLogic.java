@@ -11,6 +11,8 @@ import org.hibernate.Transaction;
 import co.com.codesoftware.persistence.HibernateUtil;
 import co.com.codesoftware.persistence.entites.tables.PrecioProductoEntity;
 import co.com.codesoftware.persistence.entites.tables.ProductoTable;
+import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
+import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
 import co.com.codesoftware.persistence.enumeration.DataType;
 import co.com.codesoftware.utilities.ReadFunction;
 import org.hibernate.Criteria;
@@ -123,6 +125,29 @@ public class ProductsLogic implements AutoCloseable {
         }
         return lista;
     }
+    /**
+     * metodo que actualiza un producto por base de datos
+     * @param producto
+     * @return 
+     */
+
+    public RespuestaEntity actualizaProducto(ProductoEntity producto) {
+        RespuestaEntity respuesta = new RespuestaEntity();
+        try {
+            initOperation();
+            sesion.update(producto);
+            respuesta.setCodigoRespuesta(1);
+            respuesta.setDescripcionRespuesta("OK");
+            respuesta.setMensajeRespuesta("OK");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            respuesta.setCodigoRespuesta(0);
+            respuesta.setDescripcionRespuesta(e.getMessage());
+            respuesta.setMensajeRespuesta(e.toString());
+        }
+        return respuesta;
+    }
 
     /**
      * Metodo que consulta toda la informacion del producto
@@ -159,7 +184,7 @@ public class ProductsLogic implements AutoCloseable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return producto;
     }
 
