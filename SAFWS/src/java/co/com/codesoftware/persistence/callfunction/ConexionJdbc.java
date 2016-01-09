@@ -3,16 +3,17 @@ package co.com.codesoftware.persistence.callfunction;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ResourceBundle;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
 public class ConexionJdbc implements AutoCloseable {
 
     private static ConexionJdbc conexionJdbc;
-    private Connection          conexion;
-    private String              data_base;
-    private String              host;
-    private String              port;
-    private String              user;
-    private String              pass;
+    private Connection conexion;
+    private String nombrePool;
+    private Context context;
+    private DataSource ds;
 
     /**
      * Constructor de la clase en la cual obtengo el nombre del pool
@@ -20,17 +21,13 @@ public class ConexionJdbc implements AutoCloseable {
      */
     private ConexionJdbc() {
         ResourceBundle rb = ResourceBundle.getBundle("co.com.codesoftware.properties.baseProperties");
-        data_base = rb.getString("DATA_BASE");
-        host = rb.getString("HOST");
-        port = rb.getString("PORT");
-        user = rb.getString("USER");
-        pass = rb.getString("PASS");
+        nombrePool = rb.getString("NOMBRE_POOL");
     }
 
     /**
      * Funcion en la cual obtenemos la instancia del objeto ya que esta creado
      * por medio de un patron singleton
-     * 
+     *
      * @return
      */
     public static ConexionJdbc getInstance() {
@@ -43,14 +40,14 @@ public class ConexionJdbc implements AutoCloseable {
 
     /**
      * Funcion con la cual generamos y obtnemos la conexion
-     * 
+     *
      * @return
      */
     public Connection conexion() {
         try {
-            Class.forName("org.postgresql.Driver");
-            String url = "jdbc:postgresql://" + this.host + ":" + this.port + "/" + this.data_base;
-            conexion = DriverManager.getConnection(url, this.user, this.pass);
+            context = new InitialContext();
+            ds = (DataSource) context.lookup("java:/comp/env/jdbc/" + nombrePool);
+            conexion = ds.getConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
