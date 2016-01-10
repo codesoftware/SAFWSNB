@@ -22,7 +22,7 @@ public class LogicLogin {
 			rf.setNumParam(2);
 			rf.addParametro(name, DataType.TEXT);
 			rf.addParametro(pass, DataType.TEXT);
-			rf.callFunction();
+			rf.callFunctionJdbc();
 			response = rf.getRespuestaPg();
 		} catch (Exception e) {
 			e.printStackTrace();

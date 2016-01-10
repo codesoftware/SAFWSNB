@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.engine.spi.SessionImplementor;
-
-import co.com.codesoftware.persistence.HibernateUtil;
 import co.com.codesoftware.persistence.callfunction.ConexionJdbc;
 import co.com.codesoftware.persistence.entites.ParamFunction;
 import co.com.codesoftware.persistence.enumeration.DataType;
@@ -26,24 +22,6 @@ public class ReadFunction implements AutoCloseable {
     private String                   respuesta;
     private String                   rtaPg;
     private List<String>             respuestaPg;
-
-    /**
-     * Funcion que toma el objeto conexion de Hibernate y lo utiliza como un
-     * objeto conexion de jdbc
-     * 
-     * @return
-     */
-    public boolean conectionJDBC() {
-        try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            SessionImplementor miSessionImplementor = (SessionImplementor) session;
-            con = miSessionImplementor.connection();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     /**
      * Funcion en la cual se adicionan parametros a la lista
@@ -85,45 +63,6 @@ public class ReadFunction implements AutoCloseable {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-        return true;
-    }
-
-    /**
-     * Funcion en la cual se llama el procedimiento
-     * 
-     * @return
-     */
-    public boolean callFunction() {
-        try {
-            this.createBase();
-            if (this.conectionJDBC()) {
-
-                PreparedStatement ps = con.prepareStatement(this.base);
-                int i = 1;
-                for (ParamFunction parametro : this.parameters) {
-                    if (parametro.getDataType().toString().equalsIgnoreCase("TEXT")) {
-                        ps.setString(i, parametro.getName());
-                    } else if (parametro.getDataType().toString().equalsIgnoreCase("INT")) {
-                        ps.setInt(i, Integer.parseInt(parametro.getName()));
-                    } else if (parametro.getDataType().toString().equalsIgnoreCase("NUMERIC")) {
-                        ps.setDouble(i, Double.parseDouble(parametro.getName()));
-                    } else if (parametro.getDataType().toString().equalsIgnoreCase("BIGDECIMAL")) {
-                        ps.setBigDecimal(i, new BigDecimal(parametro.getName()));
-                    }
-                    i++;
-                }
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    rtaPg = rs.getString(1);
-                }
-                this.ListResponsePg();
-                ps.close();
-            } else {
-                respuesta = "Error al crear la conexion ";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return true;
     }

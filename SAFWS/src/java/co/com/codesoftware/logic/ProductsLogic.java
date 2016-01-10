@@ -93,7 +93,7 @@ public class ProductsLogic implements AutoCloseable {
             rf.setNumParam(2);
             rf.addParametro(sede_sede, DataType.INT);
             rf.addParametro(dska_dska, DataType.INT);
-            rf.callFunction();
+            rf.callFunctionJdbc();
             response = rf.getRespuestaPg();
         } catch (Exception e) {
             e.printStackTrace();

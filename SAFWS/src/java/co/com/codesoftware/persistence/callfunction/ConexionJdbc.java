@@ -1,7 +1,6 @@
 package co.com.codesoftware.persistence.callfunction;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.ResourceBundle;
 import javax.naming.Context;
 import javax.naming.InitialContext;
