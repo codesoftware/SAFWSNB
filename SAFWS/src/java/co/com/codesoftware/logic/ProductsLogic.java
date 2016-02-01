@@ -212,14 +212,15 @@ public class ProductsLogic implements AutoCloseable {
     }
     /**
      * Funcion con la cual se buscan las existencias por sede de un producto
-     * @param id
+     * @param idDska
      * @return 
      */
     public List<ExistenciaXSedeTable> buscoExistenciaProd(Integer idDska){
         List<ExistenciaXSedeTable> rta = null;
         try {
             initOperation();
-            Criteria crit = sesion.createCriteria(ExistenciaXSedeTable.class).add(Restrictions.eq("idProducto", idDska));
+            Criteria crit = sesion.createCriteria(ExistenciaXSedeTable.class)
+                    .add(Restrictions.eq("idDska", idDska));
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
