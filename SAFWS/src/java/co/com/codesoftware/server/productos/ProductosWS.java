@@ -10,7 +10,6 @@ import co.com.codesoftware.persistence.entites.tables.ExistenciaXSedeTable;
 import co.com.codesoftware.persistence.entites.tables.PromPonderaTable;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

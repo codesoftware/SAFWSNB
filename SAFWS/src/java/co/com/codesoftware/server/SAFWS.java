@@ -601,7 +601,7 @@ public class SAFWS {
     public List<PrecioProductoEntity> consultaPedidoSede(Integer sede) {
         List<PrecioProductoEntity> resultado = null;
         try (ProductsLogic logica = new ProductsLogic()) {
-            resultado = logica.consultaProductosXSede(sede);
+            resultado = logica.consultaProductosXSedeB(sede);
         } catch (Exception e) {
             e.printStackTrace();
         }

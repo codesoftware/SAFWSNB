@@ -18,6 +18,7 @@ import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
 import co.com.codesoftware.persistence.enumeration.DataType;
 import co.com.codesoftware.utilities.ReadFunction;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;
 
 public class ProductsLogic implements AutoCloseable {
@@ -171,6 +172,28 @@ public class ProductsLogic implements AutoCloseable {
         }
         return lista;
     }
+    
+    /**
+     * Metodo que consulta toda la informacion del producto
+     *
+     * @param sedeId
+     * @return
+     */
+    public List<PrecioProductoEntity> consultaProductosXSedeB(Integer sedeId) {
+        List<PrecioProductoEntity> lista = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(PrecioProductoEntity.class).
+                    createAlias("idSede", "sed").createAlias("idProducto", "prod").setFetchMode("idProducto", FetchMode.JOIN).
+                    setFetchMode("idSede", FetchMode.JOIN).
+                    add(Restrictions.eq("sed.id", sedeId)).
+                    add(Restrictions.eq("estado", "A"));
+            lista = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
 
     /**
      * metodo que consulta el producto dependiendo del codigo
@@ -219,9 +242,9 @@ public class ProductsLogic implements AutoCloseable {
         List<ExistenciaXSedeTable> rta = null;
         try {
             initOperation();
-            Criteria crit = sesion.createCriteria(ExistenciaXSedeTable.class)
-                    .add(Restrictions.eq("idDska", idDska));
-            rta = crit.list();
+            Query query = sesion.createQuery("select ex from ExistenciaXSedeTable ex inner join fetch ex.sede WHERE ex.idDska = :idDska");
+            query.setParameter("idDska", idDska);
+            rta = query.list();
         } catch (Exception e) {
             e.printStackTrace();
         }
