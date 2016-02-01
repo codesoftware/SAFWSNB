@@ -6,8 +6,12 @@
 package co.com.codesoftware.server.productos;
 
 import co.com.codesoftware.logic.ProductsLogic;
+import co.com.codesoftware.persistence.entites.tables.ExistenciaXSedeTable;
+import co.com.codesoftware.persistence.entites.tables.PromPonderaTable;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
+import java.math.BigDecimal;
+import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -36,6 +40,36 @@ public class ProductosWS {
             respuesta.setMensajeRespuesta(e.toString());
         }
         return respuesta;
+    }
+    /**
+     * Funcion con la cual busco el promedio ponderado 
+     * @param idDska
+     * @return 
+     */
+    @WebMethod(operationName = "buscaPromedioPonderadoProducto")
+    public PromPonderaTable buscaPromedioPonderadoProducto(@WebParam(name = "idDska")Integer idDska){
+        PromPonderaTable rta = null;
+        try(ProductsLogic objLogic = new ProductsLogic()) {
+            rta = objLogic.buscaPromedioPondProd(idDska);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual obtengo las existencias que hay en cada sede de cada producto
+     * @param idDska
+     * @return 
+     */
+    @WebMethod(operationName = "buscaExistenciasProdu")
+    public List<ExistenciaXSedeTable> buscaExistenciasProdu(@WebParam(name = "idDska")Integer idDska){
+        List<ExistenciaXSedeTable> rta = null;
+        try (ProductsLogic objLogic = new ProductsLogic()) {
+            rta = objLogic.buscoExistenciaProd(idDska);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
     
 }

@@ -9,8 +9,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import co.com.codesoftware.persistence.HibernateUtil;
+import co.com.codesoftware.persistence.entites.tables.ExistenciaXSedeTable;
 import co.com.codesoftware.persistence.entites.tables.PrecioProductoEntity;
 import co.com.codesoftware.persistence.entites.tables.ProductoTable;
+import co.com.codesoftware.persistence.entites.tables.PromPonderaTable;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
 import co.com.codesoftware.persistence.enumeration.DataType;
@@ -125,10 +127,12 @@ public class ProductsLogic implements AutoCloseable {
         }
         return lista;
     }
+
     /**
      * metodo que actualiza un producto por base de datos
+     *
      * @param producto
-     * @return 
+     * @return
      */
 
     public RespuestaEntity actualizaProducto(ProductoEntity producto) {
@@ -186,6 +190,41 @@ public class ProductsLogic implements AutoCloseable {
         }
 
         return producto;
+    }
+
+    /**
+     * Funcion con la cual se busca el promedio ponderado y las existencias
+     * totales de un producto
+     *
+     * @param idDska
+     * @return
+     */
+    public PromPonderaTable buscaPromedioPondProd(Integer idDska) {
+        PromPonderaTable rta = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(PromPonderaTable.class).add(Restrictions.eq("idDska", idDska));
+            rta = (PromPonderaTable) crit.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual se buscan las existencias por sede de un producto
+     * @param id
+     * @return 
+     */
+    public List<ExistenciaXSedeTable> buscoExistenciaProd(Integer idDska){
+        List<ExistenciaXSedeTable> rta = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(ExistenciaXSedeTable.class).add(Restrictions.eq("idProducto", idDska));
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 
     @Override

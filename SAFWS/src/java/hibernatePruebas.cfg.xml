@@ -4,7 +4,7 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/SigemcoPruebas</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/SigemcoPRUEBAS</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">Codesoftware1234</property>
         <property name="hibernate.connection.pool_size">1</property>
@@ -42,5 +42,7 @@
         <mapping class="co.com.codesoftware.persistence.entity.usuario.TipoUsuarioEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.usuario.PerfilesEntity"/>
         <mapping class="co.com.codesoftware.persistence.entity.administracion.ConteoEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.PromPonderaTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.PromPonderaTable"/>
     </session-factory>
 </hibernate-configuration>
