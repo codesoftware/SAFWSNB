@@ -563,7 +563,7 @@ public class FacturacionLogic implements AutoCloseable {
         List<String> response = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()) {
             rf.setNombreFuncion("FA_FACTURACION_X_PRECIO");
-            rf.setNumParam(8);
+            rf.setNumParam(9);
             rf.addParametro("" + objFactura.getIdTius(), DataType.INT);
             rf.addParametro("" + objFactura.getIdCliente(), DataType.INT);
             rf.addParametro("" + idTrans, DataType.INT);
@@ -572,6 +572,7 @@ public class FacturacionLogic implements AutoCloseable {
             rf.addParametro("0", DataType.INT);
             rf.addParametro("0", DataType.INT);
             rf.addParametro(""+objFactura.getIdPedido(), DataType.INT);
+            rf.addParametro(objFactura.getReteFuente(), DataType.TEXT);
             
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();

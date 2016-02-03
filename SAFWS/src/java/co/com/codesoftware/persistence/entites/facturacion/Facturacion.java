@@ -15,6 +15,8 @@ public class Facturacion {
     private boolean domicilio;
     private Long descuento;
     private Integer idPedido;
+    //Parametro en el cual me indica si cobra retefuente o no
+    private String reteFuente;
 
     public boolean isDomicilio() {
         return domicilio;
@@ -78,6 +80,14 @@ public class Facturacion {
 
     public void setIdPedido(Integer idPedido) {
         this.idPedido = idPedido;
+    }
+
+    public String getReteFuente() {
+        return reteFuente;
+    }
+
+    public void setReteFuente(String reteFuente) {
+        this.reteFuente = reteFuente;
     }
 
 }

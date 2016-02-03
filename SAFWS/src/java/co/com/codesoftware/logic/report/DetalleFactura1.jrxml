@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="216" pageHeight="504" columnWidth="216" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="00aba01d-e033-4426-a7d1-16d54152cf8a">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fact_fact_table" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT ds.dska_cod_ext CODIGO,(dska_desc) DESCRIPCION, 
+pr.dtpr_cant CAN, to_char(pr.dtpr_vlr_venta_uni*pr.dtpr_cant,'9,999,999,999.00') VALOR
+ FROM fa_tdtpr pr,in_tdska ds
+ WHERE   dtpr_fact = cast($P{fact_fact_table} as int)
+   and dtpr_dska = dska_dska
+union all
+select rece_codigo, rece_nombre, dtre_cant, to_char(dtre_vlr_venta_uni*dtre_cant,'9,999,999,999.00') 
+from fa_tdtre, in_trece
+where dtre_rece = rece_rece
+and dtre_fact =  cast($P{fact_fact_table} as int)]]>
+	</queryString>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="can" class="java.lang.Integer"/>
+	<field name="valor" class="java.lang.String"/>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="3" y="0" width="43" height="20" uuid="c823c1a6-b84c-4d22-aecf-5803c7ad9922"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="0" width="56" height="20" uuid="faa97c49-c313-4cf7-9d74-f879499c3f75"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="0" width="114" height="20" uuid="7bc413cc-7b00-47d7-ba91-f45d42e6cb9c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="0" width="43" height="12" uuid="878465e2-05b2-4eea-9b47-3c9d4cfbf9e1"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="12" width="213" height="12" uuid="9ae61ca5-b4e0-42da-a42a-19377c72ba34"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="46" y="0" width="56" height="12" uuid="56d76b81-5028-4c44-bc51-2b73fc2fc5c6"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{can}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="102" y="0" width="114" height="12" uuid="76c9b40d-e967-402c-a267-427c0a3d47f0"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

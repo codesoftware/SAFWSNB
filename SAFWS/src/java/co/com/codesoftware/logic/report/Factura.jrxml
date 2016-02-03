@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="655" columnWidth="214" leftMargin="1" rightMargin="11" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="1.7715610000000037"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="226"/>
+	<property name="ireport.y" value="369"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -47,7 +47,10 @@
 (SELECT '$' || to_char(cast((fact_vlr_total+fact_vlr_iva) as numeric),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))TOTAL,
 (SELECT '$' || to_char(cast((fact_vlr_dcto) as numeric),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))descunento,
 (SELECT '$' || to_char(FACT_VLR_EFECTIVO,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PGOEFEC,
-(SELECT '$' || to_char(FACT_VLR_TARJETA,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PGOTARJETA]]>
+(SELECT '$' || to_char(FACT_VLR_TARJETA,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PGOTARJETA,
+(SELECT case when FACT_RETEFUN = 'S' then 'SI' ELSE 'NO' END from fa_tfact where fact_fact  = cast($P{fact_fact} as int))RETEFUENTE,
+(SELECT '$' || to_char(FACT_VLRRTFU,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))VALOR_RETE,
+(SELECT '$' || to_char((fact_vlr_total+fact_vlr_iva)-(FACT_VLRRTFU),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PAGUE]]>
 	</queryString>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="nit" class="java.lang.String"/>
@@ -67,8 +70,11 @@
 	<field name="descunento" class="java.lang.String"/>
 	<field name="pgoefec" class="java.lang.String"/>
 	<field name="pgotarjeta" class="java.lang.String"/>
+	<field name="retefuente" class="java.lang.String"/>
+	<field name="valor_rete" class="java.lang.String"/>
+	<field name="pague" class="java.lang.String"/>
 	<title>
-		<band height="305" splitType="Stretch">
+		<band height="385" splitType="Stretch">
 			<textField>
 				<reportElement x="1" y="56" width="213" height="20" uuid="3e3cea59-d8a1-47c5-8aec-0d1ffea4b7db"/>
 				<textElement textAlignment="Center">
@@ -77,23 +83,23 @@
 				<textFieldExpression><![CDATA[$F{nit}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="-1" y="288" width="212" height="10" uuid="88b5bbde-b74c-45bd-860e-c4ad279640b4"/>
+				<reportElement x="0" y="345" width="212" height="10" uuid="88b5bbde-b74c-45bd-860e-c4ad279640b4"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="8" isBold="false"/>
+					<font fontName="SansSerif" size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ciudad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="266" width="212" height="10" uuid="d9206362-7b87-493b-be57-ec509caa5319"/>
+				<reportElement x="1" y="304" width="212" height="10" uuid="d9206362-7b87-493b-be57-ec509caa5319"/>
 				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vendedor}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="50" y="151" width="162" height="10" uuid="0ad1ed6a-9fa7-4888-b24f-2544d8c858c3"/>
 				<textElement verticalAlignment="Top">
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
@@ -107,14 +113,14 @@
 			<textField>
 				<reportElement x="50" y="161" width="162" height="10" uuid="d565b957-ddf1-4f52-8228-2994cf16b372"/>
 				<textElement verticalAlignment="Bottom">
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="50" y="171" width="162" height="10" uuid="010692fa-d79f-479f-b359-1fcc748f3612"/>
 				<textElement verticalAlignment="Top">
-					<font fontName="SansSerif" size="8"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cedulacliente}]]></textFieldExpression>
 			</textField>
@@ -125,34 +131,34 @@
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="1" y="243" width="212" height="1" uuid="d42e2e49-b68f-45dc-9b1a-7a84579cfbfe"/>
+				<reportElement x="3" y="293" width="212" height="1" uuid="d42e2e49-b68f-45dc-9b1a-7a84579cfbfe"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="1" y="202" width="49" height="10" uuid="18d86fd5-961a-4fef-b674-0d6220d1390f"/>
-				<textElement textAlignment="Right">
+				<reportElement x="1" y="205" width="70" height="15" uuid="18d86fd5-961a-4fef-b674-0d6220d1390f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SUBTOTAL:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="50" y="202" width="161" height="10" uuid="c66f3d65-ecbc-442f-b9c8-5729c62005cc"/>
-				<textElement>
-					<font fontName="SansSerif" size="8"/>
+				<reportElement x="75" y="206" width="130" height="14" uuid="c66f3d65-ecbc-442f-b9c8-5729c62005cc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="50" y="222" width="161" height="21" uuid="25863acd-c957-4bbf-b5b0-46a22166b285"/>
-				<textElement>
-					<font fontName="SansSerif" size="12" isBold="true"/>
+				<reportElement x="75" y="236" width="130" height="14" uuid="25863acd-c957-4bbf-b5b0-46a22166b285"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="301" width="212" height="1" uuid="64127512-c7d3-4e22-8176-0a1ff761542f"/>
+				<reportElement x="3" y="355" width="212" height="1" uuid="64127512-c7d3-4e22-8176-0a1ff761542f"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>
@@ -186,35 +192,35 @@
 				<text><![CDATA[FACT No: PO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="212" width="48" height="10" uuid="4d9b939a-ad51-437d-947f-b05ae34d6b1f"/>
-				<textElement textAlignment="Right">
+				<reportElement x="0" y="220" width="70" height="15" uuid="4d9b939a-ad51-437d-947f-b05ae34d6b1f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
-				<text><![CDATA[IVA:]]></text>
+				<text><![CDATA[+IVA:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="50" y="212" width="161" height="10" uuid="11e1d9fa-d4ec-4351-83e6-4780de6309b1"/>
-				<textElement>
-					<font fontName="SansSerif" size="8"/>
+				<reportElement x="75" y="221" width="130" height="14" uuid="11e1d9fa-d4ec-4351-83e6-4780de6309b1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totiva}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="222" width="48" height="21" uuid="d183f58f-1562-4e88-8044-5c69fe2c8453"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="1" y="235" width="70" height="15" uuid="d183f58f-1562-4e88-8044-5c69fe2c8453"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
-				<text><![CDATA[TOTAL:]]></text>
+				<text><![CDATA[TOTAL NETO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="246" width="210" height="10" uuid="ada9214e-7ae9-4201-859c-c00b911816e3"/>
+				<reportElement x="-1" y="294" width="210" height="10" uuid="ada9214e-7ae9-4201-859c-c00b911816e3"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[USTED FUE ATENDIDO POR:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="1" y="276" width="212" height="12" uuid="e3b7afc2-b229-411f-b86b-83354c141c39"/>
+				<reportElement x="1" y="333" width="212" height="12" uuid="e3b7afc2-b229-411f-b86b-83354c141c39"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="8"/>
 				</textElement>
@@ -265,7 +271,7 @@
 				<text><![CDATA[RÉGIMEN COMÚN]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="3" y="256" width="211" height="13" uuid="db200089-0a4f-4f67-8d17-1358c216a28d"/>
+				<reportElement x="0" y="320" width="211" height="13" uuid="db200089-0a4f-4f67-8d17-1358c216a28d"/>
 				<textElement textAlignment="Center">
 					<font size="8" isBold="false"/>
 				</textElement>
@@ -278,6 +284,34 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{num}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="250" width="70" height="15" uuid="a5d34f53-9840-4cc1-acd3-75122424eb43"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[-RETE FTE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="75" y="251" width="130" height="14" uuid="32b5f61d-7f49-4abe-af8f-e73f37a7ae64"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_rete}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="265" width="70" height="15" uuid="a246791d-04c9-4d4d-8cf9-c4d7f5673ef7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PAGUE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="75" y="266" width="130" height="14" uuid="30ed3657-0ee5-49dd-bb68-02b38c311ceb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pague}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
@@ -288,7 +322,7 @@
 					<subreportParameterExpression><![CDATA[$P{fact_fact}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"DetalleFactura.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"DetalleFactura1.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
