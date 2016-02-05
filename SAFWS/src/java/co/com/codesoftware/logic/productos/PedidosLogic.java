@@ -188,6 +188,25 @@ public class PedidosLogic implements AutoCloseable {
             return false;
         }
     }
+    /**
+     * Funcion con la cual se actualiza el estado de un pedido 
+     * @param estado
+     * @return 
+     */
+    public boolean  actualizaEstadoPedido(Integer id, String estado){
+        boolean rta = false;
+        try {
+            initOperation();
+            PedidoEntity pedido = (PedidoEntity) sesion.get(PedidoEntity.class, id);
+            pedido.setEstado(estado.toUpperCase());
+            sesion.update(pedido);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            rta = false;
+        }
+        return rta;
+    }
 
     /**
      * Funcion que inicializa la clase de hibernate

@@ -645,19 +645,20 @@ public class SAFWS {
         }
         return respuesta;
     }
+
     /**
-     * 
+     *
      * @param estado
      * @param fInicial
      * @param fFinal
      * @param idUsuario
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "consultaPedidosXFiltros")
     @WebResult(name = "PedidoEntity")
-    public List<PedidoEntity> consultaPedidoXFiltros(String estado,Date fInicial,Date fFinal, Long idUsuario) {
+    public List<PedidoEntity> consultaPedidoXFiltros(String estado, Date fInicial, Date fFinal, Long idUsuario) {
         List<PedidoEntity> respuesta = new ArrayList<PedidoEntity>();
-        try (PedidosLogic logica = new PedidosLogic()){
+        try (PedidosLogic logica = new PedidosLogic()) {
             respuesta = logica.consultaPedidoXFiltros(estado, idUsuario, fInicial, fFinal);
         } catch (Exception e) {
             e.printStackTrace();
@@ -685,9 +686,9 @@ public class SAFWS {
     }
 
     /**
-     * 
+     *
      * @param idProducto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "consultaCantidadesXProducto")
     @WebResult(name = "CantidadesEntity")
@@ -718,22 +719,41 @@ public class SAFWS {
         }
         return respuesta;
     }
-    
+
     /**
      * metodo que elimina un pedido por el id
+     *
      * @param idPedido
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "eliminaPedido")
     @WebResult(name = "resultado")
-   public boolean eliminaPedidoXId(Integer idPedido){
-       boolean respuesta = false;
-        try(PedidosLogic logic = new PedidosLogic()) {
+    public boolean eliminaPedidoXId(Integer idPedido) {
+        boolean respuesta = false;
+        try (PedidosLogic logic = new PedidosLogic()) {
             respuesta = logic.eliminaPedidoId(idPedido);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return respuesta;
-   }
+    }
+
+    /**
+     * Funcion con la cual se actualiza el estado de un pedido
+     *
+     * @param estado
+     * @return
+     */
+    @WebMethod(operationName = "cambiaEstadoPedido")
+    @WebResult(name = "respuesta")
+    public boolean cambiaEstadoPedido(@XmlElement(required = true) @WebParam(name = "idPedido") Integer idPedido,@XmlElement(required = true) @WebParam(name = "estado") String estado) {
+        boolean rta = false;
+        try(PedidosLogic objLogic = new PedidosLogic()) {
+            rta = objLogic.actualizaEstadoPedido(idPedido, estado);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }
