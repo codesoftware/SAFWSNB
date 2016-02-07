@@ -457,8 +457,7 @@ public class SAFWS {
     @WebResult(name = "imagen")
     public String findBillForId(@XmlElement(required = true) @WebParam(name = "fact_fact") String fact_fact) {
         String imagen = null;
-        try {
-            ReporteLogica logica = new ReporteLogica();
+        try (ReporteLogica logica = new ReporteLogica();){
             imagen = logica.generaPdfFactura(fact_fact);
         } catch (Exception e) {
             e.printStackTrace();
@@ -750,6 +749,22 @@ public class SAFWS {
         boolean rta = false;
         try(PedidosLogic objLogic = new PedidosLogic()) {
             rta = objLogic.actualizaEstadoPedido(idPedido, estado);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * Funcion con la cual se genera el pdf con el pedido 
+     * @param id
+     * @return 
+     */
+    @WebMethod(operationName = "generaPdfCotizacion")
+    @WebResult(name = "imagen")
+    public String generaPdfCotizacion(@XmlElement(required = true) @WebParam(name = "idPedido")Integer idPedido){
+        String rta = "";
+        try(ReporteLogica objLogica = new ReporteLogica()) {
+            rta = objLogica.generaJasperCotizacion(idPedido);
         } catch (Exception e) {
             e.printStackTrace();
         }
