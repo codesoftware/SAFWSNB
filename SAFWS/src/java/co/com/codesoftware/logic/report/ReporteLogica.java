@@ -163,9 +163,9 @@ public class ReporteLogica implements AutoCloseable {
     }
     
     /**
-     * Funcion la cual llama al jasper para la creacion del pdf
+     * Funcion la cual llama al jasper para la creacion del pdf de la cotizacion
      *
-     * @param pdf
+     * @param pedido
      * @return
      */
     public synchronized String generaJasperCotizacion(Integer pedido) {

@@ -755,7 +755,7 @@ public class SAFWS {
         return rta;
     }
     /**
-     * Funcion con la cual se genera el pdf con el pedido 
+     * Funcion con la cual se genera el pdf con el pedido como cotizacion
      * @param id
      * @return 
      */

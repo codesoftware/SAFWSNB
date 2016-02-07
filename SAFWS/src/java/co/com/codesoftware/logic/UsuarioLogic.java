@@ -162,7 +162,9 @@ public class UsuarioLogic implements AutoCloseable {
 
     private void initOperation() throws HibernateException {
         sesion = HibernateUtil.getSessionFactory().openSession();
-        tx = sesion.beginTransaction();
+        if(tx == null){
+            tx = sesion.beginTransaction();
+        }
     }
 
     @Override
