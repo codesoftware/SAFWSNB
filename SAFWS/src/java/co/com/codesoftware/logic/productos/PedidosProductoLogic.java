@@ -34,7 +34,6 @@ public class PedidosProductoLogic implements AutoCloseable {
     /**
      * metodo que inserta los productos del pedido
      *
-     * @param idPedido
      * @param Id
      * @param listaProductos
      * @return
@@ -42,14 +41,16 @@ public class PedidosProductoLogic implements AutoCloseable {
     public RespuestaEntity insertaProductoPedido(ArrayList<PedidoProductoEntity> listaProductos, Integer Id) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
-            this.initOperation();
             for (PedidoProductoEntity item : listaProductos) {
                 item.setId(selectMaxPedidoProdcuto());
+                this.initOperation();
                 item.setPedido(Id);
                 sesion.save(item);
+                this.close();
                 respuesta.setCodigoRespuesta(Id);
                 respuesta.setDescripcionRespuesta("INSERTO CORRECTAMENTE LOS PRODUCTOS");
                 respuesta.setMensajeRespuesta("OK");
+                
             }
         } catch (Exception e) {
             respuesta.setCodigoRespuesta(0);
@@ -68,9 +69,11 @@ public class PedidosProductoLogic implements AutoCloseable {
     public Integer selectMaxPedidoProdcuto() {
         Integer resultado = 1;
         try {
+            this.initOperation();
             Criteria crit = sesion.createCriteria(PedidoProductoEntity.class)
                     .setProjection(Projections.max("id"));
             resultado = (Integer) crit.uniqueResult() + 1;
+            this.close();
         } catch (Exception e) {
             resultado = 1;
             e.printStackTrace();
@@ -205,6 +208,7 @@ public class PedidosProductoLogic implements AutoCloseable {
         }
         if (sesion != null) {
             sesion.close();
+            sesion = null;
         }
     }
 }

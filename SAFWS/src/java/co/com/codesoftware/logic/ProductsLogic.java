@@ -184,10 +184,16 @@ public class ProductsLogic implements AutoCloseable {
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(PrecioProductoEntity.class).
-                    createAlias("idSede", "sed").createAlias("idProducto", "prod").setFetchMode("idProducto", FetchMode.JOIN).
+                    createAlias("idSede", "sed").createAlias("idProducto", "prod").
+                    setFetchMode("idProducto", FetchMode.JOIN).
                     setFetchMode("idSede", FetchMode.JOIN).
+                    setFetchMode("idProducto.categoria", FetchMode.JOIN).
+                    setFetchMode("idProducto.referencia", FetchMode.JOIN).
+                    setFetchMode("idProducto.subcuenta", FetchMode.JOIN).
+                    setFetchMode("idProducto.marca", FetchMode.JOIN).
                     add(Restrictions.eq("sed.id", sedeId)).
                     add(Restrictions.eq("estado", "A"));
+            
             lista = crit.list();
         } catch (Exception e) {
             e.printStackTrace();

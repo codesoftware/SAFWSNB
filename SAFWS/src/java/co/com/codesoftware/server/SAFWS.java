@@ -504,7 +504,6 @@ public class SAFWS {
         RespuestaEntity respuesta = new RespuestaEntity();
         try (PedidosLogic logic = new PedidosLogic()) {
             respuesta = logic.insertaProductos(productos, idPedido);
-
         } catch (Exception e) {
             e.printStackTrace();
             respuesta.setCodigoRespuesta(0);

@@ -1,5 +1,6 @@
 package co.com.codesoftware.persistence.entites.tables;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,7 +12,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "em_tpara")
-public class ParametrosEmpresaTable {
+public class ParametrosEmpresaTable implements Serializable{
 	private Integer id;
 	private Date fecha;
 	private String clave;
