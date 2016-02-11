@@ -27,7 +27,7 @@ import org.hibernate.criterion.Restrictions;
  * @author root
  */
 public class PedidosProductoLogic implements AutoCloseable {
-    
+
     private Session sesion;
     private Transaction tx;
 
@@ -50,7 +50,7 @@ public class PedidosProductoLogic implements AutoCloseable {
                 respuesta.setCodigoRespuesta(Id);
                 respuesta.setDescripcionRespuesta("INSERTO CORRECTAMENTE LOS PRODUCTOS");
                 respuesta.setMensajeRespuesta("OK");
-                
+
             }
         } catch (Exception e) {
             respuesta.setCodigoRespuesta(0);
@@ -88,7 +88,6 @@ public class PedidosProductoLogic implements AutoCloseable {
      * @param idPedido
      * @return
      */
-    
     public RespuestaPedidoEntity consultaProductosXPedido(Integer idPedido) {
         RespuestaPedidoEntity respuesta = new RespuestaPedidoEntity();
         List<ProductoGenEntity> productos = new ArrayList<ProductoGenEntity>();
@@ -135,7 +134,7 @@ public class PedidosProductoLogic implements AutoCloseable {
             Criteria crit = sesion.createCriteria(PedidoEntity.class)
                     .add(Restrictions.eq("id", pedido));
             resultado = (PedidoEntity) crit.uniqueResult();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,7 +151,7 @@ public class PedidosProductoLogic implements AutoCloseable {
         Cliente repuesta = new Cliente();
         try {
             initOperation();
-            Criteria crit = sesion.createCriteria(Cliente.class).add(Restrictions.eq("id",idCliente.longValue()));
+            Criteria crit = sesion.createCriteria(Cliente.class).add(Restrictions.eq("id", idCliente.longValue()));
             repuesta = (Cliente) crit.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
@@ -202,13 +201,19 @@ public class PedidosProductoLogic implements AutoCloseable {
      * @throws Exception
      */
     @Override
-    public void close() throws Exception {
-        if (tx != null) {
-            tx.commit();
+    public void close() {
+        try {
+            if (tx != null) {
+                tx.commit();
+                tx = null;
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (sesion != null) {
-            sesion.close();
-            sesion = null;
-        }
+
     }
 }
