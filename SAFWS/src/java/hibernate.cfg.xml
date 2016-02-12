@@ -8,7 +8,7 @@
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">Codesoftware1234</property>
         <property name="hibernate.connection.pool_size">1</property>
-        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.show_sql">false</property>
         <property name="hibernate.format_sql">true</property>
         <property name="hibernate.enable_lazy_load_no_trans">true</property>
         <mapping class="co.com.codesoftware.persistence.entites.tables.Sede"/>
