@@ -128,8 +128,8 @@ public class PedidosLogic implements AutoCloseable {
             initOperation();
             Criteria crit = sesion.createCriteria(PedidoEntity.class)
                     .createAlias("usuario", "us")
-                    //.add(Restrictions.ge("fecha", fInicial))
-                    //.add(Restrictions.lt("fecha", fFinal))
+                    .add(Restrictions.ge("fecha", fInicial))
+                    .add(Restrictions.lt("fecha", fFinal))
                     //.add(Restrictions.between("fecha", fInicial, fFinal))
                     .add(Restrictions.eq("us.id", idUsuario));
             if(!"".equalsIgnoreCase(estado)){
