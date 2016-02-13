@@ -117,13 +117,7 @@ public class ReporteLogica implements AutoCloseable {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                con.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ReporteLogica.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        } 
         return documento;
     }
 
@@ -152,12 +146,7 @@ public class ReporteLogica implements AutoCloseable {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                con.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ReporteLogica.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        
         }
         return documento;
     }

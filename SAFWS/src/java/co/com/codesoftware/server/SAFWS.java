@@ -556,8 +556,7 @@ public class SAFWS {
     @WebResult(name = "imagen")
     public String generaCodigoPedido(@XmlElement(required = true) @WebParam(name = "pedi_pedi") Integer fact_fact) {
         String imagen = null;
-        try {
-            ReporteLogica logica = new ReporteLogica();
+        try (ReporteLogica logica = new ReporteLogica()){          
             imagen = logica.generaPdfPedidos(fact_fact);
         } catch (Exception e) {
             e.printStackTrace();
