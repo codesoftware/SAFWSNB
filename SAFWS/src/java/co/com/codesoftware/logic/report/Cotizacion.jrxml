@@ -4,6 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="pedi_pedi" class="java.lang.String"/>
+	<parameter name="rutaImagen" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select pedi_fech, clien_cedula, UPPER(clien_nombres || ' ' ||clien_apellidos) nombre, (select count(*) + 1  from in_tpedi where pedi_esta = 'CO' and pedi_pedi < cast($P{pedi_pedi} as int) ) contador,
 sede_nombre, sede_direccion, sede_telefono,
@@ -27,8 +28,7 @@ and sede_sede = pedi_sede
 AND PEDPROD_DSKA = DSKA_DSKA
 AND PEDPROD_PEDI = pedi_pedi
 and pedi_usu = tius_tius
-and tius_pers = pers_pers
-]]>
+and tius_pers = pers_pers]]>
 	</queryString>
 	<field name="pedi_fech" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[fecha de creacion del pedido]]></fieldDescription>
@@ -40,7 +40,7 @@ and tius_pers = pers_pers
 		<fieldDescription><![CDATA[Nombre de la sede (se vera reflejado en la factura)]]></fieldDescription>
 	</field>
 	<field name="sede_direccion" class="java.lang.String">
-		<fieldDescription><![CDATA[Direccion de la sede ]]></fieldDescription>
+		<fieldDescription><![CDATA[Direccion de la sede]]></fieldDescription>
 	</field>
 	<field name="sede_telefono" class="java.lang.String">
 		<fieldDescription><![CDATA[Telefono de la sede]]></fieldDescription>
@@ -75,7 +75,7 @@ and tius_pers = pers_pers
 				</box>
 				<image>
 					<reportElement x="0" y="0" width="218" height="45" uuid="765b6f4b-8f06-4016-9af0-c34a3fa6e154"/>
-					<imageExpression><![CDATA["C:\\REPORTESSAF\\logo.png"]]></imageExpression>
+					<imageExpression><![CDATA[$P{rutaImagen}+"logo.png"]]></imageExpression>
 				</image>
 				<frame>
 					<reportElement x="275" y="45" width="306" height="20" uuid="90df41a7-5034-466c-9d84-216f014e5857"/>

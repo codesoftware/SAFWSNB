@@ -135,7 +135,6 @@ public class ReporteLogica implements AutoCloseable {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        
         }
         return documento;
     }
@@ -152,6 +151,7 @@ public class ReporteLogica implements AutoCloseable {
             this.conectionJDBC();
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put("pedi_pedi", pedido);
+            properties.put("rutaImagen", rutaRepoServ);
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepoServ + "Cotizacion.jasper");
             JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
             JasperExportManager.exportReportToPdfFile(print, rutaRepoServ + "cotizacion_"+pedido+".pdf");
