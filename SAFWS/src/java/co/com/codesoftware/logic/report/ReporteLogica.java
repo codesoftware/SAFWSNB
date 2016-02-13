@@ -31,7 +31,6 @@ import org.hibernate.engine.spi.SessionImplementor;
 public class ReporteLogica implements AutoCloseable {
 
     private Connection con;
-    private String rutaRepo;
     private Session session;
     private String rutaRepoServ;
 
@@ -41,16 +40,6 @@ public class ReporteLogica implements AutoCloseable {
             this.rutaRepoServ = (String) initCtx.lookup("java:comp/env/rutaReports");
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        ResourceBundle rb = ResourceBundle.getBundle("co.com.codesoftware.properties.baseProperties");
-        this.rutaRepo = rb.getString("RUTA_REP").trim();
-        //Identificamos si el sistema operativo es windows o linux
-        String sistemaOperativo = System.getProperty("os.name");
-        sistemaOperativo = sistemaOperativo.toUpperCase();
-        if (sistemaOperativo.contains("WINDOWS")) {
-            rutaRepo = "C:\\" + rutaRepo + "\\";
-        } else {
-            rutaRepo = "/" + rutaRepo + "/";
         }
     }
 
@@ -101,18 +90,18 @@ public class ReporteLogica implements AutoCloseable {
             this.conectionJDBC();
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put("fact_fact", fact_fact);
-            properties.put("SUBREPORT_DIR", rutaRepo);
+            properties.put("SUBREPORT_DIR", rutaRepoServ);
 
             //JasperReport jasperReport = (JasperReport) JRLoader.loadObject("D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\src\\java\\co\\com\\codesoftware\\logic\\report\\Factura.jasper");
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepo + "Factura.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepoServ + "Factura.jasper");
             JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
-            JasperExportManager.exportReportToPdfFile(print, rutaRepo + "prueba.pdf");
+            JasperExportManager.exportReportToPdfFile(print, rutaRepoServ + "prueba.pdf");
             CodificaBase64 codifica64 = new CodificaBase64();
-            boolean codifico = codifica64.codificacionDocumento(rutaRepo + "prueba.pdf");
+            boolean codifico = codifica64.codificacionDocumento(rutaRepoServ + "prueba.pdf");
             if (codifico) {
                 documento = codifica64.getDocumento();
                 codifica64.setDocumento(null);
-                File file = new File(rutaRepo + "prueba.pdf");
+                File file = new File(rutaRepoServ + "prueba.pdf");
                 file.delete();
             }
         } catch (Exception e) {
@@ -133,15 +122,15 @@ public class ReporteLogica implements AutoCloseable {
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put("IDPEDIDO", pedi_pedi);
             //JasperReport jasperReport = (JasperReport) JRLoader.loadObject("D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\src\\java\\co\\com\\codesoftware\\logic\\report\\Factura.jasper");
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepo + "Pedido.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepoServ + "Pedido.jasper");
             JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
-            JasperExportManager.exportReportToPdfFile(print, rutaRepo + "Pedido_" + pedi_pedi + ".pdf");
+            JasperExportManager.exportReportToPdfFile(print, rutaRepoServ + "Pedido_" + pedi_pedi + ".pdf");
             CodificaBase64 codifica64 = new CodificaBase64();
-            boolean codifico = codifica64.codificacionDocumento(rutaRepo + "Pedido_" + pedi_pedi + ".pdf");
+            boolean codifico = codifica64.codificacionDocumento(rutaRepoServ + "Pedido_" + pedi_pedi + ".pdf");
             if (codifico) {
                 documento = codifica64.getDocumento();
                 codifica64.setDocumento(null);
-                File file = new File(rutaRepo + "Pedido_" + pedi_pedi + ".pdf");
+                File file = new File(rutaRepoServ + "Pedido_" + pedi_pedi + ".pdf");
                 file.delete();
             }
         } catch (Exception e) {
@@ -204,13 +193,6 @@ public class ReporteLogica implements AutoCloseable {
         }
     }
 
-    public String getRutaRepo() {
-        return rutaRepo;
-    }
-
-    public void setRutaRepo(String rutaRepo) {
-        this.rutaRepo = rutaRepo;
-    }
 
     @Override
     public void close() throws Exception {
