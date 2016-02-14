@@ -21,6 +21,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.exception.GenericJDBCException;
 
 /**
  *
@@ -30,6 +31,7 @@ public class PedidosProductoLogic implements AutoCloseable {
 
     private Session sesion;
     private Transaction tx;
+    private String msn;
 
     /**
      * metodo que inserta los productos del pedido
@@ -45,7 +47,13 @@ public class PedidosProductoLogic implements AutoCloseable {
             for (PedidoProductoEntity item : listaProductos) {
                 item.setId(selectMaxPedidoProdcuto());
                 item.setPedido(Id);
+                try {
                 sesion.save(item);
+                } catch (GenericJDBCException e) {
+                    e.printStackTrace();
+                    System.out.println("erro"+e.getCause().getMessage());
+                }
+
                 respuesta.setCodigoRespuesta(Id);
                 respuesta.setDescripcionRespuesta("INSERTO CORRECTAMENTE LOS PRODUCTOS");
                 respuesta.setMensajeRespuesta("OK");
@@ -208,9 +216,23 @@ public class PedidosProductoLogic implements AutoCloseable {
                 sesion.close();
                 sesion = null;
             }
-        } catch (Exception e) {
+        } catch (GenericJDBCException e) {
+                    e.printStackTrace();
+                    System.out.println("erro"+e.getCause().getMessage());
+                
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
+    public String getMsn() {
+        return msn;
+    }
+
+    public void setMsn(String msn) {
+        this.msn = msn;
+    }
+    
 }

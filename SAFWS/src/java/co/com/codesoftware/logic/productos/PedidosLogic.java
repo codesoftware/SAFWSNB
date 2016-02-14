@@ -19,6 +19,8 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.exception.GenericJDBCException;
+import org.postgresql.util.PSQLException;
 
 /**
  *
@@ -39,10 +41,9 @@ public class PedidosLogic implements AutoCloseable {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
             this.initOperation();
-            Integer IdPedidos = selectMaxPedido();
-            entidad.setId(IdPedidos);
+            entidad.setId(selectMaxPedido());
             sesion.save(entidad);
-            respuesta.setCodigoRespuesta(IdPedidos);
+            respuesta.setCodigoRespuesta(entidad.getId());
             respuesta.setDescripcionRespuesta("OK");
             respuesta.setMensajeRespuesta("OK");
         } catch (Exception e) {
@@ -66,8 +67,15 @@ public class PedidosLogic implements AutoCloseable {
         RespuestaEntity respuesta = new RespuestaEntity();
         try (PedidosProductoLogic logic = new PedidosProductoLogic();) {
             respuesta = logic.insertaProductoPedido(productos, productoId);
-        } catch (Exception e) {
+        } 
+                catch (GenericJDBCException e) {
+                    e.printStackTrace();
+                    System.out.println("erro"+e.getCause().getMessage());
+                
+        }
+        catch (Exception e) {
             tx.rollback();
+            System.out.println(""+e.getClass());
             respuesta.setCodigoRespuesta(0);
             respuesta.setDescripcionRespuesta(e.getMessage());
             respuesta.setMensajeRespuesta("ERROR");

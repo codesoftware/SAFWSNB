@@ -47,6 +47,8 @@ import co.com.codesoftware.persistence.entity.usuario.TipoUsuarioEntity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import org.hibernate.exception.GenericJDBCException;
+import org.postgresql.util.PSQLException;
 
 @WebService(name = "SAFWS")
 public class SAFWS {
@@ -499,18 +501,25 @@ public class SAFWS {
         return respuesta;
     }
 
+    /**
+     * metodo que inserta los pedidos de un producto
+     * @param productos
+     * @param idPedido
+     * @return 
+     */
     @WebMethod(operationName = "insertaProductosXPedido")
     public RespuestaEntity insertaProductoXPedido(ArrayList<PedidoProductoEntity> productos, Integer idPedido) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try (PedidosLogic logic = new PedidosLogic()) {
             respuesta = logic.insertaProductos(productos, idPedido);
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
             respuesta.setCodigoRespuesta(0);
             respuesta.setDescripcionRespuesta(e.getMessage());
             respuesta.setMensajeRespuesta("ERROR" + e.getMessage());
         }
-        return respuesta;
+            return respuesta;
 
     }
 
