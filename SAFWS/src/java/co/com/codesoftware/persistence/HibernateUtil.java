@@ -28,6 +28,11 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError(ex);
         }
     }
+    
+    public static void generaNuloSesion(){
+        sessionFactory = null;
+        sessionFactory = buildSessionFactory();
+    }
 
     public static SessionFactory getSessionFactory() {
         return sessionFactory;

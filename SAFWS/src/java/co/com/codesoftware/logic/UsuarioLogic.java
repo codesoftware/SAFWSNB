@@ -122,34 +122,36 @@ public class UsuarioLogic implements AutoCloseable {
      */
     public boolean validaUsuarioFacturador(Long idUsuario) {
         try {
-             UsuarioTable usuario = obtieneUsuarioXId(idUsuario);
-             if(usuario != null){
-                 initOperation();
-                 Query query = sesion.createQuery("from PerfilTable where id = :idPerfil ");
-                 query.setParameter("idPerfil", usuario.getIdPerfil());
-                 PerfilTable perfil = (PerfilTable) query.uniqueResult();
-                 if(perfil != null){
-                     return perfil.getPermisos().contains(".FcCr1.");
-                 }else{
-                     return false;
-                 }
-             }else{
-                 return false;
-             }
+            UsuarioTable usuario = obtieneUsuarioXId(idUsuario);
+            if (usuario != null) {
+                initOperation();
+                Query query = sesion.createQuery("from PerfilTable where id = :idPerfil ");
+                query.setParameter("idPerfil", usuario.getIdPerfil());
+                PerfilTable perfil = (PerfilTable) query.uniqueResult();
+                if (perfil != null) {
+                    return perfil.getPermisos().contains(".FcCr1.");
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
+
     /**
      * funcion que consulta los permisos por usuario
+     *
      * @param usuario
-     * @return 
+     * @return
      */
-    public TipoUsuarioEntity consultaPermisosUsuario(String usuario){
+    public TipoUsuarioEntity consultaPermisosUsuario(String usuario) {
         TipoUsuarioEntity respuesta = new TipoUsuarioEntity();
         try {
-            
+
             initOperation();
             Criteria crit = sesion.createCriteria(TipoUsuarioEntity.class)
                     .add(Restrictions.eq("usuario", usuario));
@@ -160,11 +162,26 @@ public class UsuarioLogic implements AutoCloseable {
         return respuesta;
     }
 
-    private void initOperation() throws HibernateException {
-        sesion = HibernateUtil.getSessionFactory().openSession();
-        if(tx == null){
-            tx = sesion.beginTransaction();
+    private void initOperation() {
+        try {
+            sesion = HibernateUtil.getSessionFactory().openSession();
+            if (tx == null) {
+                tx = sesion.beginTransaction();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            HibernateUtil.generaNuloSesion();
+            try {
+                sesion = HibernateUtil.getSessionFactory().openSession();
+                if (tx == null) {
+                    tx = sesion.beginTransaction();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
         }
+
     }
 
     @Override

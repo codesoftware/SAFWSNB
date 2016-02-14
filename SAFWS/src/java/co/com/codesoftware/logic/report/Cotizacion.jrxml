@@ -17,10 +17,11 @@ sede_nombre, sede_direccion, sede_telefono,
            FROM em_tsede sed,in_tpedi pedi
           WHERE pedi.pedi_pedi = cast($P{pedi_pedi} as int)
             AND pedi.pedi_sede = sed.sede_sede ) ubicacion,
-PEDPROD_CANTI, to_char(PEDPROD_PRECIO,'LFM9,999,999,999.00') PEDPROD_PRECIO, PEDPROD_PRECIO * PEDPROD_CANTI TOTALPEDI, 
-to_char((PEDPROD_PRECIO * PEDPROD_CANTI),'LFM9,999,999,999.00') totalFormato,
+PEDPROD_CANTI, '$' || to_char(PEDPROD_PRECIO,'9,999,999,999.00') PEDPROD_PRECIO, PEDPROD_PRECIO * PEDPROD_CANTI TOTALPEDI, 
+'$' || to_char((PEDPROD_PRECIO * PEDPROD_CANTI),'9,999,999,999.00') totalFormato,
 DSKA_DESC, DSKA_COD_EXT,
-pers_apellido || ' ' || pers_nombre atendido
+pers_apellido || ' ' || pers_nombre atendido,
+(select '$' || to_char(sum(pedprod_canti*pedprod_precio),'9,999,999,999.00') totalFinal from IN_TPEDPROD where pedprod_pedi = cast($P{pedi_pedi} as  int)) totalFinal
 from in_tpedi, us_tclien, em_tsede, IN_TPEDPROD, IN_TDSKA, us_ttius, us_tpers
 where pedi_pedi = cast($P{pedi_pedi} as  int)
 and pedi_clie = clien_clien
@@ -40,7 +41,7 @@ and tius_pers = pers_pers]]>
 		<fieldDescription><![CDATA[Nombre de la sede (se vera reflejado en la factura)]]></fieldDescription>
 	</field>
 	<field name="sede_direccion" class="java.lang.String">
-		<fieldDescription><![CDATA[Direccion de la sede]]></fieldDescription>
+		<fieldDescription><![CDATA[Direccion de la sede ]]></fieldDescription>
 	</field>
 	<field name="sede_telefono" class="java.lang.String">
 		<fieldDescription><![CDATA[Telefono de la sede]]></fieldDescription>
@@ -59,6 +60,7 @@ and tius_pers = pers_pers]]>
 	<field name="dska_desc" class="java.lang.String"/>
 	<field name="dska_cod_ext" class="java.lang.String"/>
 	<field name="atendido" class="java.lang.String"/>
+	<field name="totalfinal" class="java.lang.String"/>
 	<variable name="totalpedi_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{totalpedi}]]></variableExpression>
 	</variable>
@@ -379,7 +381,7 @@ and tius_pers = pers_pers]]>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="461" y="0" width="120" height="20" uuid="87e0b114-eb4e-4433-8185-1d041da7cad8"/>
+				<reportElement x="461" y="0" width="120" height="20" uuid="b826aeb7-fcd8-47a1-bb59-5025b0168f89"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -387,8 +389,10 @@ and tius_pers = pers_pers]]>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{totalpedi_1}]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalfinal}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>
