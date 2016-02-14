@@ -8,11 +8,8 @@ package co.com.codesoftware.logic.report;
 import co.com.codesoftware.persistence.HibernateUtil;
 import java.io.File;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -164,12 +161,6 @@ public class ReporteLogica implements AutoCloseable {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                con.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ReporteLogica.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         return documento;
     }
