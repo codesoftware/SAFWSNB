@@ -1,5 +1,6 @@
 package co.com.codesoftware.persistence.entites.tables;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,7 +9,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "in_tppfa")
-public class PantallaPrincipalFacTable {
+public class PantallaPrincipalFacTable implements Serializable{
 
     private Integer id;
     private String codigo;
