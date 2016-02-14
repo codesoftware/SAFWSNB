@@ -10,6 +10,7 @@ import co.com.codesoftware.persistence.entites.tables.ExistenciaXSedeTable;
 import co.com.codesoftware.persistence.entites.tables.PromPonderaTable;
 import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -65,6 +66,25 @@ public class ProductosWS {
         List<ExistenciaXSedeTable> rta = null;
         try (ProductsLogic objLogic = new ProductsLogic()) {
             rta = objLogic.buscoExistenciaProd(idDska);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+    /**
+     * metodo que verifica si el precio con el que van a vender el producto no es 
+     * inferior al promedio ponderado
+     * @param idProducto
+     * @param precio
+     * @return 
+     */
+    
+    @WebMethod(operationName = "verificaPromedioPonderado")
+    public String verificaPromedioPonderado(Integer idProducto,BigDecimal precio){
+        String rta = "OK";
+        try {
+            ProductsLogic objLogic = new ProductsLogic();
+            rta = objLogic.consultaPromPonderado(idProducto, precio);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -17,6 +17,7 @@ import co.com.codesoftware.persistence.entity.administracion.RespuestaEntity;
 import co.com.codesoftware.persistence.entity.productos.ProductoEntity;
 import co.com.codesoftware.persistence.enumeration.DataType;
 import co.com.codesoftware.utilities.ReadFunction;
+import java.math.BigDecimal;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;
@@ -255,6 +256,21 @@ public class ProductsLogic implements AutoCloseable {
             e.printStackTrace();
         }
         return rta;
+    }
+    
+    public String consultaPromPonderado(Integer idProducto,BigDecimal precio){
+      List<String>rta = new ArrayList<>();
+        try (ReadFunction rf = new ReadFunction()) {
+			rf.setNombreFuncion("FX_VALIDA_PROMEDIO_PONDERADO");
+			rf.setNumParam(2);
+			rf.addParametro(""+idProducto, DataType.INT);
+			rf.addParametro(""+precio, DataType.BIGDECIMAL);
+			rf.callFunctionJdbc();
+			rta = rf.getRespuestaPg();
+		} catch (Exception e) {
+			
+		}
+        return rta.get(0);
     }
 
     @Override
