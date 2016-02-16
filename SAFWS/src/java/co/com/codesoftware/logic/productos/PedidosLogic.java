@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -67,15 +68,13 @@ public class PedidosLogic implements AutoCloseable {
         RespuestaEntity respuesta = new RespuestaEntity();
         try (PedidosProductoLogic logic = new PedidosProductoLogic();) {
             respuesta = logic.insertaProductoPedido(productos, productoId);
-        } 
-                catch (GenericJDBCException e) {
-                    e.printStackTrace();
-                    System.out.println("erro"+e.getCause().getMessage());
-                
-        }
-        catch (Exception e) {
+        } catch (GenericJDBCException e) {
+            e.printStackTrace();
+            System.out.println("erro" + e.getCause().getMessage());
+
+        } catch (Exception e) {
             tx.rollback();
-            System.out.println(""+e.getClass());
+            System.out.println("" + e.getClass());
             respuesta.setCodigoRespuesta(0);
             respuesta.setDescripcionRespuesta(e.getMessage());
             respuesta.setMensajeRespuesta("ERROR");
@@ -140,7 +139,7 @@ public class PedidosLogic implements AutoCloseable {
                     .add(Restrictions.lt("fecha", fFinal))
                     //.add(Restrictions.between("fecha", fInicial, fFinal))
                     .add(Restrictions.eq("us.id", idUsuario));
-            if(!"".equalsIgnoreCase(estado)){
+            if (!"".equalsIgnoreCase(estado)) {
                 crit.add(Restrictions.eq("estado", estado));
             }
             respuesta = crit.list();
@@ -176,8 +175,9 @@ public class PedidosLogic implements AutoCloseable {
 
     /**
      * metodo que elimina los productos de un pedido
+     *
      * @param idPedido
-     * @return 
+     * @return
      */
     public boolean eliminaProductoPedido(Integer idPedido) {
         try {
@@ -199,12 +199,14 @@ public class PedidosLogic implements AutoCloseable {
             return false;
         }
     }
+
     /**
-     * Funcion con la cual se actualiza el estado de un pedido 
+     * Funcion con la cual se actualiza el estado de un pedido
+     *
      * @param estado
-     * @return 
+     * @return
      */
-    public boolean  actualizaEstadoPedido(Integer id, String estado){
+    public boolean actualizaEstadoPedido(Integer id, String estado) {
         boolean rta = false;
         try {
             initOperation();
@@ -215,6 +217,28 @@ public class PedidosLogic implements AutoCloseable {
         } catch (Exception e) {
             e.printStackTrace();
             rta = false;
+        }
+        return rta;
+    }
+
+    /**
+     * Funcion con la cual busco todas las cotizaciones generadas para un
+     * cliente
+     *
+     * @param idCliente
+     * @return
+     */
+    public List<PedidoEntity> buscaCotizacionXCliente(Long idCliente) {
+        List<PedidoEntity> rta = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(PedidoEntity.class);
+            crit.createAlias("cliente", "cli").add(Restrictions.eq("cli.id", idCliente));
+            crit.setFetchMode("cli", FetchMode.JOIN).setFetchMode("sede", FetchMode.JOIN);
+            crit.setFetchMode("usuario", FetchMode.JOIN);
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return rta;
     }

@@ -777,5 +777,21 @@ public class SAFWS {
         }
         return rta;
     }
+    
+    /**
+     * Funcion con la cual busco cotizaciones generadas por un cliente
+     * @return 
+     */
+    @WebMethod(operationName = "buscaCotizacionPorCliente")
+    @WebResult(name = "listaPedidos")
+    public List<PedidoEntity> buscaCotizacionPorCliente(@XmlElement(required = true) @WebParam(name = "idCliente")Long idCliente){
+        List<PedidoEntity> rta = null;
+        try (PedidosLogic objLogic = new PedidosLogic()){
+            rta = objLogic.buscaCotizacionXCliente(idCliente);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }
