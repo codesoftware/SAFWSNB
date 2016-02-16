@@ -21,7 +21,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.GenericJDBCException;
-import org.postgresql.util.PSQLException;
 
 /**
  *
@@ -233,9 +232,10 @@ public class PedidosLogic implements AutoCloseable {
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(PedidoEntity.class);
-            crit.createAlias("cliente", "cli").add(Restrictions.eq("cli.id", idCliente));
+            crit.createAlias("cliente", "cli").add(Restrictions.eq("cli.id", idCliente)).add(Restrictions.eq("estado", "CO"));
             crit.setFetchMode("cli", FetchMode.JOIN).setFetchMode("sede", FetchMode.JOIN);
             crit.setFetchMode("usuario", FetchMode.JOIN);
+            crit.addOrder(Order.desc("id"));
             rta = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
