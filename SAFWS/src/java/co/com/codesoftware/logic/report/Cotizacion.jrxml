@@ -41,7 +41,7 @@ and tius_pers = pers_pers]]>
 		<fieldDescription><![CDATA[Nombre de la sede (se vera reflejado en la factura)]]></fieldDescription>
 	</field>
 	<field name="sede_direccion" class="java.lang.String">
-		<fieldDescription><![CDATA[Direccion de la sede ]]></fieldDescription>
+		<fieldDescription><![CDATA[Direccion de la sede]]></fieldDescription>
 	</field>
 	<field name="sede_telefono" class="java.lang.String">
 		<fieldDescription><![CDATA[Telefono de la sede]]></fieldDescription>
@@ -65,7 +65,87 @@ and tius_pers = pers_pers]]>
 		<variableExpression><![CDATA[$F{totalpedi}]]></variableExpression>
 	</variable>
 	<title>
-		<band height="65" splitType="Stretch">
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="145">
+			<frame>
+				<reportElement x="0" y="65" width="581" height="80" uuid="949a409d-d7eb-4e2e-8f2e-0ae7ff8ae048"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<staticText>
+					<reportElement x="5" y="40" width="72" height="20" uuid="4d6ff2a9-c9db-4b67-966e-07b025242d88"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[CLIENTE:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="88" y="41" width="187" height="20" uuid="86c439de-bbe3-4086-a147-e86f4b96ffb1"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="5" y="60" width="72" height="20" uuid="606f6aea-15b7-4c87-b659-a2d134e5d1b1"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[CEDULA / NIT:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="88" y="60" width="187" height="20" uuid="bb8aad68-3c68-429a-9700-18cef10fc57e"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{clien_cedula}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="275" y="60" width="72" height="20" uuid="50d29dbd-6403-49b7-ac14-3f88c5d022a2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[DIRECCION:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="275" y="40" width="72" height="20" uuid="68f96f67-48df-48d9-b049-d6e317fbd821"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[TELEFONO:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="358" y="40" width="223" height="20" uuid="5fe5face-2f97-49ae-bada-15cd7ad2ef27"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{telemp}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="358" y="60" width="223" height="20" uuid="e2ba7bc6-0b76-4b0d-a8ed-5bc967dc815f"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{diremp}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="5" y="21" width="576" height="20" uuid="796c1871-bcf4-4deb-b3c5-130ea655041b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[¡CAMINO A LA EXCELENCIA!]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="5" y="0" width="137" height="20" uuid="ef40e3fa-0ade-4984-a8c2-f3bc1408a0aa"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[ATENDIDO POR:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="154" y="0" width="427" height="20" uuid="ac70778f-288c-4200-b6bd-1d3e491a8e80"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{atendido}]]></textFieldExpression>
+				</textField>
+			</frame>
 			<frame>
 				<reportElement x="0" y="0" width="581" height="65" uuid="c4338596-4240-4e21-9780-ef1c9a19190a"/>
 				<box>
@@ -131,87 +211,6 @@ and tius_pers = pers_pers]]>
 					<reportElement x="211" y="0" width="125" height="15" uuid="1fef9bde-aaa0-4e3f-8072-672bb1a46ebd"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{sede_direccion}]]></textFieldExpression>
-				</textField>
-			</frame>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="80">
-			<frame>
-				<reportElement x="0" y="0" width="581" height="80" uuid="949a409d-d7eb-4e2e-8f2e-0ae7ff8ae048"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<staticText>
-					<reportElement x="5" y="40" width="72" height="20" uuid="4d6ff2a9-c9db-4b67-966e-07b025242d88"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[CLIENTE:]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="88" y="40" width="187" height="20" uuid="86c439de-bbe3-4086-a147-e86f4b96ffb1"/>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="5" y="60" width="72" height="20" uuid="606f6aea-15b7-4c87-b659-a2d134e5d1b1"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[CEDULA / NIT:]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="88" y="60" width="187" height="20" uuid="bb8aad68-3c68-429a-9700-18cef10fc57e"/>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$F{clien_cedula}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="275" y="60" width="72" height="20" uuid="50d29dbd-6403-49b7-ac14-3f88c5d022a2"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[DIRECCION:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="275" y="40" width="72" height="20" uuid="68f96f67-48df-48d9-b049-d6e317fbd821"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[TELEFONO:]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="358" y="40" width="223" height="20" uuid="5fe5face-2f97-49ae-bada-15cd7ad2ef27"/>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$F{telemp}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="358" y="60" width="223" height="20" uuid="e2ba7bc6-0b76-4b0d-a8ed-5bc967dc815f"/>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$F{diremp}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="5" y="20" width="576" height="20" uuid="796c1871-bcf4-4deb-b3c5-130ea655041b"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="14" isBold="true"/>
-					</textElement>
-					<text><![CDATA[¡CAMINO A LA EXCELENCIA!]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="5" y="0" width="137" height="20" uuid="ef40e3fa-0ade-4984-a8c2-f3bc1408a0aa"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[ATENDIDO POR:]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="154" y="0" width="427" height="20" uuid="ac70778f-288c-4200-b6bd-1d3e491a8e80"/>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$F{atendido}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
@@ -364,8 +363,15 @@ and tius_pers = pers_pers]]>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="25">
+	<lastPageFooter>
+		<band height="50">
+			<staticText>
+				<reportElement x="5" y="25" width="576" height="10" uuid="c5f69b4c-c12c-44ac-a792-c67ef51c1bc0"/>
+				<textElement textAlignment="Center">
+					<font size="5"/>
+				</textElement>
+				<text><![CDATA[COTIZACION VALIDA POR 15 DIAS (LOS PRECIOS ESTAN SUJETOS A VARIACION)]]></text>
+			</staticText>
 			<staticText>
 				<reportElement x="341" y="0" width="120" height="20" uuid="2a1cb53b-893f-48bc-b5de-753b1bd2182d"/>
 				<box>
@@ -395,16 +401,5 @@ and tius_pers = pers_pers]]>
 				<textFieldExpression><![CDATA[$F{totalfinal}]]></textFieldExpression>
 			</textField>
 		</band>
-	</columnFooter>
-	<pageFooter>
-		<band height="10">
-			<staticText>
-				<reportElement x="5" y="0" width="377" height="10" uuid="c5f69b4c-c12c-44ac-a792-c67ef51c1bc0"/>
-				<textElement textAlignment="Right">
-					<font size="5"/>
-				</textElement>
-				<text><![CDATA[COTIZACION VALIDA POR 15 DIAS (LOS PRECIOS ESTAN SUJETOS A VARIACION)]]></text>
-			</staticText>
-		</band>
-	</pageFooter>
+	</lastPageFooter>
 </jasperReport>
