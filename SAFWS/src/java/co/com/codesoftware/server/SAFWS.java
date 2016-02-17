@@ -793,5 +793,20 @@ public class SAFWS {
         }
         return rta;
     }
+    /**
+     * Funcion con la cual busco un producto por su codigo de barras
+     * @return 
+     */
+    @WebMethod(operationName = "buscaProductoXCodBarras")
+    @WebResult(name = "PrecioProductoEntity")
+    public List<PrecioProductoEntity> buscaProductoXCodBarras(String codigoBarras, Integer idSede){
+        List<PrecioProductoEntity> rta = null;
+        try (ProductsLogic objLogic = new ProductsLogic()){
+            rta = objLogic.buscaProductoXCodBarras(codigoBarras,idSede);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }

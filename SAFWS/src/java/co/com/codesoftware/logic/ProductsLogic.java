@@ -136,7 +136,6 @@ public class ProductsLogic implements AutoCloseable {
      * @param producto
      * @return
      */
-
     public RespuestaEntity actualizaProducto(ProductoEntity producto) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try {
@@ -173,7 +172,7 @@ public class ProductsLogic implements AutoCloseable {
         }
         return lista;
     }
-    
+
     /**
      * Metodo que consulta toda la informacion del producto
      *
@@ -194,7 +193,7 @@ public class ProductsLogic implements AutoCloseable {
                     setFetchMode("idProducto.marca", FetchMode.JOIN).
                     add(Restrictions.eq("sed.id", sedeId)).
                     add(Restrictions.eq("estado", "A"));
-            
+
             lista = crit.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -240,12 +239,14 @@ public class ProductsLogic implements AutoCloseable {
         }
         return rta;
     }
+
     /**
      * Funcion con la cual se buscan las existencias por sede de un producto
+     *
      * @param idDska
-     * @return 
+     * @return
      */
-    public List<ExistenciaXSedeTable> buscoExistenciaProd(Integer idDska){
+    public List<ExistenciaXSedeTable> buscoExistenciaProd(Integer idDska) {
         List<ExistenciaXSedeTable> rta = null;
         try {
             initOperation();
@@ -257,20 +258,54 @@ public class ProductsLogic implements AutoCloseable {
         }
         return rta;
     }
-    
-    public String consultaPromPonderado(Integer idProducto,BigDecimal precio){
-      List<String>rta = new ArrayList<>();
+
+    /**
+     * Funcion con la cual valido si el precio que se le dara cumple con los
+     * parametros de codigo de barras
+     *
+     * @param idProducto
+     * @param precio
+     * @return
+     */
+    public String consultaPromPonderado(Integer idProducto, BigDecimal precio) {
+        List<String> rta = new ArrayList<>();
         try (ReadFunction rf = new ReadFunction()) {
-			rf.setNombreFuncion("FX_VALIDA_PROMEDIO_PONDERADO");
-			rf.setNumParam(2);
-			rf.addParametro(""+idProducto, DataType.INT);
-			rf.addParametro(""+precio, DataType.BIGDECIMAL);
-			rf.callFunctionJdbc();
-			rta = rf.getRespuestaPg();
-		} catch (Exception e) {
-			
-		}
+            rf.setNombreFuncion("FX_VALIDA_PROMEDIO_PONDERADO");
+            rf.setNumParam(2);
+            rf.addParametro("" + idProducto, DataType.INT);
+            rf.addParametro("" + precio, DataType.BIGDECIMAL);
+            rf.callFunctionJdbc();
+            rta = rf.getRespuestaPg();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return rta.get(0);
+    }
+
+    /**
+     * Funcion con la cual busco un producto por su codigo de barras
+     *
+     * @return
+     */
+    public List<PrecioProductoEntity> buscaProductoXCodBarras(String codBarras, Integer idSede) {
+        List<PrecioProductoEntity> rta = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(PrecioProductoEntity.class);
+            crit.createAlias("idProducto", "prod").createAlias("idSede", "sede");
+            crit.add(Restrictions.eq("prod.codigoBarras", codBarras));
+            crit.add(Restrictions.eq("estado", "A")).add(Restrictions.eq("sede.id", idSede));
+            crit.setFetchMode("idProducto", FetchMode.JOIN).
+                    setFetchMode("idSede", FetchMode.JOIN).
+                    setFetchMode("idProducto.categoria", FetchMode.JOIN).
+                    setFetchMode("idProducto.referencia", FetchMode.JOIN).
+                    setFetchMode("idProducto.subcuenta", FetchMode.JOIN).
+                    setFetchMode("idProducto.marca", FetchMode.JOIN);
+            rta = crit.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
     }
 
     @Override
