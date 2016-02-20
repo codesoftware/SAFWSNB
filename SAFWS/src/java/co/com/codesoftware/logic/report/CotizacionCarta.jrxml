@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="581" leftMargin="7" rightMargin="7" topMargin="7" bottomMargin="7" uuid="310bb560-7053-42aa-9944-526ae3c61b65">
-	<property name="ireport.zoom" value="0.42409761837248483"/>
+	<property name="ireport.zoom" value="1.210000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="68"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="pedi_pedi" class="java.lang.String"/>
 	<parameter name="rutaImagen" class="java.lang.String"/>
 	<queryString>
@@ -20,8 +20,9 @@ sede_nombre, sede_direccion, sede_telefono,
 PEDPROD_CANTI, '$' || to_char(PEDPROD_PRECIO,'9,999,999,999.00') PEDPROD_PRECIO, PEDPROD_PRECIO * PEDPROD_CANTI TOTALPEDI, 
 '$' || to_char((PEDPROD_PRECIO * PEDPROD_CANTI),'9,999,999,999.00') totalFormato,
 DSKA_DESC, DSKA_COD_EXT,
-pers_apellido || ' ' || pers_nombre atendido,
-(select '$' || to_char(sum(pedprod_canti*pedprod_precio),'9,999,999,999.00') totalFinal from IN_TPEDPROD where pedprod_pedi = cast($P{pedi_pedi} as  int)) totalFinal
+' ' || pers_nombre atendido,
+(select '$' || to_char(sum(pedprod_canti*pedprod_precio),'9,999,999,999.00') totalFinal from IN_TPEDPROD where pedprod_pedi = cast($P{pedi_pedi} as  int)) totalFinal,
+COALESCE(clien_telefono, 'NO REGISTRO') clien_telefono , COALESCE(clien_direccion, 'NO REGISTRO') clien_direccion
 from in_tpedi, us_tclien, em_tsede, IN_TPEDPROD, IN_TDSKA, us_ttius, us_tpers
 where pedi_pedi = cast($P{pedi_pedi} as  int)
 and pedi_clie = clien_clien
@@ -61,6 +62,10 @@ and tius_pers = pers_pers]]>
 	<field name="dska_cod_ext" class="java.lang.String"/>
 	<field name="atendido" class="java.lang.String"/>
 	<field name="totalfinal" class="java.lang.String"/>
+	<field name="clien_telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[Telefono del cliente]]></fieldDescription>
+	</field>
+	<field name="clien_direccion" class="java.lang.String"/>
 	<background>
 		<band height="828" splitType="Stretch">
 			<staticText>
@@ -149,16 +154,6 @@ and tius_pers = pers_pers]]>
 					</textElement>
 					<text><![CDATA[TELEFONO:]]></text>
 				</staticText>
-				<textField>
-					<reportElement x="358" y="40" width="223" height="20" uuid="654d63f8-8806-4d6d-ae8b-8edc01324659"/>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$F{telemp}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="358" y="60" width="223" height="20" uuid="0320da2f-315f-4c0f-a18b-fff919a4b851"/>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$F{diremp}]]></textFieldExpression>
-				</textField>
 				<staticText>
 					<reportElement x="5" y="21" width="576" height="20" uuid="deae6e5b-3a96-4a15-8561-e875e61cc68a"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -177,6 +172,16 @@ and tius_pers = pers_pers]]>
 					<reportElement x="154" y="0" width="427" height="20" uuid="59efd0e0-5c57-4b26-a5ca-c1d006b661d6"/>
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{atendido}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="361" y="41" width="220" height="15" uuid="4443d50e-097f-4161-989d-e7b6c5a7eac7"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{clien_telefono}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="361" y="60" width="220" height="20" uuid="063d1f54-373c-4963-87e4-a1c2827363fe"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{clien_direccion}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -202,22 +207,15 @@ and tius_pers = pers_pers]]>
 						<rightPen lineWidth="0.0"/>
 					</box>
 					<textField>
-						<reportElement x="156" y="0" width="150" height="20" uuid="192ceb49-a49b-4af9-ad76-1d1991dcd432"/>
+						<reportElement x="98" y="0" width="208" height="20" uuid="192ceb49-a49b-4af9-ad76-1d1991dcd432"/>
 						<textElement verticalAlignment="Middle">
 							<font size="11"/>
 						</textElement>
 						<textFieldExpression><![CDATA[$F{contador}]]></textFieldExpression>
 					</textField>
-					<staticText>
-						<reportElement x="0" y="0" width="143" height="20" uuid="8fc33a8f-a0e4-4c05-8b23-abdfc00382b4"/>
-						<textElement textAlignment="Right" verticalAlignment="Middle">
-							<font isBold="true"/>
-						</textElement>
-						<text><![CDATA[COTIZACIÓN No.]]></text>
-					</staticText>
 				</frame>
 				<textField>
-					<reportElement x="5" y="45" width="270" height="20" uuid="1bb519b5-5c0c-492c-8dd6-9062ad94bd86"/>
+					<reportElement x="5" y="45" width="206" height="20" uuid="1bb519b5-5c0c-492c-8dd6-9062ad94bd86"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
@@ -236,14 +234,26 @@ and tius_pers = pers_pers]]>
 					<text><![CDATA[www.tornillos7777777.com / info@tornillos7777777.com]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="336" y="0" width="245" height="15" uuid="4d5e5ffb-7a3a-4ff4-8489-b7451b1afc1f"/>
+					<reportElement x="319" y="0" width="97" height="15" uuid="4d5e5ffb-7a3a-4ff4-8489-b7451b1afc1f"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{ubicacion}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="211" y="0" width="125" height="15" uuid="ea6eb2b4-7907-4bf3-bebe-a24e86f46078"/>
+					<reportElement x="211" y="0" width="108" height="15" uuid="ea6eb2b4-7907-4bf3-bebe-a24e86f46078"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{sede_direccion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="218" y="45" width="143" height="20" uuid="8fc33a8f-a0e4-4c05-8b23-abdfc00382b4"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[COTIZACIÓN No.]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="416" y="0" width="165" height="15" uuid="66fa703c-ae98-477d-b77a-a62390aeff25"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{telemp}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
