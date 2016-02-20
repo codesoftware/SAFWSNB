@@ -148,7 +148,7 @@ public class ReporteLogica implements AutoCloseable {
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put("pedi_pedi", pedido);
             properties.put("rutaImagen", rutaRepoServ);
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepoServ + "Cotizacion.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepoServ + "CotizacionCarta.jasper");
             JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
             JasperExportManager.exportReportToPdfFile(print, rutaRepoServ + "cotizacion_"+pedido+".pdf");
             CodificaBase64 codifica64 = new CodificaBase64();
