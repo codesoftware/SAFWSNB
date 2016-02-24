@@ -40,7 +40,43 @@ public class ProductsLogic implements AutoCloseable {
         List<ProductoTable> productosRta = null;
         try {
             initOperation();
-            productos = sesion.createQuery("from ProductoTable").list();
+            Criteria crit = sesion.createCriteria(ProductoTable.class);
+            productos = crit.setFirstResult(0).setMaxResults(200).list();            
+            for (ProductoTable producto : productos) {
+                Query query1 = sesion.createQuery("from PrecioProductoTable WHERE estado = :estado and idSede = :idSede and idProducto = :idProducto  ");
+                query1.setParameter("estado", "A");
+                query1.setParameter("idSede", sede_sede);
+                query1.setParameter("idProducto", producto.getId());
+                List precio = query1.list();
+                if (precio != null && precio.size() > 0) {
+                    producto.setPrecios(precio);
+                    if (productosRta == null) {
+                        productosRta = new ArrayList<>();
+                    }
+                    productosRta.add(producto);
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productosRta;
+
+    }
+    /**
+     * Funcion con la cual busco los productos por medio de un criterio
+     * @param sede_sede
+     * @param criterio
+     * @return 
+     */
+    public List<ProductoTable> buscaProductosXCriterio(Integer sede_sede, String criterio) {
+        List<ProductoTable> productos = null;
+        List<ProductoTable> productosRta = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(ProductoTable.class);
+            crit.add(Restrictions.like("descripcion",criterio ));
+            productos = crit.setFirstResult(0).setMaxResults(200).list();            
             for (ProductoTable producto : productos) {
                 Query query1 = sesion.createQuery("from PrecioProductoTable WHERE estado = :estado and idSede = :idSede and idProducto = :idProducto  ");
                 query1.setParameter("estado", "A");

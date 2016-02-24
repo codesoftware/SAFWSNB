@@ -10,7 +10,9 @@ import org.hibernate.Transaction;
 import co.com.codesoftware.persistence.HibernateUtil;
 import co.com.codesoftware.persistence.entites.tables.PrecioRecetaTable;
 import co.com.codesoftware.persistence.entites.tables.RecetaTable;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 
 public class RecetaLogic implements AutoCloseable {
 
@@ -33,6 +35,45 @@ public class RecetaLogic implements AutoCloseable {
         try {
             initOperation();
             recetas = sesion.createQuery("from RecetaTable").list();
+            for (RecetaTable receta : recetas) {
+                String auxQuery = "from PrecioRecetaTable precio  WHERE precio.estado = 'A' and precio.idReceta = " + receta.getId() + " and precio.idSede = " + sede;
+                List<PrecioRecetaTable> precios = sesion.createQuery(auxQuery).list();
+                if (precios != null & precios.size() > 0) {
+                    receta.setPrecios(precios);
+                    if (rta == null) {
+                        rta = new ArrayList<>();
+                    }
+                    rta.add(receta);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return rta;
+    }
+    
+    /**
+     * Funcion encargada de realizar la logica para la obtencion de recetas del
+     * sistema que tengan el precio parametrizado y ademas filtrado por un criterio
+     *
+     * @param param
+     * @param sede
+     * @param criterio
+     * @return
+     * @throws HibernateException
+     */
+    @SuppressWarnings("unchecked")
+    public List<RecetaTable> getRecetasXCriterio(List<String> param, Integer sede, String criterio) throws HibernateException {
+        List<RecetaTable> recetas = null;
+        List<RecetaTable> rta = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(RecetaTable.class);
+            crit.add(Restrictions.like("descripcion", criterio));
+            recetas = crit.list();
+            //recetas = sesion.createQuery("from RecetaTable").list();
             for (RecetaTable receta : recetas) {
                 String auxQuery = "from PrecioRecetaTable precio  WHERE precio.estado = 'A' and precio.idReceta = " + receta.getId() + " and precio.idSede = " + sede;
                 List<PrecioRecetaTable> precios = sesion.createQuery(auxQuery).list();
