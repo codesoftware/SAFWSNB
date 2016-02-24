@@ -20,6 +20,7 @@ import co.com.codesoftware.utilities.ReadFunction;
 import java.math.BigDecimal;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 public class ProductsLogic implements AutoCloseable {
@@ -41,7 +42,7 @@ public class ProductsLogic implements AutoCloseable {
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(ProductoTable.class);
-            productos = crit.setFirstResult(0).setMaxResults(200).list();            
+            productos = crit.setFirstResult(0).setMaxResults(200).list();
             for (ProductoTable producto : productos) {
                 Query query1 = sesion.createQuery("from PrecioProductoTable WHERE estado = :estado and idSede = :idSede and idProducto = :idProducto  ");
                 query1.setParameter("estado", "A");
@@ -63,11 +64,13 @@ public class ProductsLogic implements AutoCloseable {
         return productosRta;
 
     }
+
     /**
      * Funcion con la cual busco los productos por medio de un criterio
+     *
      * @param sede_sede
      * @param criterio
-     * @return 
+     * @return
      */
     public List<ProductoTable> buscaProductosXCriterio(Integer sede_sede, String criterio) {
         List<ProductoTable> productos = null;
@@ -75,22 +78,24 @@ public class ProductsLogic implements AutoCloseable {
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(ProductoTable.class);
-            crit.add(Restrictions.like("descripcion",criterio ));
-            productos = crit.setFirstResult(0).setMaxResults(200).list();            
-            for (ProductoTable producto : productos) {
-                Query query1 = sesion.createQuery("from PrecioProductoTable WHERE estado = :estado and idSede = :idSede and idProducto = :idProducto  ");
-                query1.setParameter("estado", "A");
-                query1.setParameter("idSede", sede_sede);
-                query1.setParameter("idProducto", producto.getId());
-                List precio = query1.list();
-                if (precio != null && precio.size() > 0) {
-                    producto.setPrecios(precio);
-                    if (productosRta == null) {
-                        productosRta = new ArrayList<>();
+            crit.add(Restrictions.like("descripcion", criterio, MatchMode.ANYWHERE).ignoreCase());
+            productos = crit.setFirstResult(0).setMaxResults(200).list();
+            if (productos != null) {
+                for (ProductoTable producto : productos) {
+                    Query query1 = sesion.createQuery("from PrecioProductoTable WHERE estado = :estado and idSede = :idSede and idProducto = :idProducto  ");
+                    query1.setParameter("estado", "A");
+                    query1.setParameter("idSede", sede_sede);
+                    query1.setParameter("idProducto", producto.getId());
+                    List precio = query1.list();
+                    if (precio != null && precio.size() > 0) {
+                        producto.setPrecios(precio);
+                        if (productosRta == null) {
+                            productosRta = new ArrayList<>();
+                        }
+                        productosRta.add(producto);
                     }
-                    productosRta.add(producto);
-                }
 
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -249,6 +254,11 @@ public class ProductsLogic implements AutoCloseable {
             initOperation();
             Criteria crit = sesion.createCriteria(PrecioProductoEntity.class).createAlias("idProducto", "pr")
                     .add(Restrictions.eq("pr.codigoExt", codigo)).add(Restrictions.eq("estado", "A"));
+            crit.setFetchMode("idProducto", FetchMode.JOIN).setFetchMode("idSede", FetchMode.JOIN);
+            crit.setFetchMode("idProducto.categoria", FetchMode.JOIN).
+                    setFetchMode("idProducto.referencia", FetchMode.JOIN).
+                    setFetchMode("idProducto.subcuenta", FetchMode.JOIN).
+                    setFetchMode("idProducto.marca", FetchMode.JOIN);
             producto = (PrecioProductoEntity) crit.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();

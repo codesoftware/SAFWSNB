@@ -12,6 +12,7 @@ import co.com.codesoftware.persistence.entites.tables.PrecioRecetaTable;
 import co.com.codesoftware.persistence.entites.tables.RecetaTable;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 public class RecetaLogic implements AutoCloseable {
@@ -53,10 +54,11 @@ public class RecetaLogic implements AutoCloseable {
         }
         return rta;
     }
-    
+
     /**
      * Funcion encargada de realizar la logica para la obtencion de recetas del
-     * sistema que tengan el precio parametrizado y ademas filtrado por un criterio
+     * sistema que tengan el precio parametrizado y ademas filtrado por un
+     * criterio
      *
      * @param param
      * @param sede
@@ -71,21 +73,22 @@ public class RecetaLogic implements AutoCloseable {
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(RecetaTable.class);
-            crit.add(Restrictions.like("descripcion", criterio));
+            crit.add(Restrictions.like("descripcion", criterio, MatchMode.ANYWHERE).ignoreCase());
             recetas = crit.list();
             //recetas = sesion.createQuery("from RecetaTable").list();
-            for (RecetaTable receta : recetas) {
-                String auxQuery = "from PrecioRecetaTable precio  WHERE precio.estado = 'A' and precio.idReceta = " + receta.getId() + " and precio.idSede = " + sede;
-                List<PrecioRecetaTable> precios = sesion.createQuery(auxQuery).list();
-                if (precios != null & precios.size() > 0) {
-                    receta.setPrecios(precios);
-                    if (rta == null) {
-                        rta = new ArrayList<>();
+            if (recetas != null) {
+                for (RecetaTable receta : recetas) {
+                    String auxQuery = "from PrecioRecetaTable precio  WHERE precio.estado = 'A' and precio.idReceta = " + receta.getId() + " and precio.idSede = " + sede;
+                    List<PrecioRecetaTable> precios = sesion.createQuery(auxQuery).list();
+                    if (precios != null & precios.size() > 0) {
+                        receta.setPrecios(precios);
+                        if (rta == null) {
+                            rta = new ArrayList<>();
+                        }
+                        rta.add(receta);
                     }
-                    rta.add(receta);
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -111,10 +114,10 @@ public class RecetaLogic implements AutoCloseable {
                 Query query2 = sesion.createQuery("from PrecioRecetaTable precio  WHERE precio.estado = 'A' and precio.idReceta = :idReceta and precio.idSede = :idSede ");
                 query2.setParameter("idReceta", receta.getId());
                 query2.setParameter("idSede", sede_sede);
-                List precios =  query2.list();
-                if(precios != null & precios.size() > 0 ){
+                List precios = query2.list();
+                if (precios != null & precios.size() > 0) {
                     receta.setPrecios(precios);
-                }else{
+                } else {
                     receta = null;
                 }
             }

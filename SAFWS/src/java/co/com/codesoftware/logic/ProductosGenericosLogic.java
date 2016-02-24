@@ -123,7 +123,7 @@ public class ProductosGenericosLogic {
                     }
                 }
             }
-            if (productos != null & productos.size() > 0) {
+            if (productos != null) {
                 if (rta == null) {
                     rta = new ArrayList<>();
                 }
