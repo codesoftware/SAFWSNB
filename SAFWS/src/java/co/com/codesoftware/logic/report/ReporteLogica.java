@@ -87,7 +87,8 @@ public class ReporteLogica implements AutoCloseable {
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put("fact_fact", fact_fact);
             properties.put("SUBREPORT_DIR", rutaRepoServ);
-
+            String imagenLogo = rutaRepoServ + "logo.png";
+            properties.put("RUTA_LOGOFACT", imagenLogo);
             //JasperReport jasperReport = (JasperReport) JRLoader.loadObject("D:\\proyectos\\codeSoftware\\SAFWSNB\\SAFWS\\src\\java\\co\\com\\codesoftware\\logic\\report\\Factura.jasper");
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(rutaRepoServ + "Factura.jasper");
             JasperPrint print = JasperFillManager.fillReport(jasperReport, properties, con);
