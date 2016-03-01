@@ -361,6 +361,33 @@ public class FacturacionLogic implements AutoCloseable {
         }
         return facturas;
     }
+    
+    /**
+     * metodo que consulta las facturas por fechas y sede
+     * @param fechaInicial
+     * @param fechaFinal
+     * @return 
+     */
+    @SuppressWarnings("unchecked")
+    public List<FacturaTable> consultaFacturasXSede(Date fechaInicial, Date fechaFinal,Integer idSede) {
+        List<FacturaTable> facturas = null;
+        try {
+            initOperation();
+            facturas = sesion.createQuery("from FacturaTable WHERE fecha BETWEEN :fechaInicial AND :fechaFinal AND idSede = :idSede ORDER BY id DESC ")
+                    .setParameter("fechaInicial", fechaInicial).setParameter("fechaFinal", fechaFinal).setParameter("idSede", idSede).list();
+            for (FacturaTable factura : facturas) {
+                if (factura != null) {
+                    Query query2 = sesion.createQuery("from Cliente WHERE id = :idCliente ");
+                    query2.setParameter("idCliente", factura.getIdCliente());
+                    factura.setCliente((Cliente) query2.uniqueResult());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return facturas;
+    }
+
 
     /**
      * Funcion con la cual se obtiene una factura por medio de su id

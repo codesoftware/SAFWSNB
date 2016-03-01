@@ -345,6 +345,23 @@ public class SAFWS {
             return null;
         }
     }
+    
+    /**
+     * metodo que consulta las facturas por sede y rango de fechas
+     * @param fInicial
+     * @param fFinal
+     * @return 
+     */
+     @WebMethod(operationName = "getFacturasSede")
+    @WebResult(name = "listaFacturas")
+    public List<FacturaTable> getFacturasSede(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial, @XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal,@XmlElement(required = true)@WebParam(name = "idSede")Integer idSede) {
+        try (FacturacionLogic objLogic = new FacturacionLogic()) {
+            return objLogic.consultaFacturasXSede(fInicial, fFinal,idSede);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * Metodo con el cual obtengo una factura teniendo como referencia su id
