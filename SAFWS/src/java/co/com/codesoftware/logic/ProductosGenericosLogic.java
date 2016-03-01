@@ -98,5 +98,43 @@ public class ProductosGenericosLogic {
         }
         return rta;
     }
+    
+    /**
+     * Funcion encargada de realizar la busqueda de productos y recetas aptos
+     * para su facturacion
+     *
+     * @param sede_sede
+     * @return
+     */
+    public List<ProductoGenericoEntity> buscaProductosRecetasXCriterio(Integer sede_sede, String criterio) {
+        List<ProductoGenericoEntity> rta = null;
+        try {
+            RecetaLogic recetaLogic = new RecetaLogic();
+            List<RecetaTable> recetas = recetaLogic.getRecetasXCriterio(null, sede_sede,criterio);
+            ProductsLogic productsLogic = new ProductsLogic();
+            List<ProductoTable> productos = productsLogic.buscaProductosXCriterio(sede_sede, criterio);
+            if (recetas != null) {
+                if (recetas != null & recetas.size() > 0) {
+                    if (rta == null) {
+                        rta = new ArrayList<>();
+                    }
+                    for (RecetaTable receta : recetas) {
+                        rta.add(this.mapeaGenericObjectReceta(receta));
+                    }
+                }
+            }
+            if (productos != null) {
+                if (rta == null) {
+                    rta = new ArrayList<>();
+                }
+                for (ProductoTable producto : productos) {
+                    rta.add(this.mapeaGenericObjectProducto(producto));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
 
 }

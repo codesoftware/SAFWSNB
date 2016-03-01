@@ -465,6 +465,25 @@ public class SAFWS {
             return null;
         }
     }
+    
+    /**
+     * Metodo el cual busca los productos y recetas parametrizados en el sistema
+     *
+     * @param sede_sede
+     * @param criterio
+     * @return
+     */
+    @WebMethod(operationName = "findProductosAndDishesXCriterio")
+    @WebResult(name = "ListGeneric")
+    public List<ProductoGenericoEntity> findProductosAndDishesXCriterio(Integer sede_sede, String criterio) {
+        try {
+            ProductosGenericosLogic logic = new ProductosGenericosLogic();
+            return logic.buscaProductosRecetasXCriterio(sede_sede, criterio);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * Funcion con la cual se genera un pdf con la factura apartir de su id
