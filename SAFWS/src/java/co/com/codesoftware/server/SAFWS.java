@@ -338,9 +338,9 @@ public class SAFWS {
      */
     @WebMethod(operationName = "getFacturas")
     @WebResult(name = "listaFacturas")
-    public List<FacturaTable> getFacturas(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial, @XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal) {
+    public List<FacturaTable> getFacturas(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial, @XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal,@XmlElement(required = true) @WebParam(name = "idFactura") Integer idFactura ) {
         try (FacturacionLogic objLogic = new FacturacionLogic()) {
-            return objLogic.consultaFacturas(fInicial, fFinal);
+            return objLogic.consultaFacturas(fInicial, fFinal,idFactura);
         } catch (Exception e) {
             return null;
         }

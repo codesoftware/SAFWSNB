@@ -24,6 +24,8 @@ import co.com.codesoftware.persistence.enumeration.DataType;
 import co.com.codesoftware.utilities.ReadFunction;
 import java.math.BigDecimal;
 import java.util.Date;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 public class FacturacionLogic implements AutoCloseable {
 
@@ -343,12 +345,20 @@ public class FacturacionLogic implements AutoCloseable {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<FacturaTable> consultaFacturas(Date fechaInicial, Date fechaFinal) {
+    public List<FacturaTable> consultaFacturas(Date fechaInicial, Date fechaFinal, Integer idFactura) {
         List<FacturaTable> facturas = null;
         try {
             initOperation();
-            facturas = sesion.createQuery("from FacturaTable WHERE fecha BETWEEN :fechaInicial AND :fechaFinal ORDER BY id DESC ")
-                    .setParameter("fechaInicial", fechaInicial).setParameter("fechaFinal", fechaFinal).list();
+            Criteria crit = sesion.createCriteria(FacturaTable.class);
+            if(idFactura != null && idFactura != 0){
+                crit.add(Restrictions.eq("id", idFactura));
+            }else{
+                fechaFinal.setHours(23);
+                fechaFinal.setMinutes(59);
+                fechaFinal.setSeconds(59);
+                crit.add(Restrictions.between("fecha", fechaInicial, fechaFinal));
+            }
+            facturas = crit.list();
             for (FacturaTable factura : facturas) {
                 if (factura != null) {
                     Query query2 = sesion.createQuery("from Cliente WHERE id = :idCliente ");
