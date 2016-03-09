@@ -338,27 +338,51 @@ public class SAFWS {
      */
     @WebMethod(operationName = "getFacturas")
     @WebResult(name = "listaFacturas")
-    public List<FacturaTable> getFacturas(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial, 
+    public List<FacturaTable> getFacturas(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial,
             @XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal,
-            @XmlElement(required = true) @WebParam(name = "idFactura") Integer idFactura ) {
+            @XmlElement(required = true) @WebParam(name = "idFactura") Integer idFactura) {
+        //System.out.println("Este es el id del cliente "+ idCliente);
         try (FacturacionLogic objLogic = new FacturacionLogic()) {
-            return objLogic.consultaFacturas(fInicial, fFinal,idFactura);
+            return objLogic.consultaFacturas(fInicial, fFinal, idFactura);
         } catch (Exception e) {
             return null;
         }
     }
-    
+
+    /**
+     * Funcion con la cual obtengo las facturas de una sede y ademas de esto las
+     * filtro para encontrarlas mas facil
+     *
+     * @return
+     */
+    @WebMethod(operationName = "obtenerFacturasConFiltros")
+    @WebResult(name = "listaFacturas")
+    public List<FacturaTable> obtenerFacturasConFiltros(Date fInicial, 
+            Date fFinal,
+            Integer idFactura,
+            Long IdCliente,
+            String codExterno) {
+        List<FacturaTable> rta = null;
+        try (FacturacionLogic objLogic = new FacturacionLogic()){
+            rta = objLogic.consultaFacturasXFiltros(fInicial, fFinal, idFactura, IdCliente, codExterno);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rta;
+    }
+
     /**
      * metodo que consulta las facturas por sede y rango de fechas
+     *
      * @param fInicial
      * @param fFinal
-     * @return 
+     * @return
      */
-     @WebMethod(operationName = "getFacturasSede")
+    @WebMethod(operationName = "getFacturasSede")
     @WebResult(name = "listaFacturas")
-    public List<FacturaTable> getFacturasSede(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial, @XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal,@XmlElement(required = true)@WebParam(name = "idSede")Integer idSede) {
+    public List<FacturaTable> getFacturasSede(@XmlElement(required = true) @WebParam(name = "fInicial") Date fInicial, @XmlElement(required = true) @WebParam(name = "fFinal") Date fFinal, @XmlElement(required = true) @WebParam(name = "idSede") Integer idSede) {
         try (FacturacionLogic objLogic = new FacturacionLogic()) {
-            return objLogic.consultaFacturasXSede(fInicial, fFinal,idSede);
+            return objLogic.consultaFacturasXSede(fInicial, fFinal, idSede);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -467,7 +491,7 @@ public class SAFWS {
             return null;
         }
     }
-    
+
     /**
      * Metodo el cual busca los productos y recetas parametrizados en el sistema
      *
@@ -497,7 +521,7 @@ public class SAFWS {
     @WebResult(name = "imagen")
     public String findBillForId(@XmlElement(required = true) @WebParam(name = "fact_fact") String fact_fact) {
         String imagen = null;
-        try (ReporteLogica logica = new ReporteLogica();){
+        try (ReporteLogica logica = new ReporteLogica();) {
             imagen = logica.generaPdfFactura(fact_fact);
         } catch (Exception e) {
             e.printStackTrace();
@@ -541,23 +565,23 @@ public class SAFWS {
 
     /**
      * metodo que inserta los pedidos de un producto
+     *
      * @param productos
      * @param idPedido
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertaProductosXPedido")
     public RespuestaEntity insertaProductoXPedido(ArrayList<PedidoProductoEntity> productos, Integer idPedido) {
         RespuestaEntity respuesta = new RespuestaEntity();
         try (PedidosLogic logic = new PedidosLogic()) {
             respuesta = logic.insertaProductos(productos, idPedido);
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             respuesta.setCodigoRespuesta(0);
             respuesta.setDescripcionRespuesta(e.getMessage());
             respuesta.setMensajeRespuesta("ERROR" + e.getMessage());
         }
-            return respuesta;
+        return respuesta;
 
     }
 
@@ -603,7 +627,7 @@ public class SAFWS {
     @WebResult(name = "imagen")
     public String generaCodigoPedido(@XmlElement(required = true) @WebParam(name = "pedi_pedi") Integer fact_fact) {
         String imagen = null;
-        try (ReporteLogica logica = new ReporteLogica()){          
+        try (ReporteLogica logica = new ReporteLogica()) {
             imagen = logica.generaPdfPedidos(fact_fact);
         } catch (Exception e) {
             e.printStackTrace();
@@ -790,57 +814,62 @@ public class SAFWS {
      */
     @WebMethod(operationName = "cambiaEstadoPedido")
     @WebResult(name = "respuesta")
-    public boolean cambiaEstadoPedido(@XmlElement(required = true) @WebParam(name = "idPedido") Integer idPedido,@XmlElement(required = true) @WebParam(name = "estado") String estado) {
+    public boolean cambiaEstadoPedido(@XmlElement(required = true) @WebParam(name = "idPedido") Integer idPedido, @XmlElement(required = true) @WebParam(name = "estado") String estado) {
         boolean rta = false;
-        try(PedidosLogic objLogic = new PedidosLogic()) {
+        try (PedidosLogic objLogic = new PedidosLogic()) {
             rta = objLogic.actualizaEstadoPedido(idPedido, estado);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
     /**
      * Funcion con la cual se genera el pdf con el pedido como cotizacion
+     *
      * @param id
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "generaPdfCotizacion")
     @WebResult(name = "imagen")
-    public String generaPdfCotizacion(@XmlElement(required = true) @WebParam(name = "idPedido")Integer idPedido){
+    public String generaPdfCotizacion(@XmlElement(required = true) @WebParam(name = "idPedido") Integer idPedido) {
         String rta = "";
-        try(ReporteLogica objLogica = new ReporteLogica()) {
+        try (ReporteLogica objLogica = new ReporteLogica()) {
             rta = objLogica.generaJasperCotizacion(idPedido);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
-    
+
     /**
      * Funcion con la cual busco cotizaciones generadas por un cliente
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "buscaCotizacionPorCliente")
     @WebResult(name = "listaPedidos")
-    public List<PedidoEntity> buscaCotizacionPorCliente(@XmlElement(required = true) @WebParam(name = "idCliente")Long idCliente){
+    public List<PedidoEntity> buscaCotizacionPorCliente(@XmlElement(required = true) @WebParam(name = "idCliente") Long idCliente) {
         List<PedidoEntity> rta = null;
-        try (PedidosLogic objLogic = new PedidosLogic()){
+        try (PedidosLogic objLogic = new PedidosLogic()) {
             rta = objLogic.buscaCotizacionXCliente(idCliente);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rta;
     }
+
     /**
      * Funcion con la cual busco un producto por su codigo de barras
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "buscaProductoXCodBarras")
     @WebResult(name = "PrecioProductoEntity")
-    public List<PrecioProductoEntity> buscaProductoXCodBarras(String codigoBarras, Integer idSede){
+    public List<PrecioProductoEntity> buscaProductoXCodBarras(String codigoBarras, Integer idSede) {
         List<PrecioProductoEntity> rta = null;
-        try (ProductsLogic objLogic = new ProductsLogic()){
-            rta = objLogic.buscaProductoXCodBarras(codigoBarras,idSede);
+        try (ProductsLogic objLogic = new ProductsLogic()) {
+            rta = objLogic.buscaProductoXCodBarras(codigoBarras, idSede);
         } catch (Exception e) {
             e.printStackTrace();
         }

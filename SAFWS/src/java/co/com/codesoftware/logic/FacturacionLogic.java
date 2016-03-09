@@ -350,9 +350,9 @@ public class FacturacionLogic implements AutoCloseable {
         try {
             initOperation();
             Criteria crit = sesion.createCriteria(FacturaTable.class);
-            if(idFactura != null && idFactura != 0){
+            if (idFactura != null && idFactura != 0) {
                 crit.add(Restrictions.eq("id", idFactura));
-            }else{
+            } else {
                 fechaFinal.setHours(23);
                 fechaFinal.setMinutes(59);
                 fechaFinal.setSeconds(59);
@@ -371,15 +371,106 @@ public class FacturacionLogic implements AutoCloseable {
         }
         return facturas;
     }
-    
+
     /**
-     * metodo que consulta las facturas por fechas y sede
+     * Funcion con la cual se obtienen las facturas por medio de una serie de
+     * criterios
+     *
      * @param fechaInicial
      * @param fechaFinal
+     * @param idFactura
+     * @param idCliente
+     * @param codExterno
+     * @return
+     */
+    public List<FacturaTable> consultaFacturasXFiltros(Date fechaInicial,
+            Date fechaFinal,
+            Integer idFactura,
+            Long idCliente,
+            String codExterno) {
+        List<FacturaTable> facturas = null;
+        try {
+            initOperation();
+            Criteria crit = sesion.createCriteria(FacturaTable.class);
+            if (idFactura != null && idFactura != 0) {
+                crit.add(Restrictions.eq("id", idFactura));
+            } else {
+                if (idCliente != null && idCliente != 0) {
+                    crit.add(Restrictions.eq("idCliente", idCliente));
+                }
+                if (codExterno != null && !"".equalsIgnoreCase(codExterno)) {
+                    Integer idProducto = this.buscaIdProductoXCodigoExterno(codExterno);
+                    System.out.println("Este es el id: " + idProducto);
+                    if(idProducto != null && idProducto != 0){
+                        ArrayList<Integer> idFacturas = this.obtieneFacturasXCodigoProducto(idProducto);
+                        if(idFacturas != null){
+                            crit.add(Restrictions.in("id", idFacturas));
+                        }
+                    }
+                }
+                fechaFinal.setHours(23);
+                fechaFinal.setMinutes(59);
+                fechaFinal.setSeconds(59);
+                crit.add(Restrictions.between("fecha", fechaInicial, fechaFinal));
+            }
+            facturas = crit.list();
+            for (FacturaTable factura : facturas) {
+                if (factura != null) {
+                    Query query2 = sesion.createQuery("from Cliente WHERE id = :idCliente ");
+                    query2.setParameter("idCliente", factura.getIdCliente());
+                    factura.setCliente((Cliente) query2.uniqueResult());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return facturas;
+    }
+
+    /**
+     * Funcion con la cual busco el id de un producto por medio de su codigo
+     * Externo
+     *
+     * @param codigoExterno
+     * @return
+     */
+    public Integer buscaIdProductoXCodigoExterno(String codigoExterno) {
+        Integer idDska = 0;
+        try {
+            Query query = sesion.createQuery("select p.id from ProductoEntity p where codigoExt = :codExterno ");
+            query.setParameter("codExterno", codigoExterno);
+            idDska = (Integer) query.uniqueResult(); 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return idDska;        
+    }
+    /**
+     * Funcion con la cual busca dentro de las facturas un producto en especifico
+     * @param idDska
      * @return 
      */
+    public ArrayList<Integer> obtieneFacturasXCodigoProducto(Integer idDska){
+        ArrayList<Integer> lista = null;
+        try {
+            Query query = sesion.createQuery("select det.idFactura from DetProdFacturaTable det where idProducto = :idProducto ");
+            query.setParameter("idProducto", idDska);
+            lista = (ArrayList<Integer>) query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    /**
+     * metodo que consulta las facturas por fechas y sede
+     *
+     * @param fechaInicial
+     * @param fechaFinal
+     * @return
+     */
     @SuppressWarnings("unchecked")
-    public List<FacturaTable> consultaFacturasXSede(Date fechaInicial, Date fechaFinal,Integer idSede) {
+    public List<FacturaTable> consultaFacturasXSede(Date fechaInicial, Date fechaFinal, Integer idSede) {
         List<FacturaTable> facturas = null;
         try {
             initOperation();
@@ -397,7 +488,6 @@ public class FacturacionLogic implements AutoCloseable {
         }
         return facturas;
     }
-
 
     /**
      * Funcion con la cual se obtiene una factura por medio de su id
@@ -588,7 +678,7 @@ public class FacturacionLogic implements AutoCloseable {
         }
         return rta;
     }
-    
+
     /**
      * Funcion encargada de realizar el llamado a la funcion que realiza toda la
      * facturacion
@@ -608,9 +698,9 @@ public class FacturacionLogic implements AutoCloseable {
             rf.addParametro("N/A", DataType.TEXT);
             rf.addParametro("0", DataType.INT);
             rf.addParametro("0", DataType.INT);
-            rf.addParametro(""+objFactura.getIdPedido(), DataType.INT);
+            rf.addParametro("" + objFactura.getIdPedido(), DataType.INT);
             rf.addParametro(objFactura.getReteFuente(), DataType.TEXT);
-            
+
             rf.callFunctionJdbc();
             response = rf.getRespuestaPg();
             String respuesta = response.get(0);
