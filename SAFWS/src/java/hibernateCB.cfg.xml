@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/SigemcoCB</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">Codesoftware1234</property>
+        <property name="hibernate.connection.pool_size">1</property>
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.Sede"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.Cliente"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.RecetaTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.PrecioRecetaTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.ProductoTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.PrecioProductoEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.PantallaPrincipalFacTable"/>     
+        <mapping class="co.com.codesoftware.persistence.entites.tables.PrecioProductoTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.PersonaUsuarioTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.UsuarioTable"/>
+        <mapping class="co.com.codesoftware.persistence.entities.facturacion.tables.TemporalProdTable"/>
+        <mapping class="co.com.codesoftware.persistence.entities.facturacion.tables.TemporalRecTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.facturacion.FacturaTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.facturacion.DetProdFacturaTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.ParametrosEmpresaTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.facturacion.DetReceFacturacionTable" />
+        <mapping class="co.com.codesoftware.persistence.entites.tables.PerfilTable" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ProductosHomeEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ProductoConteoEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.SedeEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.MarcaEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.CategoriaEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ReferenciaEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.SubCuentaEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.CantidadesEntity" />
+        <mapping class="co.com.codesoftware.persistence.entity.productos.PedidoEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.productos.PedidoProductoEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.productos.ProductoEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.usuario.TipoUsuarioEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.usuario.PerfilesEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entity.administracion.ConteoEntity"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.PromPonderaTable"/>
+        <mapping class="co.com.codesoftware.persistence.entites.tables.ExistenciaXSedeTable"/>
+    </session-factory>
+</hibernate-configuration>
