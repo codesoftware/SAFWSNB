@@ -119,6 +119,24 @@ public class SAFWS {
             return null;
         }
     }
+    
+    /**
+     * Funcion con la cual obtengo un cliente por su cedula
+     *
+     * @param cedula
+     * @return
+     */
+    @WebMethod
+    @WebResult(name = "Cliente", partName = "Cliente")
+    public Cliente getClienteXCedulaString(@XmlElement(required = true) @WebParam(name = "cedula") String cedula) {
+        try {
+            ClienteLogic logic = new ClienteLogic();
+            return logic.obtieneclienteXCedulaString(cedula);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * Metodo con el cual adiciono un cliente al sistema
