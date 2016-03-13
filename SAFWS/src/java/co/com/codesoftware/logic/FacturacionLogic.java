@@ -26,6 +26,7 @@ import co.com.codesoftware.utilities.ReadFunction;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 public class FacturacionLogic implements AutoCloseable {
@@ -419,6 +420,7 @@ public class FacturacionLogic implements AutoCloseable {
                 fechaFinal.setSeconds(59);
                 crit.add(Restrictions.between("fecha", fechaInicial, fechaFinal));
             }
+            crit.addOrder(Order.desc("id"));
             facturas = crit.list();
             for(FacturaTable fac : facturas){
                 fac.setIdFactVisual(fac.getId()+iniFact);

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="2160" columnWidth="214" leftMargin="1" rightMargin="11" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -189,7 +189,7 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				<text><![CDATA[NIT:  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="50" y="170" width="51" height="10" uuid="b9c7f07d-ed21-404c-88e0-3eab2e2c8766"/>
+				<reportElement x="10" y="170" width="91" height="10" uuid="b9c7f07d-ed21-404c-88e0-3eab2e2c8766"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
@@ -230,8 +230,9 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ubicacion}]]></textFieldExpression>
 			</textField>
-			<image>
+			<image hAlign="Center">
 				<reportElement x="0" y="0" width="215" height="40" uuid="cb898473-19d9-4397-9261-ea97bb5c5855"/>
+				<imageExpression><![CDATA[$P{RUTA_LOGOFACT}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="70" width="215" height="12" uuid="e3f17efd-3ef0-49f8-aeb6-f49ef4b94109"/>
