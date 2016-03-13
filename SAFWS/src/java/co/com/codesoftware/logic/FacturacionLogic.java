@@ -15,6 +15,7 @@ import co.com.codesoftware.persistence.entites.facturacion.FacturaTable;
 import co.com.codesoftware.persistence.entites.facturacion.Facturacion;
 import co.com.codesoftware.persistence.entites.facturacion.RespuestaFacturacion;
 import co.com.codesoftware.persistence.entites.tables.Cliente;
+import co.com.codesoftware.persistence.entites.tables.ParametrosEmpresaTable;
 import co.com.codesoftware.persistence.entites.tables.ProductoTable;
 import co.com.codesoftware.persistence.entites.tables.RecetaTable;
 import co.com.codesoftware.persistence.entites.tables.UsuarioTable;
@@ -391,8 +392,14 @@ public class FacturacionLogic implements AutoCloseable {
         List<FacturaTable> facturas = null;
         try {
             initOperation();
+            //Numero desde el cual se inicio la facturacion
+            Integer iniFact = this.buscaConcecutivoFactura();
+            if(idFactura == null){
+                idFactura = 0;
+            }
+            idFactura =  idFactura - iniFact ;
             Criteria crit = sesion.createCriteria(FacturaTable.class);
-            if (idFactura != null && idFactura != 0) {
+            if (idFactura != null && idFactura > 0) {
                 crit.add(Restrictions.eq("id", idFactura));
             } else {
                 if (idCliente != null && idCliente != 0) {
@@ -400,7 +407,6 @@ public class FacturacionLogic implements AutoCloseable {
                 }
                 if (codExterno != null && !"".equalsIgnoreCase(codExterno)) {
                     Integer idProducto = this.buscaIdProductoXCodigoExterno(codExterno);
-                    System.out.println("Este es el id: " + idProducto);
                     if(idProducto != null && idProducto != 0){
                         ArrayList<Integer> idFacturas = this.obtieneFacturasXCodigoProducto(idProducto);
                         if(idFacturas != null){
@@ -414,6 +420,9 @@ public class FacturacionLogic implements AutoCloseable {
                 crit.add(Restrictions.between("fecha", fechaInicial, fechaFinal));
             }
             facturas = crit.list();
+            for(FacturaTable fac : facturas){
+                fac.setIdFactVisual(fac.getId()+iniFact);
+            }
             for (FacturaTable factura : facturas) {
                 if (factura != null) {
                     Query query2 = sesion.createQuery("from Cliente WHERE id = :idCliente ");
@@ -426,6 +435,26 @@ public class FacturacionLogic implements AutoCloseable {
         }
         return facturas;
     }
+    /**
+     * Funcion con la cual busco el consecutivo de factura que se encuentra en los parametros de la aplicacion
+     * @return 
+     */
+    public Integer buscaConcecutivoFactura(){
+        Integer id = 0;
+        try {
+            Criteria crit = sesion.createCriteria(ParametrosEmpresaTable.class);
+            crit.add(Restrictions.eq("clave","FACTURA" ));
+            ParametrosEmpresaTable tabla = (ParametrosEmpresaTable) crit.uniqueResult();
+            if(tabla != null){
+                id = Integer.parseInt(tabla.getValor());
+            }else{
+                id = 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+    } 
 
     /**
      * Funcion con la cual busco el id de un producto por medio de su codigo

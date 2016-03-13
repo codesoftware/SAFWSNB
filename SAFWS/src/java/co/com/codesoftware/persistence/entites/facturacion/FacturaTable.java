@@ -41,6 +41,7 @@ public class FacturaTable implements Serializable{
     private List<DetReceFacturacionTable> detalleRecetas;
     private Cliente cliente;
     private Date fechaExacta;
+    private Integer idFactVisual;
 
     @Id
     @Column(name = "fact_fact")
@@ -240,5 +241,15 @@ public class FacturaTable implements Serializable{
     public void setFechaExacta(Date fechaExacta) {
         this.fechaExacta = fechaExacta;
     }
+    @Transient
+    public Integer getIdFactVisual() {
+        return idFactVisual;
+    }
+
+    public void setIdFactVisual(Integer idFactVisual) {
+        this.idFactVisual = idFactVisual;
+    }
+    
+    
 
 }
