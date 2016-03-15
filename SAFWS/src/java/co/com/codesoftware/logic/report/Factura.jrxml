@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="226" pageHeight="2160" columnWidth="214" leftMargin="1" rightMargin="11" topMargin="7" bottomMargin="7" uuid="396ba8d0-ab46-4cae-a719-866dff7b0291">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="96"/>
 	<parameter name="fact_fact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
@@ -52,7 +52,10 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 (SELECT '$' || to_char(FACT_VLR_TARJETA,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PGOTARJETA,
 (SELECT case when FACT_RETEFUN = 'S' then 'SI' ELSE 'NO' END from fa_tfact where fact_fact  = cast($P{fact_fact} as int))RETEFUENTE,
 (SELECT '$' || to_char(FACT_VLRRTFU,'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))VALOR_RETE,
-(SELECT '$' || to_char((fact_vlr_total+fact_vlr_iva)-(FACT_VLRRTFU),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PAGUE]]>
+(SELECT '$' || to_char((fact_vlr_total+fact_vlr_iva)-(FACT_VLRRTFU),'9,999,999,999.00') from fa_tfact where fact_fact  = cast($P{fact_fact} as int))PAGUE,
+(select Coalesce(para_valor,' ') from em_tpara where para_clave = 'ACRONIMO') MENSAJE,
+(select Coalesce(para_valor,' ') from em_tpara where para_clave = 'RESOLUCION') MSNRESOLUCION,
+(select Coalesce(para_valor,' ') from em_tpara where para_clave = 'PRENUMFACT') PRENUMFACT]]>
 	</queryString>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="nit" class="java.lang.String"/>
@@ -77,6 +80,9 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 	<field name="retefuente" class="java.lang.String"/>
 	<field name="valor_rete" class="java.lang.String"/>
 	<field name="pague" class="java.lang.String"/>
+	<field name="mensaje" class="java.lang.String"/>
+	<field name="msnresolucion" class="java.lang.String"/>
+	<field name="prenumfact" class="java.lang.String"/>
 	<title>
 		<band height="320" splitType="Stretch">
 			<textField>
@@ -168,13 +174,6 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="0" y="110" width="215" height="15" uuid="a72bcd1d-12cf-4776-9721-912b82d5e77b"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[¡CAMINO A LA EXCELENCIA!]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="0" y="150" width="40" height="10" uuid="dee0a86e-e181-4310-9f5d-77ea56484ac9"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7" isBold="true"/>
@@ -189,11 +188,11 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 				<text><![CDATA[NIT:  ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="170" width="91" height="10" uuid="b9c7f07d-ed21-404c-88e0-3eab2e2c8766"/>
+				<reportElement x="0" y="170" width="61" height="10" uuid="b9c7f07d-ed21-404c-88e0-3eab2e2c8766"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
-				<text><![CDATA[FACT No:  PO]]></text>
+				<text><![CDATA[FACT No:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="10" y="201" width="70" height="15" uuid="4d9b939a-ad51-437d-947f-b05ae34d6b1f"/>
@@ -240,13 +239,6 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 					<font size="7"/>
 				</textElement>
 				<text><![CDATA[Res. DIAN No 320001340007 FECHA 2015/11/27]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="-1" y="95" width="215" height="13" uuid="6e121e79-8da2-4c29-a95b-bf9cfa7cbcf4"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7"/>
-				</textElement>
-				<text><![CDATA[Numeración Autorizada con prefijo PO 1 al PO 100.000]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="82" width="134" height="13" uuid="fc9e5cc2-9981-470e-946b-03a619de3c1d"/>
@@ -322,6 +314,27 @@ COALESCE((select para_valor from em_tpara where para_clave = 'CORREOFACT'),'NO A
 					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{correofact}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="108" width="215" height="15" uuid="8e2c540d-2924-40fd-ad6d-5fda50ba6c62"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mensaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="95" width="212" height="13" uuid="bba2827f-60f9-46b5-a990-e0a425cfaafd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{msnresolucion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="170" width="39" height="10" uuid="38c19cdf-8abb-4873-8fbb-c4b93f3d5b8f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prenumfact}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
